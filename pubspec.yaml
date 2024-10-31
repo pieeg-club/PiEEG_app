@@ -38,7 +38,7 @@ dependencies:
     sdk: flutter
   flutter_riverpod: ^2.6.1
   riverpod_annotation: ^2.6.1
-  rpi_gpio: ^0.10.0
+  rpi_gpio: ^0.9.1
   rpi_spi: ^0.4.0
 
 dev_dependencies:
