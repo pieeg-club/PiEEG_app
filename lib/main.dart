@@ -82,7 +82,7 @@ class EEGPage extends ConsumerWidget {
             onPressed: dataReciver.startDataRead,
             child: const Text('Start'),
           ),
-          ...graphs,
+          // ...graphs,
         ],
       ),
     );
