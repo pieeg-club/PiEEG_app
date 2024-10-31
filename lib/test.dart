@@ -18,7 +18,7 @@ ADS1299Reader dataListener(Ref ref) {
 }
 
 class ADS1299Reader {
-  final RpiSpi spi = RpiSpi();
+  late RpiSpi spi;
   late SpiDevice _device;
   final int chipSelectPin = 24;
   final int speed = 600000;
@@ -42,6 +42,7 @@ class ADS1299Reader {
   }
 
   void startDataRead() {
+    spi = RpiSpi();
     _device = spi.device(0, chipSelectPin, speed, mode);
     _initializeADS1299();
 
