@@ -6,7 +6,7 @@ import 'package:test_project/test.dart';
 
 void main() {
   runApp(
-    const ProviderScope(child: MyApp()),
+    const MyApp(),
   );
 }
 
