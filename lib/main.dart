@@ -78,11 +78,11 @@ class EEGPage extends ConsumerWidget {
     return Scaffold(
       body: Column(
         children: [
-          TextButton(
+          ElevatedButton(
             onPressed: dataReciver.startDataRead,
             child: const Text('Start'),
           ),
-          // ...graphs,
+          ...graphs,
         ],
       ),
     );
