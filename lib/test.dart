@@ -29,6 +29,7 @@ class ADS1299Reader {
   ADS1299Reader(this.dataNotifier) {
     _device = spi.device(0, chipSelectPin, speed, mode);
     _initializeADS1299();
+    startDataRead();
   }
 
   void _initializeADS1299() {
