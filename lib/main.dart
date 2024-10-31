@@ -76,14 +76,16 @@ class EEGPage extends ConsumerWidget {
       },
     );
     return Scaffold(
-      body: Column(
-        children: [
-          ElevatedButton(
-            onPressed: dataReciver.startDataRead,
-            child: const Text('Start'),
-          ),
-          ...graphs,
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: dataReciver.startDataRead,
+              child: const Text('Start'),
+            ),
+            ...graphs,
+          ],
+        ),
       ),
     );
   }

@@ -26,10 +26,7 @@ class ADS1299Reader {
 
   final DataNitiifer dataNotifier;
 
-  ADS1299Reader(this.dataNotifier) {
-    _device = spi.device(0, chipSelectPin, speed, mode);
-    _initializeADS1299();
-  }
+  ADS1299Reader(this.dataNotifier);
 
   void _initializeADS1299() {
     _sendCommand(0x02); // WAKEUP
@@ -45,6 +42,9 @@ class ADS1299Reader {
   }
 
   void startDataRead() {
+    _device = spi.device(0, chipSelectPin, speed, mode);
+    _initializeADS1299();
+
     _sendCommand(0x10); // Set device to read mode
     _sendCommand(0x08); // Start data capture
 
