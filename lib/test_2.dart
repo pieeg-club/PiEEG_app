@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:rpi_gpio/rpi_gpio.dart';
 import 'package:rpi_spi/rpi_spi.dart';
 import 'package:rpi_spi/spi.dart';
 import 'package:test_project/data_notifier.dart';
@@ -95,7 +94,6 @@ class ADS1299Reader {
 
   Future<void> startDataRead() async {
     final spi = RpiSpi();
-    final gpio = await initialize_RpiGpio();
     await _initializeADS1299(spi);
 
     // Read and process data in a continuous loop for both devices
@@ -107,10 +105,9 @@ class ADS1299Reader {
       final result1 = DeviceDataProcessorService.processRawDeviceData(data1);
 
       // Set chip select line for device 2
-      gpio.output(chipSelectPin2).value = false;
+
       // Read data from SPI device 2
       final data2 = _readBytes(_device2, 27);
-      gpio.output(chipSelectPin2).value = true;
 
       // Process and scale data for device 2
       final result2 = DeviceDataProcessorService.processRawDeviceData(data2);
