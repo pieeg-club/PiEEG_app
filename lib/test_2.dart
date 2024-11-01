@@ -31,7 +31,7 @@ class ADS1299Reader {
 
   ADS1299Reader(this.dataNotifier);
 
-  Future<void> _initializeADS1299(RpiSpi spi, RpiGpio gpio) async {
+  Future<void> _initializeADS1299(RpiSpi spi) async {
     // Constants and commands
     const int config1 = 0x01;
     const int config2 = 0x02;
@@ -53,10 +53,6 @@ class ADS1299Reader {
       0x0B,
       0x0C
     ];
-
-    // Configure GPIO for chip select lines
-    var cs1 = gpio.output(chipSelectPin1);
-    var cs2 = gpio.output(chipSelectPin2);
 
     // Setup SPI devices for both channels
     _device1 = spi.device(0, 0, speed, mode); // SPI device 1 on channel 0
@@ -100,7 +96,7 @@ class ADS1299Reader {
   Future<void> startDataRead() async {
     final spi = RpiSpi();
     final gpio = await initialize_RpiGpio();
-    await _initializeADS1299(spi, gpio);
+    await _initializeADS1299(spi);
 
     // Read and process data in a continuous loop for both devices
     Timer.periodic(const Duration(milliseconds: 4), (timer) async {
