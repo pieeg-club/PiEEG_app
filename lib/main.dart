@@ -77,7 +77,7 @@ class EEGPage extends ConsumerWidget {
     );
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(50),
         child: Scrollbar(
           thumbVisibility: true,
           child: SingleChildScrollView(
