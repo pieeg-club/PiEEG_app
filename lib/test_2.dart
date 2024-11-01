@@ -111,7 +111,7 @@ class ADS1299Reader {
 
       // Process and scale data for device 2
       final result2 = DeviceDataProcessorService.processRawDeviceData(data2);
-      dataNotifier.addData(result1, result2);
+      // dataNotifier.addData(result1, result2);
     });
 
     print("Data reading started for both SPI devices.");
