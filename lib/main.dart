@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const EEGPage(),
+      home: EEGPage(),
     );
   }
 }
@@ -47,7 +47,9 @@ class MyApp extends StatelessWidget {
 /// Screen to listen data from EEG device
 class EEGPage extends ConsumerWidget {
   /// Basic Constructor for EEGPage
-  const EEGPage({super.key});
+  EEGPage({super.key});
+
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -80,7 +82,9 @@ class EEGPage extends ConsumerWidget {
         padding: const EdgeInsets.all(50),
         child: Scrollbar(
           thumbVisibility: true,
+          controller: _scrollController,
           child: SingleChildScrollView(
+            controller: _scrollController,
             child: Column(
               children: [
                 ElevatedButton(
