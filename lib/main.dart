@@ -77,7 +77,7 @@ class EEGPage extends ConsumerWidget {
     );
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Scrollbar(
           child: Column(
             children: [
               ElevatedButton(
