@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -90,6 +92,12 @@ class EEGPage extends ConsumerWidget {
                 ElevatedButton(
                   onPressed: dataReciver.startDataRead,
                   child: const Text('Start'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    exit(0); // Close the app on Linux
+                  },
+                  child: Text('Close App'),
                 ),
                 ...graphs,
               ],
