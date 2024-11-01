@@ -78,14 +78,17 @@ class EEGPage extends ConsumerWidget {
     return Scaffold(
       body: SafeArea(
         child: Scrollbar(
-          child: Column(
-            children: [
-              ElevatedButton(
-                onPressed: dataReciver.startDataRead,
-                child: const Text('Start'),
-              ),
-              ...graphs,
-            ],
+          thumbVisibility: true,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ElevatedButton(
+                  onPressed: dataReciver.startDataRead,
+                  child: const Text('Start'),
+                ),
+                ...graphs,
+              ],
+            ),
           ),
         ),
       ),
