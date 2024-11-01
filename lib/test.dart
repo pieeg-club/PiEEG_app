@@ -56,7 +56,7 @@ class ADS1299Reader {
 
       // Process and scale the data to obtain voltage values
       final result = DeviceDataProcessorService.processRawDeviceData(data);
-      dataNotifier.addData(result);
+      // dataNotifier.addData(result);
     });
 
     print("Data reading started.");
