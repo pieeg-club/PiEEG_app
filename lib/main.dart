@@ -76,7 +76,8 @@ class EEGPage extends ConsumerWidget {
       },
     );
     return Scaffold(
-      body: SafeArea(
+      body: Padding(
+        padding: const EdgeInsets.all(20),
         child: Scrollbar(
           thumbVisibility: true,
           child: SingleChildScrollView(
