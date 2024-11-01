@@ -34,11 +34,47 @@ class ADS1299Reader {
     _sendCommand(0x06); // RESET
     _sendCommand(0x11); // SDATAC
 
+    _writeByte(0x14, 0x80); // GPIO
+
     // Write configuration registers
     _writeByte(0x01, 0x96); // CONFIG1
     _writeByte(0x02, 0xD4); // CONFIG2
     _writeByte(0x03, 0xFF); // CONFIG3
-    // More register configurations as per the Python setup
+
+    const config1 = 0x01;
+    const config2 = 0X02;
+    const config3 = 0X03;
+
+    const ch1set = 0x05;
+    const ch2set = 0x06;
+    const ch3set = 0x07;
+    const ch4set = 0x08;
+    const ch5set = 0x09;
+    const ch6set = 0x0A;
+    const ch7set = 0x0B;
+    const ch8set = 0x0C;
+
+    _writeByte(config1, 0x96);
+    _writeByte(config2, 0xD4);
+    _writeByte(config3, 0xFF);
+    _writeByte(0x04, 0x00);
+    _writeByte(0x0D, 0x00);
+    _writeByte(0x0E, 0x00);
+    _writeByte(0x0F, 0x00);
+    _writeByte(0x10, 0x00);
+    _writeByte(0x11, 0x00);
+    _writeByte(0x15, 0x20);
+    _writeByte(0x17, 0x00);
+    _writeByte(ch1set, 0x00);
+    _writeByte(ch2set, 0x00);
+    _writeByte(ch3set, 0x00);
+    _writeByte(ch4set, 0x00);
+    _writeByte(ch5set, 0x00);
+    _writeByte(ch6set, 0x00);
+    _writeByte(ch7set, 0x00);
+    _writeByte(ch8set, 0x00);
+    _sendCommand(0x10); // RDATAC
+    _sendCommand(0x08); // START
   }
 
   void startDataRead() {
