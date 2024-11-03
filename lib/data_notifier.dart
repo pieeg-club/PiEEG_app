@@ -34,6 +34,10 @@ class DataNitiifer extends _$DataNitiifer {
         voltData[i].removeAt(0);
       }
     }
+    if (voltData[0].length < 1000) {
+      state = voltData;
+      return;
+    }
     final bandPassFilterService = ref.read(bandPassFilterServiceProvider);
     final filteredData = <List<double>>[];
     for (var i = 0; i < voltData.length; i++) {
