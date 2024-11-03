@@ -131,8 +131,8 @@ class Chart extends StatelessWidget {
     return Padding(
       padding: _padding,
       child: SizedBox(
-        width: double.infinity,
-        height: 50,
+        width: 300,
+        height: 75,
         child: LineChart(
           duration: const Duration(milliseconds: 0),
           LineChartData(
