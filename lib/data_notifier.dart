@@ -7,7 +7,7 @@ part 'data_notifier.g.dart';
 class DataNitiifer extends _$DataNitiifer {
   @override
   List<List<double>> build() {
-    return List<List<double>>.generate(16, (i) => []);
+    return List<List<double>>.generate(8, (i) => []);
   }
 
   /// adds data to a current list
