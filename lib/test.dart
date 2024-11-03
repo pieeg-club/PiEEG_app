@@ -36,7 +36,6 @@ class ADS1299Reader {
     const sdatac = 0x11;
     const rdatac = 0x10;
     const wakeup = 0x02;
-    const rdata = 0x12;
 
     const ch1set = 0x05;
     const ch2set = 0x06;

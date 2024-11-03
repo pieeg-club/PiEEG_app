@@ -6,7 +6,7 @@ part of 'data_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$dataNitiiferHash() => r'e0b9a70bdf4cd0f080afe17415f9f48bf728c18e';
+String _$dataNitiiferHash() => r'd7de0a3c12425709bb8279e717696fa8b0525d37';
 
 /// notifier that will update ui when new data is processed
 ///
