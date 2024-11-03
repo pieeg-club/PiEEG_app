@@ -34,7 +34,7 @@ class DataNitiifer extends _$DataNitiifer {
         voltData[i].removeAt(0);
       }
     }
-    if (voltData[0].length < 1000) {
+    if (voltData[0].length < 905) {
       state = voltData;
       return;
     }

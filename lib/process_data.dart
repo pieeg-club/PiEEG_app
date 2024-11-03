@@ -12,7 +12,7 @@ const int numberOfChannels = 8;
 const double _leftCutOffFreq = 1;
 const double _rightCutOffFreq = 10;
 const int _order = 5;
-const int _bandPassMinProcessedLength = 1000;
+const int _bandPassMinProcessedLength = 900;
 const int _bandPassWarmUpLength = 100;
 
 class BandPassFilterService {
