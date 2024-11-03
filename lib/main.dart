@@ -97,9 +97,11 @@ class EEGPage extends ConsumerWidget {
                   onPressed: () {
                     exit(0); // Close the app on Linux
                   },
-                  child: Text('Close App'),
+                  child: const Text('Close App'),
                 ),
-                ...graphs,
+                Wrap(
+                  children: graphs,
+                ),
               ],
             ),
           ),
@@ -130,7 +132,7 @@ class Chart extends StatelessWidget {
       padding: _padding,
       child: SizedBox(
         width: double.infinity,
-        height: 100,
+        height: 50,
         child: LineChart(
           duration: const Duration(milliseconds: 0),
           LineChartData(

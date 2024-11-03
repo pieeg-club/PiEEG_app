@@ -29,6 +29,9 @@ class DataNitiifer extends _$DataNitiifer {
     for (var i = 0; i < 8; i++) {
       newState.add([]);
       newState[i] = [...state[i], data1[i]];
+      while (newState[i].length > 1000) {
+        newState[i].removeAt(0);
+      }
     }
     state = newState;
   }
