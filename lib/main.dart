@@ -51,8 +51,6 @@ class EEGPage extends ConsumerWidget {
   /// Basic Constructor for EEGPage
   EEGPage({super.key});
 
-  final ScrollController _scrollController = ScrollController();
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dataNotifier = ref.watch(dataNitiiferProvider);
@@ -82,28 +80,25 @@ class EEGPage extends ConsumerWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            children: [
-              ElevatedButton(
-                onPressed: dataReciver.startDataRead,
-                child: const Text('Start'),
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: dataReciver.startDataRead,
+              child: const Text('Start'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                exit(0); // Close the app on Linux
+              },
+              child: const Text('Close App'),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Wrap(
+                children: graphs,
               ),
-              ElevatedButton(
-                onPressed: () {
-                  exit(0); // Close the app on Linux
-                },
-                child: const Text('Close App'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Wrap(
-                  children: graphs,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
