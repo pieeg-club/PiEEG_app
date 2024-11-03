@@ -29,14 +29,12 @@ class BandPassFilterService {
   }
 
   List<double> applyBandPassFilter(List<double> data) {
-    if (data.length < _bandPassMinProcessedLength) return [];
+    // if (data.length < _bandPassMinProcessedLength) return [];
 
     List<double> filteredData = [];
     for (double sample in data) {
       filteredData.add(_butterworth.filter(sample));
     }
-    return filteredData.length < _bandPassWarmUpLength
-        ? []
-        : filteredData.sublist(_bandPassWarmUpLength);
+    return filteredData;
   }
 }
