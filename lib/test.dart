@@ -20,30 +20,23 @@ ADS1299Reader dataListener(Ref ref) {
 class ADS1299Reader {
   late RpiSpi spi;
   late SpiDevice _device;
-  final int chipSelectPin = 24;
-  final int speed = 600000;
-  final int mode = 1; // SPI Mode 1 for ADS1299
 
   final DataNitiifer dataNotifier;
 
   ADS1299Reader(this.dataNotifier);
 
   void _initializeADS1299() {
-    _sendCommand(0x02); // WAKEUP
-    _sendCommand(0x0A); // STOP
-    _sendCommand(0x06); // RESET
-    _sendCommand(0x11); // SDATAC
-
-    _writeByte(0x14, 0x80); // GPIO
-
-    // Write configuration registers
-    _writeByte(0x01, 0x96); // CONFIG1
-    _writeByte(0x02, 0xD4); // CONFIG2
-    _writeByte(0x03, 0xFF); // CONFIG3
-
     const config1 = 0x01;
     const config2 = 0X02;
     const config3 = 0X03;
+
+    const reset = 0x06;
+    const stop = 0x0A;
+    const start = 0x08;
+    const sdatac = 0x11;
+    const rdatac = 0x10;
+    const wakeup = 0x02;
+    const rdata = 0x12;
 
     const ch1set = 0x05;
     const ch2set = 0x06;
@@ -53,6 +46,18 @@ class ADS1299Reader {
     const ch6set = 0x0A;
     const ch7set = 0x0B;
     const ch8set = 0x0C;
+
+    _sendCommand(wakeup);
+    _sendCommand(stop);
+    _sendCommand(reset);
+    _sendCommand(sdatac);
+
+    _writeByte(0x14, 0x80); // GPIO
+
+    // Write configuration registers
+    _writeByte(0x01, 0x96); // CONFIG1
+    _writeByte(0x02, 0xD4); // CONFIG2
+    _writeByte(0x03, 0xFF); // CONFIG3
 
     _writeByte(config1, 0x96);
     _writeByte(config2, 0xD4);
@@ -64,6 +69,7 @@ class ADS1299Reader {
     _writeByte(0x10, 0x00);
     _writeByte(0x11, 0x00);
     _writeByte(0x15, 0x20);
+
     _writeByte(0x17, 0x00);
     _writeByte(ch1set, 0x01);
     _writeByte(ch2set, 0x01);
@@ -73,13 +79,14 @@ class ADS1299Reader {
     _writeByte(ch6set, 0x01);
     _writeByte(ch7set, 0x01);
     _writeByte(ch8set, 0x01);
-    _sendCommand(0x10); // RDATAC
-    _sendCommand(0x08); // START
+
+    _sendCommand(rdatac); // RDATAC
+    _sendCommand(start); // START
   }
 
   void startDataRead() {
     spi = RpiSpi();
-    _device = spi.device(0, chipSelectPin, speed, mode);
+    _device = spi.device(0, 24, 600000, 1);
     _initializeADS1299();
 
     _sendCommand(0x10); // Set device to read mode
@@ -105,7 +112,7 @@ class ADS1299Reader {
 
   void _writeByte(int register, int data) {
     final writeCommand = 0x40 | register;
-    _device.send([writeCommand, data]);
+    _device.send([writeCommand, 0x00, data]);
   }
 
   Uint8List _readBytes(int length) {
