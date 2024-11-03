@@ -80,7 +80,7 @@ class EEGPage extends ConsumerWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Expanded(
+        child: Center(
           child: Column(
             children: [
               ElevatedButton(
