@@ -92,8 +92,11 @@ class EEGPage extends ConsumerWidget {
               },
               child: const Text('Close App'),
             ),
-            Wrap(
-              children: graphs,
+            SizedBox(
+              width: 500,
+              child: Wrap(
+                children: graphs,
+              ),
             ),
           ],
         ),
