@@ -80,28 +80,26 @@ class EEGPage extends ConsumerWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(50),
-        child: SizedBox.expand(
-          child: Expanded(
-            child: Column(
-              children: [
-                ElevatedButton(
-                  onPressed: dataReciver.startDataRead,
-                  child: const Text('Start'),
+        child: Expanded(
+          child: Column(
+            children: [
+              ElevatedButton(
+                onPressed: dataReciver.startDataRead,
+                child: const Text('Start'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  exit(0); // Close the app on Linux
+                },
+                child: const Text('Close App'),
+              ),
+              SizedBox(
+                width: 700,
+                child: Wrap(
+                  children: graphs,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    exit(0); // Close the app on Linux
-                  },
-                  child: const Text('Close App'),
-                ),
-                SizedBox(
-                  width: 700,
-                  child: Wrap(
-                    children: graphs,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
