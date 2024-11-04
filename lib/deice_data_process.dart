@@ -8,7 +8,7 @@ class DeviceDataProcessorService {
     int bytesPerSample = 3;
     List<double> dataForGraph = [];
 
-    for (int index = 0; index < dataReceived.length; index++) {
+    for (int index = 3; index < dataReceived.length; index++) {
       int dataRead = dataReceived[index];
       dataResult = (dataResult << 8) | dataRead;
 
