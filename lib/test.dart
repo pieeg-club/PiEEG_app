@@ -53,11 +53,6 @@ class ADS1299Reader {
 
     _writeByte(0x14, 0x80); // GPIO
 
-    // Write configuration registers
-    _writeByte(0x01, 0x96); // CONFIG1
-    _writeByte(0x02, 0xD4); // CONFIG2
-    _writeByte(0x03, 0xFF); // CONFIG3
-
     _writeByte(config1, 0x96);
     _writeByte(config2, 0xD4);
     _writeByte(config3, 0xFF);
@@ -70,14 +65,14 @@ class ADS1299Reader {
     _writeByte(0x15, 0x20);
 
     _writeByte(0x17, 0x00);
-    _writeByte(ch1set, 0x00);
-    _writeByte(ch2set, 0x00);
-    _writeByte(ch3set, 0x00);
-    _writeByte(ch4set, 0x00);
-    _writeByte(ch5set, 0x00);
-    _writeByte(ch6set, 0x00);
-    _writeByte(ch7set, 0x00);
-    _writeByte(ch8set, 0x00);
+    _writeByte(ch1set, 0x01);
+    _writeByte(ch2set, 0x01);
+    _writeByte(ch3set, 0x01);
+    _writeByte(ch4set, 0x01);
+    _writeByte(ch5set, 0x01);
+    _writeByte(ch6set, 0x01);
+    _writeByte(ch7set, 0x01);
+    _writeByte(ch8set, 0x01);
 
     _sendCommand(rdatac); // RDATAC
     _sendCommand(start); // START
@@ -85,7 +80,7 @@ class ADS1299Reader {
 
   void startDataRead() {
     spi = RpiSpi();
-    _device = spi.device(0, 24, 600000, 1);
+    _device = spi.device(0, 24, 600000, 1); // ???
     _initializeADS1299();
 
     _sendCommand(0x10); // Set device to read mode
