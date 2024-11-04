@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:rpi_gpio/rpi_gpio.dart';
 import 'package:rpi_spi/rpi_spi.dart';
 import 'package:rpi_spi/spi.dart';
 import 'package:test_project/data_notifier.dart';
@@ -78,7 +79,12 @@ class ADS1299Reader {
     _sendCommand(start); // START
   }
 
-  void startDataRead() {
+  Future<void> startDataRead() async {
+    RpiGpio gpio = await initialize_RpiGpio();
+    const int buttonPin = 26;
+    final button = gpio.input(buttonPin);
+    int testDRDY = 5;
+
     spi = RpiSpi();
     _device = spi.device(0, 24, 600000, 1); // ???
     _initializeADS1299();
@@ -86,15 +92,25 @@ class ADS1299Reader {
     _sendCommand(0x10); // Set device to read mode
     _sendCommand(0x08); // Start data capture
 
-    // Read and process data in a continuous loop
-    Timer.periodic(const Duration(milliseconds: 4), (timer) {
-      // Read 27 bytes from the SPI device, similar to the Python code
-      final data = _readBytes(27);
+    await for (final buttonState in button.values) {
+      if (buttonState) {
+        testDRDY = 10;
+      } else if (testDRDY == 10) {
+        testDRDY = 0;
 
-      // Process and scale the data to obtain voltage values
-      final result = DeviceDataProcessorService.processRawDeviceData(data);
-      dataNotifier.addData(result);
-    });
+        // Read 27 bytes from the SPI device, similar to the Python code
+        final data = _readBytes(27);
+
+        // Process and scale the data to obtain voltage values
+        final result = DeviceDataProcessorService.processRawDeviceData(data);
+        dataNotifier.addData(result);
+      }
+    }
+
+    // // Read and process data in a continuous loop
+    // Timer.periodic(const Duration(milliseconds: 4), (timer) {
+
+    // });
 
     print("Data reading started.");
   }
