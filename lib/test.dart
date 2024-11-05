@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:rpi_gpio/gpio.dart';
 import 'package:rpi_gpio/rpi_gpio.dart';
 import 'package:rpi_spi/rpi_spi.dart';
 import 'package:rpi_spi/spi.dart';
@@ -82,8 +81,8 @@ class ADS1299Reader {
 
   Future<void> startDataRead() async {
     RpiGpio gpio = await initialize_RpiGpio(spi: false);
-    const int buttonPin = 26;
-    final button = gpio.input(buttonPin, Pull.up);
+    const int buttonPin = 37;
+    final button = gpio.input(buttonPin);
     int testDRDY = 5;
 
     print('Rpigpio initialized');
