@@ -99,38 +99,38 @@ class ADS1299Reader {
 
     print("Data reading started.");
 
-    // await for (final buttonState in button.values) {
-    //   print('Button state: $buttonState');
-    //   if (buttonState) {
-    //     testDRDY = 10;
-    //   } else if (testDRDY == 10) {
-    //     testDRDY = 0;
-
-    //     // Read 27 bytes from the SPI device, similar to the Python code
-    //     final data = _readBytes(27);
-
-    //     // Process and scale the data to obtain voltage values
-    //     final result = DeviceDataProcessorService.processRawDeviceData(data);
-    //     dataNotifier.addData(result);
-    //   }
-    // }
-
-    Timer.periodic(Duration(microseconds: 100), (timer) async {
-      bool buttonState = await button.value;
+    await for (final buttonState in button.allValues) {
+      print('Button state: $buttonState');
       if (buttonState) {
         testDRDY = 10;
-      }
-      if (testDRDY == 10 && !buttonState) {
+      } else if (testDRDY == 10) {
         testDRDY = 0;
 
-        // Read 27 bytes from the SPI device
+        // Read 27 bytes from the SPI device, similar to the Python code
         final data = _readBytes(27);
 
         // Process and scale the data to obtain voltage values
         final result = DeviceDataProcessorService.processRawDeviceData(data);
         dataNotifier.addData(result);
       }
-    });
+    }
+
+    // Timer.periodic(Duration(microseconds: 100), (timer) async {
+    //   bool buttonState = await button.value;
+    //   if (buttonState) {
+    //     testDRDY = 10;
+    //   }
+    //   if (testDRDY == 10 && !buttonState) {
+    //     testDRDY = 0;
+
+    //     // Read 27 bytes from the SPI device
+    //     final data = _readBytes(27);
+
+    //     // Process and scale the data to obtain voltage values
+    //     final result = DeviceDataProcessorService.processRawDeviceData(data);
+    //     dataNotifier.addData(result);
+    //   }
+    // });
   }
 
   // Commands and register configurations
