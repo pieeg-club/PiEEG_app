@@ -85,14 +85,21 @@ class ADS1299Reader {
     final button = gpio.input(buttonPin);
     int testDRDY = 5;
 
+    print('Rpigpio initialized');
+
     spi = RpiSpi();
     _device = spi.device(0, 24, 600000, 1); // ???
     _initializeADS1299();
 
+    print('Rpispi initialized');
+
     _sendCommand(0x10); // Set device to read mode
     _sendCommand(0x08); // Start data capture
 
+    print("Data reading started.");
+
     await for (final buttonState in button.values) {
+      print('Button state: $buttonState');
       if (buttonState) {
         testDRDY = 10;
       } else if (testDRDY == 10) {
@@ -111,8 +118,6 @@ class ADS1299Reader {
     // Timer.periodic(const Duration(milliseconds: 4), (timer) {
 
     // });
-
-    print("Data reading started.");
   }
 
   // Commands and register configurations
