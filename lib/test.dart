@@ -80,7 +80,7 @@ class ADS1299Reader {
   }
 
   Future<void> startDataRead() async {
-    RpiGpio gpio = await initialize_RpiGpio(spi: false);
+    RpiGpio gpio = await initialize_RpiGpio();
     const int buttonPin = 26;
     final button = gpio.input(buttonPin);
     int testDRDY = 5;
