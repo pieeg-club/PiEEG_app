@@ -80,7 +80,7 @@ class ADS1299Reader {
   }
 
   Future<void> startDataRead() async {
-    RpiGpio gpio = await initialize_RpiGpio();
+    RpiGpio gpio = await initialize_RpiGpio(spi: false);
     const int buttonPin = 26;
     final button = gpio.input(buttonPin);
     int testDRDY = 5;
@@ -97,9 +97,6 @@ class ADS1299Reader {
     _sendCommand(0x08); // Start data capture
 
     print("Data reading started.");
-
-    final output = gpio.output(buttonPin);
-    output.value = true;
 
     await for (final buttonState in button.values) {
       print('Button state: $buttonState');
