@@ -98,6 +98,9 @@ class ADS1299Reader {
 
     print("Data reading started.");
 
+    final output = gpio.output(buttonPin);
+    output.value = true;
+
     await for (final buttonState in button.values) {
       print('Button state: $buttonState');
       if (buttonState) {
