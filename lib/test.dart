@@ -88,7 +88,7 @@ class ADS1299Reader {
     print('Rpigpio initialized');
 
     spi = RpiSpi();
-    _device = spi.device(0, 24, 600000, 1); // ???
+    _device = spi.device(0, 24, 600000, 1);
     _initializeADS1299();
 
     print('Rpispi initialized');
