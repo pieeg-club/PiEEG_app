@@ -115,7 +115,7 @@ class ADS1299Reader {
     // }
 
     bool buttonState = false;
-    Timer.periodic(const Duration(microseconds: 100), (timer) async {
+    Timer.periodic(const Duration(microseconds: 200), (timer) async {
       buttonState = await button.value;
       print('Button state: $buttonState');
       if (buttonState) {
