@@ -29,7 +29,7 @@ class DataNitiifer extends _$DataNitiifer {
     for (var i = 0; i < 8; i++) {
       voltData.add([]);
       voltData[i] = [...state[i], ...data1[i]];
-      while (voltData[i].length > 500) {
+      while (voltData[i].length > 5000) {
         voltData[i].removeAt(0);
       }
     }
