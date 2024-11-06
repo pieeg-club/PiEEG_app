@@ -23,7 +23,7 @@ class ADS1299Reader2 {
 
   ADS1299Reader2(this.dataNotifier);
 
-  void _initializeADS1299(SPI spi) {
+  static void _initializeADS1299(SPI spi) {
     const config1 = 0x01;
     const config2 = 0X02;
     const config3 = 0X03;
@@ -154,18 +154,18 @@ class ADS1299Reader2 {
     }
   }
 
-  void _sendCommand(SPI spi, int command) {
+  static void _sendCommand(SPI spi, int command) {
     final sendData = [command];
     spi.transfer(sendData, false);
   }
 
-  void _writeByte(SPI spi, int register, int data) {
+  static void _writeByte(SPI spi, int register, int data) {
     final writeCommand = 0x40 | register;
     final sendData = [writeCommand, 0x00, data];
     spi.transfer(sendData, false);
   }
 
-  List<int> _readData(SPI spi, int length) {
+  static List<int> _readData(SPI spi, int length) {
     return spi.transfer(List.filled(length, 0), false);
   }
 
@@ -183,7 +183,7 @@ class ADS1299Reader2 {
     });
   }
 
-  void dataAcquisitionIsolate(SendPort sendPort) {
+  static void dataAcquisitionIsolate(SendPort sendPort) {
     // Initialize SPI and GPIO here
     final spi = SPI(0, 0, SPImode.mode1, 600000);
     spi.setSPIbitsPerWord(8);
