@@ -145,7 +145,7 @@ class Chart extends StatelessWidget {
                 LineChartBarData(
                   dotData: const FlDotData(show: false),
                   barWidth: 0.5,
-                  isCurved: true,
+                  isCurved: false,
                   color: Colors.red,
                   spots: _secondSpots,
                 ),
