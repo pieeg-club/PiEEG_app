@@ -200,8 +200,6 @@ class ADS1299Reader2 {
     bool testDRDY = false;
     bool buttonState = false;
 
-    final previousData = List<int>.filled(27, 0);
-
     while (true) {
       buttonState = gpio.read();
 
@@ -212,18 +210,6 @@ class ADS1299Reader2 {
 
         // Read data from SPI
         final data = _readData(spi, 27);
-        // comaare(not the pointers, the acual values) previous data with current data
-        bool isSame = true;
-        for (var i = 0; i < data.length; i++) {
-          if (data[i] != previousData[i]) {
-            isSame = false;
-          }
-        }
-
-        if (!isSame) {
-          print(
-              'Raw SPI Data: ${data.map((b) => b.toRadixString(16).padLeft(2, '0')).join(' ')}');
-        }
 
         // Process data
         final result = DeviceDataProcessorService.processRawDeviceData(data);
