@@ -69,14 +69,14 @@ class ADS1299Reader {
     _writeByte(device, 0x15, 0x20);
 
     _writeByte(device, 0x17, 0x00);
-    _writeByte(device, ch1set, 0x00);
-    _writeByte(device, ch2set, 0x00);
-    _writeByte(device, ch3set, 0x00);
-    _writeByte(device, ch4set, 0x00);
-    _writeByte(device, ch5set, 0x00);
-    _writeByte(device, ch6set, 0x00);
-    _writeByte(device, ch7set, 0x00);
-    _writeByte(device, ch8set, 0x00);
+    _writeByte(device, ch1set, 0x01);
+    _writeByte(device, ch2set, 0x01);
+    _writeByte(device, ch3set, 0x01);
+    _writeByte(device, ch4set, 0x01);
+    _writeByte(device, ch5set, 0x01);
+    _writeByte(device, ch6set, 0x01);
+    _writeByte(device, ch7set, 0x01);
+    _writeByte(device, ch8set, 0x01);
 
     _sendCommand(device, rdatac); // RDATAC
     _sendCommand(device, start); // START
