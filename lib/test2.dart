@@ -89,9 +89,6 @@ class ADS1299Reader2 {
 
     print('Rpispi initialized');
 
-    // _sendCommand(spi, 0x10); // Set device to read mode
-    // _sendCommand(spi, 0x08); // Start data capture
-
     print("Data reading started.");
 
     var buffer = List<List<double>>.generate(8, (i) => []);
@@ -116,7 +113,7 @@ class ADS1299Reader2 {
           buffer[i].add(result[i]);
         }
 
-        if (buffer[0].length > 250) {
+        if (buffer[0].length >= 250) {
           dataNotifier.addData(buffer);
           buffer = List<List<double>>.generate(8, (i) => []);
         }

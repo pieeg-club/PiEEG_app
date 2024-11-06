@@ -93,9 +93,6 @@ class ADS1299Reader {
 
     print('Rpispi initialized');
 
-    _sendCommand(0x10); // Set device to read mode
-    _sendCommand(0x08); // Start data capture
-
     print("Data reading started.");
 
     // await for (final buttonState in button.allValues) {
@@ -117,7 +114,7 @@ class ADS1299Reader {
     var buffer = List<List<double>>.generate(8, (i) => []);
 
     bool buttonState = false;
-    Timer.periodic(const Duration(microseconds: 200), (timer) async {
+    while (true) {
       buttonState = await button.value;
       print('Button state: $buttonState');
       if (buttonState) {
@@ -135,12 +132,13 @@ class ADS1299Reader {
           buffer[i].add(result[i]);
         }
 
-        if (buffer[0].length > 250) {
+        if (buffer[0].length >= 250) {
           dataNotifier.addData(buffer);
           buffer = List<List<double>>.generate(8, (i) => []);
         }
       }
-    });
+      await Future<void>.delayed(const Duration(microseconds: 10));
+    }
   }
 
   // Commands and register configurations
