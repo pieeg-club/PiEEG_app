@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:rpi_gpio/rpi_gpio.dart';
 import 'package:test_project/data_notifier.dart';
 import 'package:dart_periphery/dart_periphery.dart';
 
@@ -75,12 +74,13 @@ class ADS1299Reader2 {
   }
 
   Future<void> startDataRead() async {
-    // const int buttonPin = 26;
-    // var gpio = GPIO(buttonPin, GPIOdirection.gpioDirIn);
+    const int buttonPin = 26;
+    var gpio = GPIO(buttonPin, GPIOdirection.gpioDirIn);
 
-    RpiGpio gpio = await initialize_RpiGpio(spi: false);
-    const int buttonPin = 37;
-    final button = gpio.input(buttonPin);
+    // rpi_gpio
+    // RpiGpio gpio = await initialize_RpiGpio(spi: false);
+    // const int buttonPin = 37;
+    // final button = gpio.input(buttonPin);
 
     int testDRDY = 5;
 
@@ -101,8 +101,9 @@ class ADS1299Reader2 {
     var buttonState = false;
 
     while (true) {
-      // buttonState = gpio.read();
-      buttonState = await button.value;
+      buttonState = gpio.read();
+      // rpi_gpio
+      // buttonState = await button.value;
       print('Button state: $buttonState');
 
       if (buttonState) {
