@@ -100,7 +100,7 @@ class ADS1299Reader2 {
 
     print("Data reading started.");
 
-    var buffer = List<List<double>>.filled(8, []);
+    var buffer = List<List<double>>.generate(8, (i) => []);
 
     var buttonState = false;
 
@@ -117,6 +117,8 @@ class ADS1299Reader2 {
 
         // Read 27 bytes from the SPI device
         final data = _readData(spi, 27);
+        print(
+            'Raw SPI Data: ${data.map((b) => b.toRadixString(16).padLeft(2, '0')).join(' ')}');
 
         // Process and scale the data to obtain voltage values
         final result = DeviceDataProcessorService.processRawDeviceData(data);
@@ -126,7 +128,7 @@ class ADS1299Reader2 {
 
         if (buffer[0].length >= 250) {
           dataNotifier.addData(buffer);
-          buffer = List<List<double>>.filled(8, []);
+          buffer = List<List<double>>.generate(8, (i) => []);
         }
       }
 

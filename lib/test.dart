@@ -111,7 +111,7 @@ class ADS1299Reader {
     //   }
     // }
 
-    var buffer = List<List<double>>.filled(8, []);
+    var buffer = List<List<double>>.generate(8, (i) => []);
 
     bool buttonState = false;
     while (true) {
@@ -134,7 +134,7 @@ class ADS1299Reader {
 
         if (buffer[0].length >= 250) {
           dataNotifier.addData(buffer);
-          buffer = List<List<double>>.filled(8, []);
+          buffer = List<List<double>>.generate(8, (i) => []);
         }
       }
       // await Future<void>.delayed(const Duration(microseconds: 10));
