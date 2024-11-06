@@ -138,7 +138,7 @@ class Chart extends StatelessWidget {
               LineChartBarData(
                 dotData: const FlDotData(show: false),
                 barWidth: 0.5,
-                isCurved: true,
+                isCurved: false,
                 spots: _spots,
               ),
               if (_secondSpots.isNotEmpty)
