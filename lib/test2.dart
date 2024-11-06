@@ -192,6 +192,7 @@ class ADS1299Reader2 {
         final sample = data['sample'] as double;
         buffers[channelIndex].add(sample);
         if (channelCounter == 8) {
+          channelCounter = 0;
           counter++;
         }
         if (counter >= 250) {
