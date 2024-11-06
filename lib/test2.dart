@@ -107,7 +107,7 @@ class ADS1299Reader2 {
 
     // bandpass filter
     BandPassFilterService bandPassFilterService = BandPassFilterService();
-    var bandPassWarmUp = List<List<double>>.generate(8, (i) => []);
+    // var bandPassWarmUp = List<List<double>>.generate(8, (i) => []);
 
     while (true) {
       buttonState = gpio.read();
@@ -134,12 +134,12 @@ class ADS1299Reader2 {
         if (buffer[0].length >= 500) {
           final bandBassResult = List<List<double>>.generate(8, (i) => []);
           for (var i = 0; i < 8; i++) {
-            final bandPassData = bandPassFilterService
-                .applyBandPassFilter([...bandPassWarmUp[i], ...buffer[i]]);
-            bandBassResult[i] = bandPassData.sublist(bandPassWarmUp[i].length);
+            final bandPassData =
+                bandPassFilterService.applyBandPassFilter([...buffer[i]]);
+            bandBassResult[i] = bandPassData.sublist(0);
           }
           dataNotifier.addData(bandBassResult);
-          bandPassWarmUp = buffer;
+          // bandPassWarmUp = buffer;
           buffer = List<List<double>>.generate(8, (i) => []);
         }
       }
