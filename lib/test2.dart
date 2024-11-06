@@ -178,6 +178,8 @@ class ADS1299Reader2 {
 
     // !! new version!!
 
+    final bandPassFilterService = BandPassFilterService();
+
     final buffers =
         List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
 
@@ -198,7 +200,17 @@ class ADS1299Reader2 {
         if (counter >= 250) {
           counter = 0;
           final dataToSend = buffers.map((buffer) => buffer.getData()).toList();
-          dataNotifier.addData(dataToSend);
+          final bandPassResult = List<List<double>>.generate(8, (i) => []);
+          for (var i = 0; i < dataToSend.length; i++) {
+            for (var j = 0; j < dataToSend[i].length; j++) {
+              final bandPassData = bandPassFilterService.applyBandPassFilter(
+                i,
+                dataToSend[i][j],
+              );
+              bandPassResult[i].add(bandPassData);
+            }
+          }
+          dataNotifier.addData(bandPassResult);
         }
       }
     });
@@ -228,9 +240,9 @@ class ADS1299Reader2 {
     // Initialize ADS1299
     _initializeADS1299(spi);
 
-    final bandPassFilterService = BandPassFilterService();
-
     // !!previous veriosn!!
+
+    // final bandPassFilterService = BandPassFilterService();
 
     // final buffers =
     //     List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
@@ -263,12 +275,9 @@ class ADS1299Reader2 {
         // !!new version!!
 
         for (var i = 0; i < result.length; i++) {
-          final bandPassResult =
-              bandPassFilterService.applyBandPassFilter(i, result[i]);
-
           sendPort.send({
             'channelIndex': i,
-            'sample': bandPassResult,
+            'sample': result[i],
           });
         }
 
