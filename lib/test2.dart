@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -148,6 +149,7 @@ class ADS1299Reader2 {
         //   dataNotifier.addData(bandPassResult);
         //   buffer = List<List<double>>.generate(8, (i) => []);
         // }
+        sleep(const Duration(milliseconds: 1));
       }
     }
   }
