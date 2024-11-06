@@ -10,7 +10,7 @@ BandPassFilterService bandPassFilterService(Ref ref) => BandPassFilterService();
 const double samplingFrequency = 250;
 const int numberOfChannels = 8;
 const double _leftCutOffFreq = 1;
-const double _rightCutOffFreq = 30;
+const double _rightCutOffFreq = 10;
 const int _order = 5;
 const int _bandPassMinProcessedLength = 900;
 const int _bandPassWarmUpLength = 100;
@@ -24,9 +24,9 @@ class BandPassFilterService {
   }
 
   void _initializeBandPassFilters() {
+    double centerFreq = (_rightCutOffFreq + _leftCutOffFreq) / 2;
+    double widthInFreq = _rightCutOffFreq - _leftCutOffFreq;
     for (var filter in _butterworths) {
-      double centerFreq = (_rightCutOffFreq + _leftCutOffFreq) / 2;
-      double widthInFreq = _rightCutOffFreq - _leftCutOffFreq;
       filter.bandPass(_order, samplingFrequency, centerFreq, widthInFreq);
     }
   }
