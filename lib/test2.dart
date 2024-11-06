@@ -179,7 +179,7 @@ class ADS1299Reader2 {
     // !! new version!!
 
     final buffers =
-        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
+        List<CircularBuffer>.generate(8, (_) => CircularBuffer(500));
 
     int counter = 0;
     int channelCounter = 0;
@@ -195,7 +195,7 @@ class ADS1299Reader2 {
           channelCounter = 0;
           counter++;
         }
-        if (counter >= 250) {
+        if (counter >= 500) {
           counter = 0;
           final dataToSend = buffers.map((buffer) => buffer.getData()).toList();
           dataNotifier.addData(dataToSend);
