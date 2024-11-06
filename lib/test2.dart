@@ -64,14 +64,14 @@ class ADS1299Reader2 {
     _writeByte(spi, 0x15, 0x20);
 
     _writeByte(spi, 0x17, 0x00);
-    _writeByte(spi, ch1set, 0x00);
-    _writeByte(spi, ch2set, 0x00);
-    _writeByte(spi, ch3set, 0x00);
-    _writeByte(spi, ch4set, 0x00);
-    _writeByte(spi, ch5set, 0x00);
-    _writeByte(spi, ch6set, 0x00);
-    _writeByte(spi, ch7set, 0x00);
-    _writeByte(spi, ch8set, 0x00);
+    _writeByte(spi, ch1set, 0x01);
+    _writeByte(spi, ch2set, 0x01);
+    _writeByte(spi, ch3set, 0x01);
+    _writeByte(spi, ch4set, 0x01);
+    _writeByte(spi, ch5set, 0x01);
+    _writeByte(spi, ch6set, 0x01);
+    _writeByte(spi, ch7set, 0x01);
+    _writeByte(spi, ch8set, 0x01);
 
     _sendCommand(spi, rdatac); // RDATAC
     _sendCommand(spi, start); // START
@@ -176,25 +176,11 @@ class ADS1299Reader2 {
     // Start the isolate
     await Isolate.spawn(dataAcquisitionIsolate, receivePort.sendPort);
 
-    // new
-    int counter = 0;
-    // /new
-
     // Listen for data from the isolate
     receivePort.listen((data) {
-      // if (data is List<List<double>>) {
-      //   dataNotifier.addData(data);
-      // }
-
-      // new
       if (data is List<List<double>>) {
-        counter++;
-        if (counter >= 250) {
-          counter = 0;
-          dataNotifier.addData(data);
-        }
+        dataNotifier.addData(data);
       }
-      // /new
     });
   }
 
@@ -239,15 +225,11 @@ class ADS1299Reader2 {
         }
         counter++;
 
-        // new
-        sendPort.send(buffers.map((buffer) => buffer.getData()).toList());
-        // /new
-
-        // if (counter >= 250) {
-        //   counter = 0;
-        //   final dataToSend = buffers.map((buffer) => buffer.getData()).toList();
-        //   sendPort.send(dataToSend);
-        // }
+        if (counter >= 250) {
+          counter = 0;
+          final dataToSend = buffers.map((buffer) => buffer.getData()).toList();
+          sendPort.send(dataToSend);
+        }
       }
     }
   }
