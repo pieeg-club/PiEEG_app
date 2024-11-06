@@ -64,14 +64,14 @@ class ADS1299Reader2 {
     _writeByte(spi, 0x15, 0x20);
 
     _writeByte(spi, 0x17, 0x00);
-    _writeByte(spi, ch1set, 0x01);
-    _writeByte(spi, ch2set, 0x01);
-    _writeByte(spi, ch3set, 0x01);
-    _writeByte(spi, ch4set, 0x01);
-    _writeByte(spi, ch5set, 0x01);
-    _writeByte(spi, ch6set, 0x01);
-    _writeByte(spi, ch7set, 0x01);
-    _writeByte(spi, ch8set, 0x01);
+    _writeByte(spi, ch1set, 0x00);
+    _writeByte(spi, ch2set, 0x00);
+    _writeByte(spi, ch3set, 0x00);
+    _writeByte(spi, ch4set, 0x00);
+    _writeByte(spi, ch5set, 0x00);
+    _writeByte(spi, ch6set, 0x00);
+    _writeByte(spi, ch7set, 0x00);
+    _writeByte(spi, ch8set, 0x00);
 
     _sendCommand(spi, rdatac); // RDATAC
     _sendCommand(spi, start); // START
@@ -176,7 +176,9 @@ class ADS1299Reader2 {
     // Start the isolate
     await Isolate.spawn(dataAcquisitionIsolate, receivePort.sendPort);
 
+    // new
     int counter = 0;
+    // /new
 
     // Listen for data from the isolate
     receivePort.listen((data) {
