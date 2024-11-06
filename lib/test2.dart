@@ -128,24 +128,26 @@ class ADS1299Reader2 {
         // Process and scale the data to obtain voltage values
         final result = DeviceDataProcessorService.processRawDeviceData(data);
         for (var i = 0; i < result.length; i++) {
-          buffer[i].add(result[i]);
+          final bandPassResult =
+              bandPassFilterService.applyBandPassFilter(i, result[i]);
+          buffer[i].add(bandPassResult);
+        }
+
+        if (buffer[0].length >= 250) {
+          dataNotifier.addData(buffer);
+          buffer = List<List<double>>.generate(8, (i) => []);
         }
 
         // if (buffer[0].length >= 250) {
-        //   dataNotifier.addData(buffer);
+        //   final bandPassResult = List<List<double>>.generate(8, (i) => []);
+        //   for (var i = 0; i < 8; i++) {
+        //     final bandPassData =
+        //         bandPassFilterService.applyBandPassFilter(i, buffer[i]);
+        //     bandPassResult[i] = bandPassData;
+        //   }
+        //   dataNotifier.addData(bandPassResult);
         //   buffer = List<List<double>>.generate(8, (i) => []);
         // }
-
-        if (buffer[0].length >= 250) {
-          final bandPassResult = List<List<double>>.generate(8, (i) => []);
-          for (var i = 0; i < 8; i++) {
-            final bandPassData =
-                bandPassFilterService.applyBandPassFilter(i, buffer[i]);
-            bandPassResult[i] = bandPassData;
-          }
-          dataNotifier.addData(bandPassResult);
-          buffer = List<List<double>>.generate(8, (i) => []);
-        }
       }
     }
   }

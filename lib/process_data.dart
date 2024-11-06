@@ -11,7 +11,7 @@ const double samplingFrequency = 250;
 const int numberOfChannels = 8;
 const double _leftCutOffFreq = 1;
 const double _rightCutOffFreq = 10;
-const int _order = 2;
+const int _order = 5;
 const int _bandPassMinProcessedLength = 900;
 const int _bandPassWarmUpLength = 100;
 
@@ -31,12 +31,17 @@ class BandPassFilterService {
     }
   }
 
-  List<double> applyBandPassFilter(int channelIndex, List<double> data) {
+  double applyBandPassFilter(int channelIndex, double data) {
     var filter = _butterworths[channelIndex];
-    List<double> filteredData = [];
-    for (double sample in data) {
-      filteredData.add(filter.filter(sample));
-    }
-    return filteredData;
+    return filter.filter(data);
   }
+
+  // List<double> applyBandPassFilter(int channelIndex, List<double> data) {
+  //   var filter = _butterworths[channelIndex];
+  //   List<double> filteredData = [];
+  //   for (double sample in data) {
+  //     filteredData.add(filter.filter(sample));
+  //   }
+  //   return filteredData;
+  // }
 }
