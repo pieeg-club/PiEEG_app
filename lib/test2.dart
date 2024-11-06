@@ -140,7 +140,7 @@ class ADS1299Reader2 {
           }
           dataNotifier.addData(bandBassResult);
           bandPassWarmUp =
-              buffer[0].length >= 250 ? buffer.sublist(250) : buffer;
+              buffer[0].length >= 250 ? buffer.sublist(249) : buffer;
           buffer = List<List<double>>.generate(8, (i) => []);
         }
       }
