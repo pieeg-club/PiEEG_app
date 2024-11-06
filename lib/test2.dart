@@ -148,7 +148,7 @@ class ADS1299Reader2 {
         //   dataNotifier.addData(bandPassResult);
         //   buffer = List<List<double>>.generate(8, (i) => []);
         // }
-        await Future<void>.delayed(Duration(milliseconds: 1));
+        // await Future<void>.delayed(Duration(milliseconds: 1));
       }
     }
   }
