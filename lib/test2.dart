@@ -89,8 +89,8 @@ class ADS1299Reader2 {
 
     print('Rpispi initialized');
 
-    _sendCommand(spi, 0x10); // Set device to read mode
-    _sendCommand(spi, 0x08); // Start data capture
+    // _sendCommand(spi, 0x10); // Set device to read mode
+    // _sendCommand(spi, 0x08); // Start data capture
 
     print("Data reading started.");
 
@@ -128,16 +128,16 @@ class ADS1299Reader2 {
 
   void _sendCommand(SPI spi, int command) {
     final sendData = [command];
-    spi.transfer(sendData, false); // ???
+    spi.transfer(sendData, false);
   }
 
   void _writeByte(SPI spi, int register, int data) {
     final writeCommand = 0x40 | register;
     final sendData = [writeCommand, 0x00, data];
-    spi.transfer(sendData, false); // ???
+    spi.transfer(sendData, false);
   }
 
   List<int> _readData(SPI spi, int length) {
-    return spi.transfer(List.filled(length, 0), false); // ???
+    return spi.transfer(List.filled(length, 0), false);
   }
 }
