@@ -7,6 +7,7 @@ import 'package:rpi_gpio/rpi_gpio.dart';
 import 'package:rpi_spi/rpi_spi.dart';
 import 'package:rpi_spi/spi.dart';
 import 'package:test_project/data_notifier.dart';
+import 'package:test_project/process_data.dart';
 
 import 'deice_data_process.dart';
 
@@ -114,6 +115,11 @@ class ADS1299Reader {
     var buffer = List<List<double>>.generate(8, (i) => []);
 
     bool buttonState = false;
+
+    // bandpass filter
+    BandPassFilterService bandPassFilterService = BandPassFilterService();
+    var bandPassWarmUp = List<List<double>>.generate(8, (i) => []);
+
     while (true) {
       buttonState = await button.value;
       // print('Button state: $buttonState');
@@ -134,8 +140,20 @@ class ADS1299Reader {
           buffer[i].add(result[i]);
         }
 
+        // if (buffer[0].length >= 250) {
+        //   dataNotifier.addData(buffer);
+        //   buffer = List<List<double>>.generate(8, (i) => []);
+        // }
+
         if (buffer[0].length >= 250) {
-          dataNotifier.addData(buffer);
+          final bandBassResult = List<List<double>>.generate(8, (i) => []);
+          for (var i = 0; i < 8; i++) {
+            final bandPassData = bandPassFilterService
+                .applyBandPassFilter([...bandPassWarmUp[i], ...buffer[i]]);
+            bandBassResult[i] = bandPassData.sublist(bandPassWarmUp[i].length);
+          }
+          dataNotifier.addData(bandBassResult);
+          bandPassWarmUp = buffer;
           buffer = List<List<double>>.generate(8, (i) => []);
         }
       }
