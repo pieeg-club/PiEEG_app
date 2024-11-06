@@ -1,5 +1,4 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:test_project/process_data.dart';
 
 part 'data_notifier.g.dart';
 
@@ -35,13 +34,13 @@ class DataNitiifer extends _$DataNitiifer {
       }
     }
 
-    final bandPassFilterService = ref.read(bandPassFilterServiceProvider);
-    final bandPassResuult = List<List<double>>.generate(8, (i) => []);
-    for (var i = 0; i < data.length; i++) {
-      bandPassResuult[i] =
-          bandPassFilterService.applyBandPassFilter(voltData[i]);
-    }
+    // final bandPassFilterService = ref.read(bandPassFilterServiceProvider);
+    // final bandPassResuult = List<List<double>>.generate(8, (i) => []);
+    // for (var i = 0; i < data.length; i++) {
+    //   bandPassResuult[i] =
+    //       bandPassFilterService.applyBandPassFilter(voltData[i]);
+    // }
 
-    state = bandPassResuult;
+    state = voltData;
   }
 }
