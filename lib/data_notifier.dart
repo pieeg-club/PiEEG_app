@@ -24,21 +24,15 @@ class DataNitiifer extends _$DataNitiifer {
   //   state = newState;
   // }
 
-  void addData(List<double> data1) {
+  void addData(List<List<double>> data1) {
     final voltData = <List<double>>[];
     for (var i = 0; i < 8; i++) {
       voltData.add([]);
-      voltData[i] = [...state[i], data1[i]];
+      voltData[i] = [...state[i], ...data1[i]];
       while (voltData[i].length > 1000) {
         voltData[i].removeAt(0);
       }
     }
-    // final bandPassFilterService = ref.read(bandPassFilterServiceProvider);
-    // final filteredData = <List<double>>[];
-    // for (var i = 0; i < voltData.length; i++) {
-    //   filteredData.add(bandPassFilterService.applyBandPassFilter(voltData[i]));
-    // }
-    // state = filteredData;
     state = voltData;
   }
 }

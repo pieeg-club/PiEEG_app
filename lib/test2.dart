@@ -94,6 +94,8 @@ class ADS1299Reader2 {
 
     print("Data reading started.");
 
+    var buffer = List<List<double>>.generate(8, (i) => []);
+
     var buttonState = false;
 
     while (true) {
@@ -110,7 +112,14 @@ class ADS1299Reader2 {
 
         // Process and scale the data to obtain voltage values
         final result = DeviceDataProcessorService.processRawDeviceData(data);
-        dataNotifier.addData(result);
+        for (var i = 0; i < result.length; i++) {
+          buffer[i].add(result[i]);
+        }
+
+        if (buffer[0].length > 250) {
+          dataNotifier.addData(buffer);
+          buffer = List<List<double>>.generate(8, (i) => []);
+        }
       }
 
       await Future<void>.delayed(const Duration(microseconds: 10));

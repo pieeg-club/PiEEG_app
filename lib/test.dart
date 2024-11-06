@@ -88,7 +88,7 @@ class ADS1299Reader {
     print('Rpigpio initialized');
 
     spi = RpiSpi();
-    _device = spi.device(0, 24, 600000, 1);
+    _device = spi.device(0, 24, 1200000, 1);
     _initializeADS1299();
 
     print('Rpispi initialized');
@@ -114,6 +114,8 @@ class ADS1299Reader {
     //   }
     // }
 
+    var buffer = List<List<double>>.generate(8, (i) => []);
+
     bool buttonState = false;
     Timer.periodic(const Duration(microseconds: 200), (timer) async {
       buttonState = await button.value;
@@ -129,7 +131,14 @@ class ADS1299Reader {
 
         // Process and scale the data to obtain voltage values
         final result = DeviceDataProcessorService.processRawDeviceData(data);
-        dataNotifier.addData(result);
+        for (var i = 0; i < result.length; i++) {
+          buffer[i].add(result[i]);
+        }
+
+        if (buffer[0].length > 250) {
+          dataNotifier.addData(buffer);
+          buffer = List<List<double>>.generate(8, (i) => []);
+        }
       }
     });
   }
