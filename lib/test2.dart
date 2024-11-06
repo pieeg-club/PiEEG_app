@@ -3,6 +3,7 @@ import 'dart:isolate';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:test_project/buffer.dart';
 import 'package:test_project/data_notifier.dart';
 import 'package:dart_periphery/dart_periphery.dart';
 import 'package:test_project/process_data.dart';
@@ -195,7 +196,9 @@ class ADS1299Reader2 {
     _initializeADS1299(spi);
 
     final bandPassFilterService = BandPassFilterService();
-    final buffer = List<List<double>>.generate(8, (_) => []);
+
+    final buffers =
+        List<CircularBuffer>.generate(8, (_) => CircularBuffer(251));
 
     bool testDRDY = false;
     bool buttonState = false;
@@ -217,16 +220,12 @@ class ADS1299Reader2 {
         for (var i = 0; i < result.length; i++) {
           final bandPassResult =
               bandPassFilterService.applyBandPassFilter(i, result[i]);
-          buffer[i].add(bandPassResult);
+          buffers[i].add(bandPassResult);
         }
 
-        if (buffer[0].length >= 250) {
-          // Send data to main isolate
-          sendPort.send(buffer);
-          // Clear buffer
-          for (var i = 0; i < buffer.length; i++) {
-            buffer[i] = [];
-          }
+        if (buffers[0].getData().length >= 250) {
+          final dataToSend = buffers.map((buffer) => buffer.getData()).toList();
+          sendPort.send(dataToSend);
         }
       }
     }
