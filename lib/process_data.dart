@@ -16,24 +16,26 @@ const int _bandPassMinProcessedLength = 900;
 const int _bandPassWarmUpLength = 100;
 
 class BandPassFilterService {
-  final Butterworth _butterworth;
+  final List<Butterworth> _butterworths;
 
-  BandPassFilterService() : _butterworth = Butterworth() {
-    _initializeBandPassFilter();
+  BandPassFilterService()
+      : _butterworths = List.generate(8, (_) => Butterworth()) {
+    _initializeBandPassFilters();
   }
 
-  void _initializeBandPassFilter() {
-    double centerFreq = (_rightCutOffFreq + _leftCutOffFreq) / 2;
-    double widthInFreq = _rightCutOffFreq - _leftCutOffFreq;
-    _butterworth.bandPass(_order, samplingFrequency, centerFreq, widthInFreq);
+  void _initializeBandPassFilters() {
+    for (var filter in _butterworths) {
+      double centerFreq = (_rightCutOffFreq + _leftCutOffFreq) / 2;
+      double widthInFreq = _rightCutOffFreq - _leftCutOffFreq;
+      filter.bandPass(_order, samplingFrequency, centerFreq, widthInFreq);
+    }
   }
 
-  List<double> applyBandPassFilter(List<double> data) {
-    // if (data.length < _bandPassMinProcessedLength) return [];
-
+  List<double> applyBandPassFilter(int channelIndex, List<double> data) {
+    var filter = _butterworths[channelIndex];
     List<double> filteredData = [];
     for (double sample in data) {
-      filteredData.add(_butterworth.filter(sample));
+      filteredData.add(filter.filter(sample));
     }
     return filteredData;
   }

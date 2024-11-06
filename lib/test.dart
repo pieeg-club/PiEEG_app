@@ -118,7 +118,6 @@ class ADS1299Reader {
 
     // bandpass filter
     BandPassFilterService bandPassFilterService = BandPassFilterService();
-    var bandPassWarmUp = List<List<double>>.generate(8, (i) => []);
 
     while (true) {
       buttonState = await button.value;
@@ -146,14 +145,13 @@ class ADS1299Reader {
         // }
 
         if (buffer[0].length >= 250) {
-          final bandBassResult = List<List<double>>.generate(8, (i) => []);
+          final bandPassResult = List<List<double>>.generate(8, (i) => []);
           for (var i = 0; i < 8; i++) {
-            final bandPassData = bandPassFilterService
-                .applyBandPassFilter([...bandPassWarmUp[i], ...buffer[i]]);
-            bandBassResult[i] = bandPassData.sublist(bandPassWarmUp[i].length);
+            final bandPassData =
+                bandPassFilterService.applyBandPassFilter(i, buffer[i]);
+            bandPassResult[i] = bandPassData;
           }
-          dataNotifier.addData(bandBassResult);
-          bandPassWarmUp = buffer;
+          dataNotifier.addData(bandPassResult);
           buffer = List<List<double>>.generate(8, (i) => []);
         }
       }
