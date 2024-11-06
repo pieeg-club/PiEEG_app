@@ -108,7 +108,7 @@ class ADS1299Reader2 {
       buttonState = gpio.read();
       // rpi_gpio
       // buttonState = await button.value;
-      print('Button state: $buttonState');
+      // print('Button state: $buttonState');
 
       if (buttonState) {
         testDRDY = 10;
