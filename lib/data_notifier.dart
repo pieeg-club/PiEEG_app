@@ -29,6 +29,9 @@ class DataNitiifer extends _$DataNitiifer {
     for (var i = 0; i < 8; i++) {
       voltData.add([]);
       voltData[i] = [...state[i], ...data[i]];
+      while (voltData[i].length > 1000) {
+        voltData[i].removeAt(0);
+      }
     }
 
     // final bandPassFilterService = ref.read(bandPassFilterServiceProvider);
