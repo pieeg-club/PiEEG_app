@@ -74,7 +74,7 @@ class ADS1299Reader2 {
   }
 
   Future<void> startDataRead() async {
-    const int buttonPin = 37;
+    const int buttonPin = 26;
     var gpio = GPIO(buttonPin, GPIOdirection.gpioDirIn);
 
     int testDRDY = 5;
