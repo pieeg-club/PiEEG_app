@@ -222,8 +222,8 @@ class ADS1299Reader2 {
           final bandPassResult =
               bandPassFilterService.applyBandPassFilter(i, result[i]);
           buffers[i].add(bandPassResult);
-          counter++;
         }
+        counter++;
 
         if (counter >= 250) {
           counter = 0;
