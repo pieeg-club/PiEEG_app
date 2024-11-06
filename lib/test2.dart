@@ -198,7 +198,7 @@ class ADS1299Reader2 {
     final bandPassFilterService = BandPassFilterService();
 
     final buffers =
-        List<CircularBuffer>.generate(8, (_) => CircularBuffer(251));
+        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
 
     bool testDRDY = false;
     bool buttonState = false;
@@ -213,6 +213,8 @@ class ADS1299Reader2 {
 
         // Read data from SPI
         final data = _readData(spi, 27);
+        print(
+            'Raw SPI Data: ${data.map((b) => b.toRadixString(16).padLeft(2, '0')).join(' ')}');
 
         // Process data
         final result = DeviceDataProcessorService.processRawDeviceData(data);
