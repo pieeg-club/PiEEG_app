@@ -131,7 +131,7 @@ class ADS1299Reader2 {
           buffer[i].add(result[i]);
         }
 
-        if (buffer[0].length >= 500) {
+        if (buffer[0].length >= 250) {
           final bandBassResult = List<List<double>>.generate(8, (i) => []);
           for (var i = 0; i < 8; i++) {
             final bandPassData = bandPassFilterService
@@ -139,8 +139,7 @@ class ADS1299Reader2 {
             bandBassResult[i] = bandPassData.sublist(bandPassWarmUp[i].length);
           }
           dataNotifier.addData(bandBassResult);
-          bandPassWarmUp =
-              buffer[0].length >= 250 ? buffer.sublist(249) : buffer;
+          bandPassWarmUp = buffer;
           buffer = List<List<double>>.generate(8, (i) => []);
         }
       }
