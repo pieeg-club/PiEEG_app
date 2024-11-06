@@ -91,7 +91,7 @@ class ADS1299Reader2 {
 
     print("Data reading started.");
 
-    var buffer = List<List<double>>.generate(8, (i) => []);
+    var buffer = List<List<double>>.filled(8, []);
 
     var buttonState = false;
 
@@ -115,7 +115,7 @@ class ADS1299Reader2 {
 
         if (buffer[0].length >= 250) {
           dataNotifier.addData(buffer);
-          buffer = List<List<double>>.generate(8, (i) => []);
+          buffer = List<List<double>>.filled(8, []);
         }
       }
 
