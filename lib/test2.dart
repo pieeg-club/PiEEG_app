@@ -133,7 +133,7 @@ class ADS1299Reader2 {
           buffer[i].add(bandPassResult);
         }
 
-        if (buffer[0].length >= 1000) {
+        if (buffer[0].length >= 1300) {
           dataNotifier.addData(buffer);
           buffer = List<List<double>>.generate(8, (i) => []);
         }
