@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -93,7 +92,7 @@ class ADS1299Reader2 {
 
     print('Rpigpio initialized');
 
-    var spi = SPI(0, 0, SPImode.mode1, 1200000);
+    var spi = SPI(0, 0, SPImode.mode1, 600000);
     spi.setSPIbitsPerWord(8);
     spi.setSPIbitOrder(BitOrder.msbFirst); // ???
 
@@ -149,7 +148,7 @@ class ADS1299Reader2 {
         //   dataNotifier.addData(bandPassResult);
         //   buffer = List<List<double>>.generate(8, (i) => []);
         // }
-        sleep(const Duration(milliseconds: 1));
+        await Future<void>.delayed(Duration(milliseconds: 1));
       }
     }
   }
