@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:isolate';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -166,5 +167,68 @@ class ADS1299Reader2 {
 
   List<int> _readData(SPI spi, int length) {
     return spi.transfer(List.filled(length, 0), false);
+  }
+
+  Future<void> startDataReadIsolate() async {
+    ReceivePort receivePort = ReceivePort();
+
+    // Start the isolate
+    await Isolate.spawn(dataAcquisitionIsolate, receivePort.sendPort);
+
+    // Listen for data from the isolate
+    receivePort.listen((data) {
+      if (data is List<List<double>>) {
+        dataNotifier.addData(data);
+      }
+    });
+  }
+
+  void dataAcquisitionIsolate(SendPort sendPort) {
+    // Initialize SPI and GPIO here
+    final spi = SPI(0, 0, SPImode.mode1, 600000);
+    spi.setSPIbitsPerWord(8);
+    spi.setSPIbitOrder(BitOrder.msbFirst);
+
+    final gpio = GPIO(26, GPIOdirection.gpioDirIn, 4);
+
+    // Initialize ADS1299
+    _initializeADS1299(spi);
+
+    final bandPassFilterService = BandPassFilterService();
+    final buffer = List<List<double>>.generate(8, (_) => []);
+
+    bool testDRDY = false;
+    bool buttonState = false;
+
+    while (true) {
+      buttonState = gpio.read();
+
+      if (buttonState) {
+        testDRDY = true;
+      } else if (testDRDY) {
+        testDRDY = false;
+
+        // Read data from SPI
+        final data = _readData(spi, 27);
+
+        // Process data
+        final result = DeviceDataProcessorService.processRawDeviceData(data);
+
+        for (var i = 0; i < result.length; i++) {
+          final bandPassResult =
+              bandPassFilterService.applyBandPassFilter(i, result[i]);
+          buffer[i].add(bandPassResult);
+        }
+
+        if (buffer[0].length >= 250) {
+          // Send data to main isolate
+          sendPort.send(buffer);
+          // Clear buffer
+          for (var i = 0; i < buffer.length; i++) {
+            buffer[i] = [];
+          }
+        }
+      }
+    }
   }
 }

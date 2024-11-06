@@ -4,7 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:test_project/data_notifier.dart';
-import 'package:test_project/test.dart';
+import 'package:test_project/test2.dart';
 
 void main() {
   runApp(
@@ -54,7 +54,7 @@ class EEGPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dataNotifier = ref.watch(dataNitiiferProvider);
-    final dataReciver = ref.read(dataListenerProvider);
+    final dataReciver = ref.read(dataListener2Provider);
     final graphs = List<Widget>.generate(
       dataNotifier.length,
       (i) {
@@ -85,7 +85,7 @@ class EEGPage extends ConsumerWidget {
             child: Column(
               children: [
                 ElevatedButton(
-                  onPressed: dataReciver.startDataRead,
+                  onPressed: dataReciver.startDataReadIsolate,
                   child: const Text('Start'),
                 ),
                 ElevatedButton(
