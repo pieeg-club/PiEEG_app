@@ -75,7 +75,11 @@ class ADS1299Reader2 {
 
   Future<void> startDataRead() async {
     const int buttonPin = 26;
-    var gpio = GPIO(buttonPin, GPIOdirection.gpioDirIn, 4);
+    const int gpioChip = 4;
+    var gpioConfig = GPIOconfig.defaultValues();
+    gpioConfig.bias = GPIObias.gpioBiasPullDown;
+    final gpio = GPIO.advanced(buttonPin, gpioConfig, gpioChip);
+    // var gpio = GPIO(buttonPin, GPIOdirection.gpioDirIn, gpioChip);
 
     // rpi_gpio
     // RpiGpio gpio = await initialize_RpiGpio(spi: false);
