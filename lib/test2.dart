@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:test_project/data_notifier.dart';
 import 'package:dart_periphery/dart_periphery.dart';
-import 'package:test_project/process_data.dart';
+// import 'package:test_project/process_data.dart';
 
 import 'deice_data_process.dart';
 
@@ -106,8 +106,8 @@ class ADS1299Reader2 {
     var buttonState = false;
 
     // bandpass filter
-    BandPassFilterService bandPassFilterService = BandPassFilterService();
-    var bandPassWarmUp = List<List<double>>.generate(8, (i) => []);
+    // BandPassFilterService bandPassFilterService = BandPassFilterService();
+    // var bandPassWarmUp = List<List<double>>.generate(8, (i) => []);
 
     while (true) {
       buttonState = gpio.read();
@@ -132,16 +132,21 @@ class ADS1299Reader2 {
         }
 
         if (buffer[0].length >= 250) {
-          final bandBassResult = List<List<double>>.generate(8, (i) => []);
-          for (var i = 0; i < 8; i++) {
-            final bandPassData = bandPassFilterService
-                .applyBandPassFilter([...bandPassWarmUp[i], ...buffer[i]]);
-            bandBassResult[i] = bandPassData.sublist(bandPassWarmUp[i].length);
-          }
-          dataNotifier.addData(bandBassResult);
-          bandPassWarmUp = buffer;
+          dataNotifier.addData(buffer);
           buffer = List<List<double>>.generate(8, (i) => []);
         }
+
+        // if (buffer[0].length >= 250) {
+        //   final bandBassResult = List<List<double>>.generate(8, (i) => []);
+        //   for (var i = 0; i < 8; i++) {
+        //     final bandPassData = bandPassFilterService
+        //         .applyBandPassFilter([...bandPassWarmUp[i], ...buffer[i]]);
+        //     bandBassResult[i] = bandPassData.sublist(bandPassWarmUp[i].length);
+        //   }
+        //   dataNotifier.addData(bandBassResult);
+        //   bandPassWarmUp = buffer;
+        //   buffer = List<List<double>>.generate(8, (i) => []);
+        // }
       }
 
       await Future<void>.delayed(const Duration(microseconds: 10));

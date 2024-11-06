@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:test_project/process_data.dart';
 
 part 'data_notifier.g.dart';
 
@@ -24,15 +25,23 @@ class DataNitiifer extends _$DataNitiifer {
   //   state = newState;
   // }
 
-  void addData(List<List<double>> data1) {
+  void addData(List<List<double>> data) {
     final voltData = <List<double>>[];
     for (var i = 0; i < 8; i++) {
       voltData.add([]);
-      voltData[i] = [...state[i], ...data1[i]];
+      voltData[i] = [...state[i], ...data[i]];
       while (voltData[i].length > 1000) {
         voltData[i].removeAt(0);
       }
     }
-    state = voltData;
+
+    final bandPassFilterService = ref.read(bandPassFilterServiceProvider);
+    final bandPassResuult = List<List<double>>.generate(8, (i) => []);
+    for (var i = 0; i < data.length; i++) {
+      bandPassResuult[i] =
+          bandPassFilterService.applyBandPassFilter(voltData[i]);
+    }
+
+    state = bandPassResuult;
   }
 }
