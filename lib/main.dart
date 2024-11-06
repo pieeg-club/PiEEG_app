@@ -56,7 +56,7 @@ class EEGPage extends ConsumerWidget {
     final dataNotifier = ref.watch(dataNitiiferProvider);
     final dataReciver = ref.read(dataListener2Provider);
     final graphs = List<Widget>.generate(
-      dataNotifier.length,
+      1,
       (i) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
