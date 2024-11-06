@@ -116,7 +116,7 @@ class ADS1299Reader {
     bool buttonState = false;
     while (true) {
       buttonState = await button.value;
-      print('Button state: $buttonState');
+      // print('Button state: $buttonState');
       if (buttonState) {
         testDRDY = 10;
       }
@@ -125,6 +125,8 @@ class ADS1299Reader {
 
         // Read 27 bytes from the SPI device
         final data = _readBytes(27);
+        print(
+            'Raw SPI Data: ${data.map((b) => b.toRadixString(16).padLeft(2, '0')).join(' ')}');
 
         // Process and scale the data to obtain voltage values
         final result = DeviceDataProcessorService.processRawDeviceData(data);
