@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:isolate';
 import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,6 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rpi_gpio/rpi_gpio.dart';
 import 'package:rpi_spi/rpi_spi.dart';
 import 'package:rpi_spi/spi.dart';
+import 'package:test_project/buffer.dart';
 import 'package:test_project/data_notifier.dart';
 import 'package:test_project/process_data.dart';
 
@@ -27,7 +29,7 @@ class ADS1299Reader {
 
   ADS1299Reader(this.dataNotifier);
 
-  void _initializeADS1299() {
+  static void _initializeADS1299(SpiDevice device) {
     const config1 = 0x01;
     const config2 = 0X02;
     const config3 = 0X03;
@@ -48,36 +50,36 @@ class ADS1299Reader {
     const ch7set = 0x0B;
     const ch8set = 0x0C;
 
-    _sendCommand(wakeup);
-    _sendCommand(stop);
-    _sendCommand(reset);
-    _sendCommand(sdatac);
+    _sendCommand(device, wakeup);
+    _sendCommand(device, stop);
+    _sendCommand(device, reset);
+    _sendCommand(device, sdatac);
 
-    _writeByte(0x14, 0x80); // GPIO
+    _writeByte(device, 0x14, 0x80); // GPIO
 
-    _writeByte(config1, 0x96);
-    _writeByte(config2, 0xD4);
-    _writeByte(config3, 0xFF);
-    _writeByte(0x04, 0x00);
-    _writeByte(0x0D, 0x00);
-    _writeByte(0x0E, 0x00);
-    _writeByte(0x0F, 0x00);
-    _writeByte(0x10, 0x00);
-    _writeByte(0x11, 0x00);
-    _writeByte(0x15, 0x20);
+    _writeByte(device, config1, 0x96);
+    _writeByte(device, config2, 0xD4);
+    _writeByte(device, config3, 0xFF);
+    _writeByte(device, 0x04, 0x00);
+    _writeByte(device, 0x0D, 0x00);
+    _writeByte(device, 0x0E, 0x00);
+    _writeByte(device, 0x0F, 0x00);
+    _writeByte(device, 0x10, 0x00);
+    _writeByte(device, 0x11, 0x00);
+    _writeByte(device, 0x15, 0x20);
 
-    _writeByte(0x17, 0x00);
-    _writeByte(ch1set, 0x00);
-    _writeByte(ch2set, 0x00);
-    _writeByte(ch3set, 0x00);
-    _writeByte(ch4set, 0x00);
-    _writeByte(ch5set, 0x00);
-    _writeByte(ch6set, 0x00);
-    _writeByte(ch7set, 0x00);
-    _writeByte(ch8set, 0x00);
+    _writeByte(device, 0x17, 0x00);
+    _writeByte(device, ch1set, 0x00);
+    _writeByte(device, ch2set, 0x00);
+    _writeByte(device, ch3set, 0x00);
+    _writeByte(device, ch4set, 0x00);
+    _writeByte(device, ch5set, 0x00);
+    _writeByte(device, ch6set, 0x00);
+    _writeByte(device, ch7set, 0x00);
+    _writeByte(device, ch8set, 0x00);
 
-    _sendCommand(rdatac); // RDATAC
-    _sendCommand(start); // START
+    _sendCommand(device, rdatac); // RDATAC
+    _sendCommand(device, start); // START
   }
 
   Future<void> startDataRead() async {
@@ -90,7 +92,7 @@ class ADS1299Reader {
 
     spi = RpiSpi();
     _device = spi.device(0, 24, 1200000, 1);
-    _initializeADS1299();
+    _initializeADS1299(_device);
 
     print('Rpispi initialized');
 
@@ -129,7 +131,7 @@ class ADS1299Reader {
         testDRDY = 0;
 
         // Read 27 bytes from the SPI device
-        final data = _readBytes(27);
+        final data = _readBytes(_device, 27);
         print(
             'Raw SPI Data: ${data.map((b) => b.toRadixString(16).padLeft(2, '0')).join(' ')}');
 
@@ -162,16 +164,83 @@ class ADS1299Reader {
   }
 
   // Commands and register configurations
-  void _sendCommand(int command) {
-    _device.send([command]);
+  static void _sendCommand(SpiDevice device, int command) {
+    device.send([command]);
   }
 
-  void _writeByte(int register, int data) {
+  static void _writeByte(SpiDevice device, int register, int data) {
     final writeCommand = 0x40 | register;
-    _device.send([writeCommand, 0x00, data]);
+    device.send([writeCommand, 0x00, data]);
   }
 
-  Uint8List _readBytes(int length) {
-    return _device.send(List<int>.filled(length, 0));
+  static Uint8List _readBytes(SpiDevice device, int length) {
+    return device.send(List<int>.filled(length, 0));
+  }
+
+  Future<void> startDataReadIsolate() async {
+    ReceivePort receivePort = ReceivePort();
+
+    // Start the isolate
+    await Isolate.spawn(dataAcquisitionIsolate, receivePort.sendPort);
+
+    // Listen for data from the isolate
+    receivePort.listen((data) {
+      if (data is List<List<double>>) {
+        dataNotifier.addData(data);
+      }
+    });
+  }
+
+  static Future<void> dataAcquisitionIsolate(SendPort sendPort) async {
+    // Initialize SPI and GPIO here
+    RpiGpio gpio = await initialize_RpiGpio(spi: false);
+    const int buttonPin = 37;
+    final button = gpio.input(buttonPin);
+    int testDRDY = 5;
+
+    final spi = RpiSpi();
+    final device = spi.device(0, 24, 1200000, 1);
+
+    // Initialize ADS1299
+    _initializeADS1299(device);
+
+    final bandPassFilterService = BandPassFilterService();
+
+    final buffers =
+        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
+
+    bool buttonState = false;
+
+    int counter = 0;
+
+    while (true) {
+      buttonState = await button.value;
+      // print('Button state: $buttonState');
+      if (buttonState) {
+        testDRDY = 10;
+      }
+      if (testDRDY == 10 && !buttonState) {
+        testDRDY = 0;
+
+        // Read 27 bytes from the SPI device
+        final data = _readBytes(device, 27);
+
+        // Process data
+        final result = DeviceDataProcessorService.processRawDeviceData(data);
+
+        for (var i = 0; i < result.length; i++) {
+          final bandPassResult =
+              bandPassFilterService.applyBandPassFilter(i, result[i]);
+          buffers[i].add(bandPassResult);
+        }
+        counter++;
+
+        if (counter >= 250) {
+          counter = 0;
+          final dataToSend = buffers.map((buffer) => buffer.getData()).toList();
+          sendPort.send(dataToSend);
+        }
+      }
+    }
   }
 }
