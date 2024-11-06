@@ -123,7 +123,6 @@ class ADS1299Reader2 {
 
         // Read 27 bytes from the SPI device
         final data = _readData(spi, 27);
-        print(data);
         print(
             'Raw SPI Data: ${data.map((b) => b.toRadixString(16).padLeft(2, '0')).join(' ')}');
 
@@ -211,6 +210,8 @@ class ADS1299Reader2 {
 
         // Read data from SPI
         final data = _readData(spi, 27);
+        print(
+            'Raw SPI Data: ${data.map((b) => b.toRadixString(16).padLeft(2, '0')).join(' ')}');
 
         // Process data
         final result = DeviceDataProcessorService.processRawDeviceData(data);
