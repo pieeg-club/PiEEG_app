@@ -44,7 +44,7 @@ class BandPassFilterService {
     double result = filter.filter(data);
 
     // Warm-up length
-    const int warmUpLength = 100;
+    const int warmUpLength = 200;
 
     if (_sampleCounts[channelIndex] <= warmUpLength) {
       // Discard outputs during warm-up
