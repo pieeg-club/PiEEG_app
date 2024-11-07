@@ -31,10 +31,6 @@ class CircularBuffer {
 
   List<double> getDataWithWarmUp() {
     // Return data in the correct order
-    return [
-      ...warmUpData,
-      ...buffer.sublist(writeIndex),
-      ...buffer.sublist(0, writeIndex)
-    ];
+    return [...warmUpData, ...buffer];
   }
 }
