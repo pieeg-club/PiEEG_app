@@ -195,8 +195,7 @@ class ADS1299Reader2 {
         channelCounter++;
 
         // Apply the band-pass filter
-        final bandPassData =
-            bandPassFilterService.applyBandPassFilterWithWarmUp(
+        final bandPassData = bandPassFilterService.applyBandPassFilter(
           channelIndex,
           sample,
         );
@@ -212,7 +211,10 @@ class ADS1299Reader2 {
         }
 
         if (counter >= 250) {
-          final dataToSend = buffers.map((buffer) => buffer.getData()).toList();
+          final dataToSend = List<List<double>>.generate(
+            8,
+            (i) => List.filled(250, 1),
+          );
           dataNotifier.addData(dataToSend);
           counter = 0;
         }
