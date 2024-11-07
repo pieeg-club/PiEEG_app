@@ -64,14 +64,14 @@ class ADS1299Reader2 {
     _writeByte(spi, 0x15, 0x20);
 
     _writeByte(spi, 0x17, 0x00);
-    _writeByte(spi, ch1set, 0x00);
-    _writeByte(spi, ch2set, 0x00);
-    _writeByte(spi, ch3set, 0x00);
-    _writeByte(spi, ch4set, 0x00);
-    _writeByte(spi, ch5set, 0x00);
-    _writeByte(spi, ch6set, 0x00);
-    _writeByte(spi, ch7set, 0x00);
-    _writeByte(spi, ch8set, 0x00);
+    _writeByte(spi, ch1set, 0x01);
+    _writeByte(spi, ch2set, 0x01);
+    _writeByte(spi, ch3set, 0x01);
+    _writeByte(spi, ch4set, 0x01);
+    _writeByte(spi, ch5set, 0x01);
+    _writeByte(spi, ch6set, 0x01);
+    _writeByte(spi, ch7set, 0x01);
+    _writeByte(spi, ch8set, 0x01);
 
     _sendCommand(spi, rdatac); // RDATAC
     _sendCommand(spi, start); // START
@@ -199,25 +199,23 @@ class ADS1299Reader2 {
         final channelIndex = data['channelIndex'] as int;
         final bandPassData = data['sample'] as double;
 
-        dataNotifier.addDataEachOne(channelIndex, bandPassData);
+        if (counter >= 250) {
+          // move data from buffer to dataToSend
+          for (var i = 0; i < buffers.length; i++) {
+            dataToSend[i] = buffers[i].getData();
+          }
+          dataNotifier.addData(dataToSend);
+          counter = 0;
+        }
 
-        // if (counter >= 250) {
-        //   // move data from buffer to dataToSend
-        //   for (var i = 0; i < buffers.length; i++) {
-        //     dataToSend[i] = buffers[i].getData();
-        //   }
-        //   dataNotifier.addData(dataToSend);
-        //   counter = 0;
-        // }
+        channelCounter++;
 
-        // channelCounter++;
+        buffers[channelIndex].add(bandPassData);
 
-        // buffers[channelIndex].add(bandPassData);
-
-        // if (channelCounter == 8) {
-        //   channelCounter = 0;
-        //   counter++;
-        // }
+        if (channelCounter == 8) {
+          channelCounter = 0;
+          counter++;
+        }
       }
     });
 
