@@ -205,14 +205,6 @@ class ADS1299Reader2 {
             dataToSend[i] = buffers[i].getData();
           }
 
-          // start
-          for (var i = 0; i < dataToSend.length; i++) {
-            for (var j = 22; j < 42; j++) {
-              dataToSend[i][j] = dataToSend[i][j - 21];
-            }
-          }
-          // end
-
           dataNotifier.addData(dataToSend);
           counter = 0;
         }
