@@ -177,121 +177,22 @@ class ADS1299Reader {
     return device.send(List<int>.filled(length, 0));
   }
 
-  // Future<void> startDataReadIsolate() async {
-  //   ReceivePort receivePort = ReceivePort();
-
-  //   // Start the isolate
-  //   await Isolate.spawn(dataAcquisitionIsolate, receivePort.sendPort);
-
-  //   // Listen for data from the isolate
-  //   receivePort.listen((data) {
-  //     if (data is List<List<double>>) {
-  //       dataNotifier.addData(data);
-  //     }
-  //   });
-  // }
-
-  // static Future<void> dataAcquisitionIsolate(SendPort sendPort) async {
-  //   // Initialize SPI and GPIO here
-  //   RpiGpio gpio = await initialize_RpiGpio(spi: false);
-  //   const int buttonPin = 37;
-  //   final button = gpio.input(buttonPin);
-  //   int testDRDY = 5;
-
-  //   final spi = RpiSpi();
-  //   final device = spi.device(0, 24, 1200000, 1);
-
-  //   // Initialize ADS1299
-  //   _initializeADS1299(device);
-
-  //   final bandPassFilterService = BandPassFilterService();
-
-  //   final buffers =
-  //       List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
-
-  //   bool buttonState = false;
-
-  //   int counter = 0;
-
-  //   while (true) {
-  //     buttonState = await button.value;
-  //     // print('Button state: $buttonState');
-  //     if (buttonState) {
-  //       testDRDY = 10;
-  //     }
-  //     if (testDRDY == 10 && !buttonState) {
-  //       testDRDY = 0;
-
-  //       // Read 27 bytes from the SPI device
-  //       final data = _readBytes(device, 27);
-
-  //       // Process data
-  //       final result = DeviceDataProcessorService.processRawDeviceData(data);
-
-  //       for (var i = 0; i < result.length; i++) {
-  //         final bandPassResult =
-  //             bandPassFilterService.applyBandPassFilter(i, result[i]);
-  //         buffers[i].add(bandPassResult);
-  //       }
-  //       counter++;
-
-  //       if (counter >= 250) {
-  //         counter = 0;
-  //         final dataToSend = buffers.map((buffer) => buffer.getData()).toList();
-  //         sendPort.send(dataToSend);
-  //       }
-  //     }
-  //   }
-  // }
-
   Future<void> startDataReadIsolate() async {
     ReceivePort receivePort = ReceivePort();
-
-    // !!new version!! /open
-
-    final buffers =
-        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
-
-    int counter = 0;
-    int channelCounter = 0;
-
-    final dataToSend = List<List<double>>.generate(
-      buffers.length,
-      (i) => buffers[i].getData(),
-    ).toList();
 
     // Start the isolate
     await Isolate.spawn(dataAcquisitionIsolate, receivePort.sendPort);
 
     // Listen for data from the isolate
     receivePort.listen((data) {
-      if (data is Map) {
-        final channelIndex = data['channelIndex'] as int;
-        final bandPassData = data['sample'] as double;
-
-        if (counter >= 250) {
-          // move data from buffer to dataToSend
-          for (var i = 0; i < buffers.length; i++) {
-            dataToSend[i] = buffers[i].getData();
-          }
-
-          dataNotifier.addData(dataToSend);
-          counter = 0;
-        }
-
-        channelCounter++;
-
-        buffers[channelIndex].add(bandPassData);
-
-        if (channelCounter == 8) {
-          channelCounter = 0;
-          counter++;
-        }
+      if (data is List<List<double>>) {
+        dataNotifier.addData(data);
       }
     });
   }
 
   static Future<void> dataAcquisitionIsolate(SendPort sendPort) async {
+    // Initialize SPI and GPIO here
     RpiGpio gpio = await initialize_RpiGpio(spi: false);
     const int buttonPin = 37;
     final button = gpio.input(buttonPin);
@@ -303,7 +204,14 @@ class ADS1299Reader {
     // Initialize ADS1299
     _initializeADS1299(device);
 
+    final bandPassFilterService = BandPassFilterService();
+
+    final buffers =
+        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
+
     bool buttonState = false;
+
+    int counter = 0;
 
     while (true) {
       buttonState = await button.value;
@@ -314,21 +222,113 @@ class ADS1299Reader {
       if (testDRDY == 10 && !buttonState) {
         testDRDY = 0;
 
-        // Read data from SPI
+        // Read 27 bytes from the SPI device
         final data = _readBytes(device, 27);
 
         // Process data
         final result = DeviceDataProcessorService.processRawDeviceData(data);
 
-        // !!new version!! /open
-
         for (var i = 0; i < result.length; i++) {
-          sendPort.send({
-            'channelIndex': i,
-            'sample': result[i],
-          });
+          final bandPassResult =
+              bandPassFilterService.applyBandPassFilter(i, result[i]);
+          buffers[i].add(bandPassResult);
+        }
+        counter++;
+
+        if (counter >= 250) {
+          counter = 0;
+          final dataToSend = buffers.map((buffer) => buffer.getData()).toList();
+          sendPort.send(dataToSend);
         }
       }
     }
   }
+
+  // Future<void> startDataReadIsolate() async {
+  //   ReceivePort receivePort = ReceivePort();
+
+  //   // !!new version!! /open
+
+  //   final buffers =
+  //       List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
+
+  //   int counter = 0;
+  //   int channelCounter = 0;
+
+  //   final dataToSend = List<List<double>>.generate(
+  //     buffers.length,
+  //     (i) => buffers[i].getData(),
+  //   ).toList();
+
+  //   // Start the isolate
+  //   await Isolate.spawn(dataAcquisitionIsolate, receivePort.sendPort);
+
+  //   // Listen for data from the isolate
+  //   receivePort.listen((data) {
+  //     if (data is Map) {
+  //       final channelIndex = data['channelIndex'] as int;
+  //       final bandPassData = data['sample'] as double;
+
+  //       if (counter >= 250) {
+  //         // move data from buffer to dataToSend
+  //         for (var i = 0; i < buffers.length; i++) {
+  //           dataToSend[i] = buffers[i].getData();
+  //         }
+
+  //         dataNotifier.addData(dataToSend);
+  //         counter = 0;
+  //       }
+
+  //       channelCounter++;
+
+  //       buffers[channelIndex].add(bandPassData);
+
+  //       if (channelCounter == 8) {
+  //         channelCounter = 0;
+  //         counter++;
+  //       }
+  //     }
+  //   });
+  // }
+
+  // static Future<void> dataAcquisitionIsolate(SendPort sendPort) async {
+  //   RpiGpio gpio = await initialize_RpiGpio(spi: false);
+  //   const int buttonPin = 37;
+  //   final button = gpio.input(buttonPin);
+  //   int testDRDY = 5;
+
+  //   final spi = RpiSpi();
+  //   final device = spi.device(0, 24, 1200000, 1);
+
+  //   // Initialize ADS1299
+  //   _initializeADS1299(device);
+
+  //   bool buttonState = false;
+
+  //   while (true) {
+  //     buttonState = await button.value;
+  //     // print('Button state: $buttonState');
+  //     if (buttonState) {
+  //       testDRDY = 10;
+  //     }
+  //     if (testDRDY == 10 && !buttonState) {
+  //       testDRDY = 0;
+
+  //       // Read data from SPI
+  //       final data = _readBytes(device, 27);
+
+  //       // Process data
+  //       final result = DeviceDataProcessorService.processRawDeviceData(data);
+
+  //       // !!new version!! /open
+
+  //       for (var i = 0; i < result.length; i++) {
+  //         sendPort.send({
+  //           'channelIndex': i,
+  //           'sample': result[i],
+  //         });
+  //       }
+  //     }
+  //   }
+  // }
 }
