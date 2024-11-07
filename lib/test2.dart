@@ -207,9 +207,14 @@ class ADS1299Reader2 {
 
           // substetude 30 samples that are from 20 to 50 with 30 average of 19th sample and 51th sample
           for (var i = 0; i < dataToSend.length; i++) {
-            final average = (dataToSend[i][19] + dataToSend[i][50]) / 2;
+            final data20 = dataToSend[i][19];
+            final data19 = dataToSend[i][18];
             for (var j = 20; j < 50; j++) {
-              dataToSend[i][j] = average;
+              if (j % 2 == 0) {
+                dataToSend[i][j] = data20;
+              } else {
+                dataToSend[i][j] = data19;
+              }
             }
           }
           // end
