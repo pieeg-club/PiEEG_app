@@ -31,9 +31,14 @@ class BandPassFilterService {
     }
   }
 
+  int previousChannelIndex = -1;
+
   double applyBandPassFilter(int channelIndex, double data) {
     var filter = _butterworths[channelIndex];
-    print('Channel: $channelIndex, Filter: ${filter.hashCode}');
+    if (previousChannelIndex != channelIndex) {
+      print('Channel: $channelIndex, Filter: ${filter.hashCode}');
+      previousChannelIndex = channelIndex;
+    }
     return filter.filter(data);
   }
 
