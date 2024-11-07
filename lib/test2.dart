@@ -204,6 +204,16 @@ class ADS1299Reader2 {
           for (var i = 0; i < buffers.length; i++) {
             dataToSend[i] = buffers[i].getData();
           }
+
+          // substetude 30 samples that are from 20 to 50 with 30 average of 19th sample and 51th sample
+          for (var i = 0; i < dataToSend.length; i++) {
+            final average = (dataToSend[i][19] + dataToSend[i][50]) / 2;
+            for (var j = 20; j < 50; j++) {
+              dataToSend[i][j] = average;
+            }
+          }
+          // end
+
           dataNotifier.addData(dataToSend);
           counter = 0;
         }
