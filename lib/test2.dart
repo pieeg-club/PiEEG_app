@@ -280,7 +280,7 @@ class ADS1299Reader2 {
       // } else if (testDRDY) {
       //   testDRDY = false;
 
-      final pollResult = gpio.poll(-1); // !!super new version!!
+      final pollResult = gpio.poll(10); // !!super new version!!
 
       // !!super new version!!
       if (pollResult == GPIOpolling.success) {
