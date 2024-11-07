@@ -241,6 +241,9 @@ class ADS1299Reader2 {
 
     final gpio = GPIO(26, GPIOdirection.gpioDirIn, 4);
 
+    // Configure GPIO for falling edge detection
+    gpio.setGPIOedge(GPIOedge.gpioEdgeFalling); // !!super new version!!
+
     // Initialize ADS1299
     _initializeADS1299(spi);
 
@@ -270,13 +273,17 @@ class ADS1299Reader2 {
     // !!new version!! /close
 
     while (true) {
-      buttonState = gpio.read();
+      // buttonState = gpio.read();
 
-      if (buttonState) {
-        testDRDY = true;
-      } else if (testDRDY) {
-        testDRDY = false;
+      // if (buttonState) {
+      //   testDRDY = true;
+      // } else if (testDRDY) {
+      //   testDRDY = false;
 
+      final pollResult = gpio.poll(-1); // !!super new version!!
+
+      // !!super new version!!
+      if (pollResult == GPIOpolling.success) {
         // Read data from SPI
         final data = _readData(spi, 27);
 
