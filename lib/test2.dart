@@ -213,15 +213,16 @@ class ADS1299Reader2 {
             final data17 = dataToSend[i][16];
             final data16 = dataToSend[i][15];
             for (var j = 20; j < 50; j++) {
-              if (j % 5 == 0) {
+              int a = j - 20;
+              if (a % 5 == 0) {
                 dataToSend[i][j] = data16;
-              } else if (j % 5 == 1) {
+              } else if (a % 5 == 1) {
                 dataToSend[i][j] = data17;
-              } else if (j % 5 == 2) {
+              } else if (a % 5 == 2) {
                 dataToSend[i][j] = data18;
-              } else if (j % 5 == 3) {
+              } else if (a % 5 == 3) {
                 dataToSend[i][j] = data19;
-              } else if (j % 5 == 4) {
+              } else if (a % 5 == 4) {
                 dataToSend[i][j] = data20;
               }
             }
