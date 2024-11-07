@@ -207,7 +207,7 @@ class ADS1299Reader2 {
 
           // start
           for (var i = 0; i < dataToSend.length; i++) {
-            for (var j = 20; j < 40; j++) {
+            for (var j = 40; j < 60; j++) {
               dataToSend[i][j] = dataToSend[i][j - 20];
             }
           }
