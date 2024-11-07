@@ -64,14 +64,14 @@ class ADS1299Reader2 {
     _writeByte(spi, 0x15, 0x20);
 
     _writeByte(spi, 0x17, 0x00);
-    _writeByte(spi, ch1set, 0x01);
-    _writeByte(spi, ch2set, 0x01);
-    _writeByte(spi, ch3set, 0x01);
-    _writeByte(spi, ch4set, 0x01);
-    _writeByte(spi, ch5set, 0x01);
-    _writeByte(spi, ch6set, 0x01);
-    _writeByte(spi, ch7set, 0x01);
-    _writeByte(spi, ch8set, 0x01);
+    _writeByte(spi, ch1set, 0x00);
+    _writeByte(spi, ch2set, 0x00);
+    _writeByte(spi, ch3set, 0x00);
+    _writeByte(spi, ch4set, 0x00);
+    _writeByte(spi, ch5set, 0x00);
+    _writeByte(spi, ch6set, 0x00);
+    _writeByte(spi, ch7set, 0x00);
+    _writeByte(spi, ch8set, 0x00);
 
     _sendCommand(spi, rdatac); // RDATAC
     _sendCommand(spi, start); // START
@@ -287,10 +287,10 @@ class ADS1299Reader2 {
 
         for (var i = 0; i < result.length; i++) {
           // Apply the band-pass filter
-          bandPassResult = bandPassFilterService.applyBandPassFilter(
-            i,
-            result[i],
-          );
+          // bandPassResult = bandPassFilterService.applyBandPassFilter(
+          //   i,
+          //   result[i],
+          // );
           sendPort.send({
             'channelIndex': i,
             'sample': bandPassResult,
