@@ -64,14 +64,14 @@ class ADS1299Reader2 {
     _writeByte(spi, 0x15, 0x20);
 
     _writeByte(spi, 0x17, 0x00);
-    _writeByte(spi, ch1set, 0x10);
-    _writeByte(spi, ch2set, 0x10);
-    _writeByte(spi, ch3set, 0x10);
-    _writeByte(spi, ch4set, 0x10);
-    _writeByte(spi, ch5set, 0x10);
-    _writeByte(spi, ch6set, 0x10);
-    _writeByte(spi, ch7set, 0x10);
-    _writeByte(spi, ch8set, 0x10);
+    _writeByte(spi, ch1set, 0x01);
+    _writeByte(spi, ch2set, 0x01);
+    _writeByte(spi, ch3set, 0x01);
+    _writeByte(spi, ch4set, 0x01);
+    _writeByte(spi, ch5set, 0x01);
+    _writeByte(spi, ch6set, 0x01);
+    _writeByte(spi, ch7set, 0x01);
+    _writeByte(spi, ch8set, 0x01);
 
     _sendCommand(spi, rdatac); // RDATAC
     _sendCommand(spi, start); // START
