@@ -265,7 +265,7 @@ class ADS1299Reader2 {
     // !!new version!! /open
 
     final bandPassFilterService = BandPassFilterService();
-    double bandPassResult = 0;
+    // double bandPassResult = 0;
 
     // !!new version!! /close
 
@@ -293,7 +293,7 @@ class ADS1299Reader2 {
           // );
           sendPort.send({
             'channelIndex': i,
-            'sample': bandPassResult,
+            'sample': result[i],
           });
         }
 
