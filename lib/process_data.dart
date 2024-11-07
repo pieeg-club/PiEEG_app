@@ -33,7 +33,7 @@ class BandPassFilterService {
 
   double applyBandPassFilter(int channelIndex, double data) {
     var filter = _butterworths[channelIndex];
-    print('Channel: $channelIndex, Filter: $filter');
+    print('Channel: $channelIndex, Filter: ${filter.hashCode}');
     return filter.filter(data);
   }
 
