@@ -173,16 +173,25 @@ class ADS1299Reader2 {
   Future<void> startDataReadIsolate() async {
     ReceivePort receivePort = ReceivePort();
 
-    // Start the isolate
-    await Isolate.spawn(dataAcquisitionIsolate, receivePort.sendPort);
-
-    // !! new version!!
+    // !!new version!!
 
     final buffers =
         List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
 
     int counter = 0;
     int channelCounter = 0;
+
+    final dataToSend = List<List<double>>.generate(
+      buffers.length,
+      (i) => buffers[i].getData(),
+    ).toList();
+
+    // !!new version!!
+
+    // Start the isolate
+    await Isolate.spawn(dataAcquisitionIsolate, receivePort.sendPort);
+
+    // !! new version!!
 
     // Listen for data from the isolate
     receivePort.listen((data) {
@@ -200,10 +209,10 @@ class ADS1299Reader2 {
         }
 
         if (counter >= 250) {
-          final dataToSend = List<List<double>>.generate(
-            buffers.length,
-            (i) => buffers[i].getData(),
-          ).toList();
+          // move data from buffer to dataToSend
+          for (var i = 0; i < buffers.length; i++) {
+            dataToSend[i] = buffers[i].getData();
+          }
           dataNotifier.addData(dataToSend);
           counter = 0;
         }
