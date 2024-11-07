@@ -43,4 +43,8 @@ class DataNitiifer extends _$DataNitiifer {
 
     state = voltData;
   }
+
+  void addDataEachOne(int channel, double data) {
+    state[channel].add(data);
+  }
 }
