@@ -175,16 +175,16 @@ class ADS1299Reader2 {
 
     // !!new version!!
 
-    final buffers =
-        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
+    // final buffers =
+    //     List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
 
-    int counter = 0;
-    int channelCounter = 0;
+    // int counter = 0;
+    // int channelCounter = 0;
 
-    final dataToSend = List<List<double>>.generate(
-      buffers.length,
-      (i) => buffers[i].getData(),
-    ).toList();
+    // final dataToSend = List<List<double>>.generate(
+    //   buffers.length,
+    //   (i) => buffers[i].getData(),
+    // ).toList();
 
     // !!new version!!
 
@@ -193,42 +193,42 @@ class ADS1299Reader2 {
 
     // !! new version!!
 
-    // Listen for data from the isolate
-    receivePort.listen((data) {
-      if (data is Map) {
-        final channelIndex = data['channelIndex'] as int;
-        final bandPassData = data['sample'] as double;
+    // // Listen for data from the isolate
+    // receivePort.listen((data) {
+    //   if (data is Map) {
+    //     final channelIndex = data['channelIndex'] as int;
+    //     final bandPassData = data['sample'] as double;
 
-        if (counter >= 250) {
-          // move data from buffer to dataToSend
-          for (var i = 0; i < buffers.length; i++) {
-            dataToSend[i] = buffers[i].getData();
-          }
-          dataNotifier.addData(dataToSend);
-          counter = 0;
-        }
+    //     if (counter >= 250) {
+    //       // move data from buffer to dataToSend
+    //       for (var i = 0; i < buffers.length; i++) {
+    //         dataToSend[i] = buffers[i].getData();
+    //       }
+    //       dataNotifier.addData(dataToSend);
+    //       counter = 0;
+    //     }
 
-        channelCounter++;
+    //     channelCounter++;
 
-        buffers[channelIndex].add(bandPassData);
+    //     buffers[channelIndex].add(bandPassData);
 
-        if (channelCounter == 8) {
-          channelCounter = 0;
-          counter++;
-        }
-      }
-    });
+    //     if (channelCounter == 8) {
+    //       channelCounter = 0;
+    //       counter++;
+    //     }
+    //   }
+    // });
 
     // !! new version!!
 
     // !!previous veriosn!!
 
     // Listen for data from the isolate
-    // receivePort.listen((data) {
-    //   if (data is List<List<double>>) {
-    //     dataNotifier.addData(data);
-    //   }
-    // });
+    receivePort.listen((data) {
+      if (data is List<List<double>>) {
+        dataNotifier.addData(data);
+      }
+    });
 
     // !!previous veriosn!!
   }
@@ -244,30 +244,30 @@ class ADS1299Reader2 {
     // Initialize ADS1299
     _initializeADS1299(spi);
 
-    // !!previous veriosn!!
+    // !!previous veriosn!! /open
 
-    // final bandPassFilterService = BandPassFilterService();
+    final bandPassFilterService = BandPassFilterService();
 
-    // final buffers =
-    //     List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
+    final buffers =
+        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
 
-    // !!previous veriosn!!
+    // !!previous veriosn!! /close
 
     bool testDRDY = false;
     bool buttonState = false;
 
-    // !!previous veriosn!!
+    // !!previous veriosn!! /open
 
-    // int counter = 0;
+    int counter = 0;
 
-    // !!previous veriosn!!
+    // !!previous veriosn!! /close
 
-    // !!new version!!
+    // !!new version!! /open
 
-    final bandPassFilterService = BandPassFilterService();
-    double bandPassResult = 0;
+    // final bandPassFilterService = BandPassFilterService();
+    // double bandPassResult = 0;
 
-    // !!new version!!
+    // !!new version!! /close
 
     while (true) {
       buttonState = gpio.read();
@@ -283,38 +283,38 @@ class ADS1299Reader2 {
         // Process data
         final result = DeviceDataProcessorService.processRawDeviceData(data);
 
-        // !!new version!!
-
-        for (var i = 0; i < result.length; i++) {
-          // Apply the band-pass filter
-          bandPassResult = bandPassFilterService.applyBandPassFilter(
-            i,
-            result[i],
-          );
-          sendPort.send({
-            'channelIndex': i,
-            'sample': bandPassResult,
-          });
-        }
-
-        // !!new version!!
-
-        // !!previous veriosn!!
+        // !!new version!! /open
 
         // for (var i = 0; i < result.length; i++) {
-        //   final bandPassResult =
-        //       bandPassFilterService.applyBandPassFilter(i, result[i]);
-        //   buffers[i].add(bandPassResult);
+        //   // Apply the band-pass filter
+        //   bandPassResult = bandPassFilterService.applyBandPassFilter(
+        //     i,
+        //     result[i],
+        //   );
+        //   sendPort.send({
+        //     'channelIndex': i,
+        //     'sample': bandPassResult,
+        //   });
         // }
-        // counter++;
 
-        // if (counter >= 250) {
-        //   counter = 0;
-        //   final dataToSend = buffers.map((buffer) => buffer.getData()).toList();
-        //   sendPort.send(dataToSend);
-        // }
+        // !!new version!! /close
 
-        // !!previous veriosn!!
+        // !!previous veriosn!! /open
+
+        for (var i = 0; i < result.length; i++) {
+          final bandPassResult =
+              bandPassFilterService.applyBandPassFilter(i, result[i]);
+          buffers[i].add(bandPassResult);
+        }
+        counter++;
+
+        if (counter >= 250) {
+          counter = 0;
+          final dataToSend = buffers.map((buffer) => buffer.getData()).toList();
+          sendPort.send(dataToSend);
+        }
+
+        // !!previous veriosn!! /close
       }
     }
   }
