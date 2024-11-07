@@ -214,6 +214,7 @@ class ADS1299Reader2 {
         if (counter >= 250) {
           final dataToSend = buffers.map((buffer) => buffer.getData()).toList();
           dataNotifier.addData(dataToSend);
+          counter = 0;
         }
       }
     });
