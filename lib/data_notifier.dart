@@ -45,6 +45,15 @@ class DataNitiifer extends _$DataNitiifer {
   }
 
   void addDataEachOne(int channel, double data) {
-    state[channel].add(data);
+    final newState = <List<double>>[];
+    for (var i = 0; i < 8; i++) {
+      newState.add([]);
+      if (i == channel) {
+        newState[i] = [...state[i], data];
+      } else {
+        newState[i] = [...state[i]];
+      }
+    }
+    state = newState;
   }
 }
