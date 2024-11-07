@@ -64,14 +64,14 @@ class ADS1299Reader2 {
     _writeByte(spi, 0x15, 0x20);
 
     _writeByte(spi, 0x17, 0x00);
-    _writeByte(spi, ch1set, 0x00);
-    _writeByte(spi, ch2set, 0x00);
-    _writeByte(spi, ch3set, 0x00);
-    _writeByte(spi, ch4set, 0x00);
-    _writeByte(spi, ch5set, 0x00);
-    _writeByte(spi, ch6set, 0x00);
-    _writeByte(spi, ch7set, 0x00);
-    _writeByte(spi, ch8set, 0x00);
+    _writeByte(spi, ch1set, 0xE0);
+    _writeByte(spi, ch2set, 0xE0);
+    _writeByte(spi, ch3set, 0xE0);
+    _writeByte(spi, ch4set, 0xE0);
+    _writeByte(spi, ch5set, 0xE0);
+    _writeByte(spi, ch6set, 0xE0);
+    _writeByte(spi, ch7set, 0xE0);
+    _writeByte(spi, ch8set, 0xE0);
 
     _sendCommand(spi, rdatac); // RDATAC
     _sendCommand(spi, start); // START
@@ -173,64 +173,64 @@ class ADS1299Reader2 {
   Future<void> startDataReadIsolate() async {
     ReceivePort receivePort = ReceivePort();
 
-    // !!new version!!
+    // !!new version!! /open
 
-    // final buffers =
-    //     List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
+    final buffers =
+        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
 
-    // int counter = 0;
-    // int channelCounter = 0;
+    int counter = 0;
+    int channelCounter = 0;
 
-    // final dataToSend = List<List<double>>.generate(
-    //   buffers.length,
-    //   (i) => buffers[i].getData(),
-    // ).toList();
+    final dataToSend = List<List<double>>.generate(
+      buffers.length,
+      (i) => buffers[i].getData(),
+    ).toList();
 
-    // !!new version!!
+    // !!new version!! /close
 
     // Start the isolate
     await Isolate.spawn(dataAcquisitionIsolate, receivePort.sendPort);
 
-    // !! new version!!
-
-    // // Listen for data from the isolate
-    // receivePort.listen((data) {
-    //   if (data is Map) {
-    //     final channelIndex = data['channelIndex'] as int;
-    //     final bandPassData = data['sample'] as double;
-
-    //     if (counter >= 250) {
-    //       // move data from buffer to dataToSend
-    //       for (var i = 0; i < buffers.length; i++) {
-    //         dataToSend[i] = buffers[i].getData();
-    //       }
-    //       dataNotifier.addData(dataToSend);
-    //       counter = 0;
-    //     }
-
-    //     channelCounter++;
-
-    //     buffers[channelIndex].add(bandPassData);
-
-    //     if (channelCounter == 8) {
-    //       channelCounter = 0;
-    //       counter++;
-    //     }
-    //   }
-    // });
-
-    // !! new version!!
-
-    // !!previous veriosn!!
+    // !! new version!! /open
 
     // Listen for data from the isolate
     receivePort.listen((data) {
-      if (data is List<List<double>>) {
-        dataNotifier.addData(data);
+      if (data is Map) {
+        final channelIndex = data['channelIndex'] as int;
+        final bandPassData = data['sample'] as double;
+
+        if (counter >= 250) {
+          // move data from buffer to dataToSend
+          for (var i = 0; i < buffers.length; i++) {
+            dataToSend[i] = buffers[i].getData();
+          }
+          dataNotifier.addData(dataToSend);
+          counter = 0;
+        }
+
+        channelCounter++;
+
+        buffers[channelIndex].add(bandPassData);
+
+        if (channelCounter == 8) {
+          channelCounter = 0;
+          counter++;
+        }
       }
     });
 
-    // !!previous veriosn!!
+    // !! new version!! /close
+
+    // !!previous veriosn!! /open
+
+    // Listen for data from the isolate
+    // receivePort.listen((data) {
+    //   if (data is List<List<double>>) {
+    //     dataNotifier.addData(data);
+    //   }
+    // });
+
+    // !!previous veriosn!! /close
   }
 
   static void dataAcquisitionIsolate(SendPort sendPort) {
@@ -246,10 +246,10 @@ class ADS1299Reader2 {
 
     // !!previous veriosn!! /open
 
-    final bandPassFilterService = BandPassFilterService();
+    // final bandPassFilterService = BandPassFilterService();
 
-    final buffers =
-        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
+    // final buffers =
+    //     List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
 
     // !!previous veriosn!! /close
 
@@ -258,14 +258,14 @@ class ADS1299Reader2 {
 
     // !!previous veriosn!! /open
 
-    int counter = 0;
+    // int counter = 0;
 
     // !!previous veriosn!! /close
 
     // !!new version!! /open
 
-    // final bandPassFilterService = BandPassFilterService();
-    // double bandPassResult = 0;
+    final bandPassFilterService = BandPassFilterService();
+    double bandPassResult = 0;
 
     // !!new version!! /close
 
@@ -285,34 +285,34 @@ class ADS1299Reader2 {
 
         // !!new version!! /open
 
-        // for (var i = 0; i < result.length; i++) {
-        //   // Apply the band-pass filter
-        //   bandPassResult = bandPassFilterService.applyBandPassFilter(
-        //     i,
-        //     result[i],
-        //   );
-        //   sendPort.send({
-        //     'channelIndex': i,
-        //     'sample': bandPassResult,
-        //   });
-        // }
+        for (var i = 0; i < result.length; i++) {
+          // Apply the band-pass filter
+          bandPassResult = bandPassFilterService.applyBandPassFilter(
+            i,
+            result[i],
+          );
+          sendPort.send({
+            'channelIndex': i,
+            'sample': bandPassResult,
+          });
+        }
 
         // !!new version!! /close
 
         // !!previous veriosn!! /open
 
-        for (var i = 0; i < result.length; i++) {
-          final bandPassResult =
-              bandPassFilterService.applyBandPassFilter(i, result[i]);
-          buffers[i].add(bandPassResult);
-        }
-        counter++;
+        // for (var i = 0; i < result.length; i++) {
+        //   final bandPassResult =
+        //       bandPassFilterService.applyBandPassFilter(i, result[i]);
+        //   buffers[i].add(bandPassResult);
+        // }
+        // counter++;
 
-        if (counter >= 250) {
-          counter = 0;
-          final dataToSend = buffers.map((buffer) => buffer.getData()).toList();
-          sendPort.send(dataToSend);
-        }
+        // if (counter >= 250) {
+        //   counter = 0;
+        //   final dataToSend = buffers.map((buffer) => buffer.getData()).toList();
+        //   sendPort.send(dataToSend);
+        // }
 
         // !!previous veriosn!! /close
       }
