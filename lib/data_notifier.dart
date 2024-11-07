@@ -43,4 +43,16 @@ class DataNitiifer extends _$DataNitiifer {
 
     state = voltData;
   }
+
+  void addSamples(List<double> samples) {
+    final newState = List<List<double>>.generate(8, (i) {
+      final updatedChannelData = [...state[i], samples[i]];
+      if (updatedChannelData.length > 1000) {
+        updatedChannelData.removeAt(0);
+      }
+      return updatedChannelData;
+    });
+
+    state = newState;
+  }
 }
