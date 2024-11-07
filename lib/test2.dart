@@ -178,8 +178,6 @@ class ADS1299Reader2 {
 
     // !! new version!!
 
-    final bandPassFilterService = BandPassFilterService();
-
     final buffers =
         List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
 
@@ -190,20 +188,11 @@ class ADS1299Reader2 {
     receivePort.listen((data) {
       if (data is Map) {
         final channelIndex = data['channelIndex'] as int;
-        final sample = data['sample'] as double;
+        final bandPassData = data['sample'] as double;
 
         channelCounter++;
 
-        // Apply the band-pass filter
-        final bandPassData = bandPassFilterService.applyBandPassFilter(
-          channelIndex,
-          sample,
-        );
-
-        // Only proceed if we have valid filtered data
-        if (bandPassData != null) {
-          buffers[channelIndex].add(bandPassData);
-        }
+        buffers[channelIndex].add(bandPassData);
 
         if (channelCounter == 8) {
           channelCounter = 0;
@@ -212,9 +201,9 @@ class ADS1299Reader2 {
 
         if (counter >= 250) {
           final dataToSend = List<List<double>>.generate(
-            8,
-            (i) => List.filled(250, 1),
-          );
+            buffers.length,
+            (i) => buffers[i].getData(),
+          ).toList();
           dataNotifier.addData(dataToSend);
           counter = 0;
         }
@@ -264,6 +253,13 @@ class ADS1299Reader2 {
 
     // !!previous veriosn!!
 
+    // !!new version!!
+
+    final bandPassFilterService = BandPassFilterService();
+    double bandPassResult = 0;
+
+    // !!new version!!
+
     while (true) {
       buttonState = gpio.read();
 
@@ -281,9 +277,14 @@ class ADS1299Reader2 {
         // !!new version!!
 
         for (var i = 0; i < result.length; i++) {
+          // Apply the band-pass filter
+          bandPassResult = bandPassFilterService.applyBandPassFilter(
+            i,
+            result[i],
+          );
           sendPort.send({
             'channelIndex': i,
-            'sample': result[i],
+            'sample': bandPassResult,
           });
         }
 

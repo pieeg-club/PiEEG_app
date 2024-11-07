@@ -17,11 +17,9 @@ const int _bandPassWarmUpLength = 100;
 
 class BandPassFilterService {
   final List<Butterworth> _butterworths;
-  final List<int> _sampleCounts;
 
   BandPassFilterService()
-      : _butterworths = List.generate(8, (_) => Butterworth()),
-        _sampleCounts = List.generate(8, (_) => 0) {
+      : _butterworths = List.generate(8, (_) => Butterworth()) {
     _initializeBandPassFilters();
   }
 
@@ -38,21 +36,21 @@ class BandPassFilterService {
     return filter.filter(data);
   }
 
-  double? applyBandPassFilterWithWarmUp(int channelIndex, double data) {
-    var filter = _butterworths[channelIndex];
-    _sampleCounts[channelIndex]++;
-    double result = filter.filter(data);
+  // double? applyBandPassFilterWithWarmUp(int channelIndex, double data) {
+  //   var filter = _butterworths[channelIndex];
+  //   _sampleCounts[channelIndex]++;
+  //   double result = filter.filter(data);
 
-    // Warm-up length
-    const int warmUpLength = 1000;
+  //   // Warm-up length
+  //   const int warmUpLength = 1000;
 
-    if (_sampleCounts[channelIndex] <= warmUpLength) {
-      // Discard outputs during warm-up
-      return null;
-    } else {
-      return result;
-    }
-  }
+  //   if (_sampleCounts[channelIndex] <= warmUpLength) {
+  //     // Discard outputs during warm-up
+  //     return null;
+  //   } else {
+  //     return result;
+  //   }
+  // }
 
   // List<double> applyBandPassFilter(int channelIndex, List<double> data) {
   //   var filter = _butterworths[channelIndex];
