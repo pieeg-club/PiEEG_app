@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'data_notifier.g.dart';
@@ -44,15 +46,28 @@ class DataNitiifer extends _$DataNitiifer {
     state = voltData;
   }
 
-  void addSamples(List<double> samples) {
-    final newState = List<List<double>>.generate(8, (i) {
-      final updatedChannelData = [...state[i], samples[i]];
-      if (updatedChannelData.length > 1000) {
-        updatedChannelData.removeAt(0);
-      }
-      return updatedChannelData;
-    });
+  Timer? _updateTimer;
+  final List<List<double>> _pendingData = List.generate(8, (_) => []);
 
-    state = newState;
+  void addSamples(List<double> samples) {
+    for (var i = 0; i < 8; i++) {
+      _pendingData[i].add(samples[i]);
+    }
+
+    if (_updateTimer == null) {
+      _updateTimer = Timer(Duration(milliseconds: 50), () {
+        final newState = List<List<double>>.generate(8, (i) {
+          final updatedChannelData = [...state[i], ..._pendingData[i]];
+          while (updatedChannelData.length > 1000) {
+            updatedChannelData.removeAt(0);
+          }
+          return updatedChannelData;
+        });
+
+        state = newState;
+        _pendingData.forEach((list) => list.clear());
+        _updateTimer = null;
+      });
+    }
   }
 }
