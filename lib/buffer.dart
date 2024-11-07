@@ -1,6 +1,7 @@
 class CircularBuffer {
   final List<double> buffer;
-  final List<double> warmUpData;
+  List<double> warmUpData;
+  final List<double> nextWarmUpData;
   int writeIndex = 0;
   final int capacity;
   final int warmUpLength;
@@ -9,7 +10,8 @@ class CircularBuffer {
     this.capacity,
     this.warmUpLength,
   )   : buffer = List<double>.filled(capacity, 0),
-        warmUpData = List<double>.filled(warmUpLength, 0);
+        warmUpData = List<double>.filled(warmUpLength, 0),
+        nextWarmUpData = List<double>.filled(warmUpLength, 0);
 
   void add(double value) {
     buffer[writeIndex] = value;
@@ -18,7 +20,7 @@ class CircularBuffer {
 
   void addWithWarmUp(double value) {
     if (writeIndex > capacity - warmUpLength) {
-      warmUpData[writeIndex - (capacity - warmUpLength)] = value;
+      nextWarmUpData[writeIndex - (capacity - warmUpLength)] = value;
     }
     buffer[writeIndex] = value;
     writeIndex = (writeIndex + 1) % capacity;
@@ -31,6 +33,9 @@ class CircularBuffer {
 
   List<double> getDataWithWarmUp() {
     // Return data in the correct order
-    return [...warmUpData, ...buffer];
+    List<double> previousWarmup = warmUpData.sublist(0);
+    warmUpData = nextWarmUpData.sublist(0);
+    nextWarmUpData.fillRange(0, warmUpLength, 0);
+    return [...previousWarmup, ...buffer];
   }
 }
