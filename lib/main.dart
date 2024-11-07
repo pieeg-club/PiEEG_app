@@ -73,65 +73,65 @@ class EEGPage extends ConsumerWidget {
                 ),
                 SizedBox(
                   width: 700,
-                  // child: Consumer(
-                  //   builder: (context, ref, child) {
-                  //     final dataNotifier = ref.watch(dataNitiiferProvider);
-                  //     return Wrap(
-                  //       children: List<Widget>.generate(
-                  //         dataNotifier.length,
-                  //         (i) {
-                  //           return Column(
-                  //             crossAxisAlignment: CrossAxisAlignment.start,
-                  //             children: [
-                  //               Padding(
-                  //                 padding: const EdgeInsets.only(left: 20),
-                  //                 child: Text('Channel: $i'),
-                  //               ),
-                  //               Chart(
-                  //                 padding: const EdgeInsets.only(
-                  //                     left: 5, right: 5, top: 15),
-                  //                 spots: dataNotifier[i]
-                  //                     .asMap()
-                  //                     .entries
-                  //                     .map((e) =>
-                  //                         FlSpot(e.key.toDouble(), e.value))
-                  //                     .toList(),
-                  //               ),
-                  //             ],
-                  //           );
-                  //         },
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
-                  child: Wrap(
-                    children: List<Widget>.generate(
-                      8,
-                      (i) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20),
-                              child: Text('Channel: $i'),
-                            ),
-                            Consumer(
-                              builder: (context, ref, child) {
-                                final channelData = ref.watch(
-                                    dataNitiiferProvider
-                                        .select((data) => data[i]));
-                                return Chart(
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      final dataNotifier = ref.watch(dataNitiiferProvider);
+                      return Wrap(
+                        children: List<Widget>.generate(
+                          dataNotifier.length,
+                          (i) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: Text('Channel: $i'),
+                                ),
+                                Chart(
                                   padding: const EdgeInsets.only(
                                       left: 5, right: 5, top: 15),
-                                  data: channelData,
-                                );
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+                                  spots: dataNotifier[i]
+                                      .asMap()
+                                      .entries
+                                      .map((e) =>
+                                          FlSpot(e.key.toDouble(), e.value))
+                                      .toList(),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
+                  // child: Wrap(
+                  //   children: List<Widget>.generate(
+                  //     8,
+                  //     (i) {
+                  //       return Column(
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           Padding(
+                  //             padding: const EdgeInsets.only(left: 20),
+                  //             child: Text('Channel: $i'),
+                  //           ),
+                  //           Consumer(
+                  //             builder: (context, ref, child) {
+                  //               final channelData = ref.watch(
+                  //                   dataNitiiferProvider
+                  //                       .select((data) => data[i]));
+                  //               return Chart(
+                  //                 padding: const EdgeInsets.only(
+                  //                     left: 5, right: 5, top: 15),
+                  //                 data: channelData,
+                  //               );
+                  //             },
+                  //           ),
+                  //         ],
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
                 ),
               ],
             ),
@@ -142,106 +142,49 @@ class EEGPage extends ConsumerWidget {
   }
 }
 
-class Chart extends StatefulWidget {
-  final EdgeInsetsGeometry padding;
-  final List<double> data;
-  final List<double> secondData;
-
-  const Chart({
-    Key? key,
-    this.padding = EdgeInsets.zero,
-    required this.data,
-    this.secondData = const [],
-  }) : super(key: key);
-
-  @override
-  _ChartState createState() => _ChartState();
-}
-
-class _ChartState extends State<Chart> {
-  List<FlSpot> _spots = [];
-  List<FlSpot> _secondSpots = [];
-
-  @override
-  void didUpdateWidget(covariant Chart oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.data != oldWidget.data) {
-      _spots = widget.data
-          .asMap()
-          .entries
-          .map((e) => FlSpot(e.key.toDouble(), e.value))
-          .toList();
-    }
-    if (widget.secondData != oldWidget.secondData) {
-      _secondSpots = widget.secondData
-          .asMap()
-          .entries
-          .map((e) => FlSpot(e.key.toDouble(), e.value))
-          .toList();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: widget.padding,
-      child: SizedBox(
-        width: 300,
-        height: 75,
-        child: LineChart(
-          duration: const Duration(milliseconds: 0),
-          LineChartData(
-            lineBarsData: [
-              LineChartBarData(
-                dotData: const FlDotData(show: false),
-                barWidth: 0.5,
-                isCurved: false,
-                spots: _spots,
-              ),
-              if (_secondSpots.isNotEmpty)
-                LineChartBarData(
-                  dotData: const FlDotData(show: false),
-                  barWidth: 0.5,
-                  isCurved: false,
-                  color: Colors.red,
-                  spots: _secondSpots,
-                ),
-            ],
-            lineTouchData: const LineTouchData(enabled: false),
-            gridData: const FlGridData(show: false),
-            titlesData: const FlTitlesData(
-              rightTitles:
-                  AxisTitles(sideTitles: SideTitles(showTitles: false)),
-              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-
-
-// class Chart extends StatelessWidget {
-//   final EdgeInsetsGeometry _padding;
-//   final List<FlSpot> _spots;
-//   final List<FlSpot> _secondSpots;
+// class Chart extends StatefulWidget {
+//   final EdgeInsetsGeometry padding;
+//   final List<double> data;
+//   final List<double> secondData;
 
 //   const Chart({
 //     Key? key,
-//     EdgeInsetsGeometry padding = EdgeInsets.zero,
-//     required List<FlSpot> spots,
-//     List<FlSpot>? secondSpots,
-//   })  : _padding = padding,
-//         _spots = spots,
-//         _secondSpots = secondSpots ?? const [],
-//         super(key: key);
+//     this.padding = EdgeInsets.zero,
+//     required this.data,
+//     this.secondData = const [],
+//   }) : super(key: key);
+
+//   @override
+//   _ChartState createState() => _ChartState();
+// }
+
+// class _ChartState extends State<Chart> {
+//   List<FlSpot> _spots = [];
+//   List<FlSpot> _secondSpots = [];
+
+//   @override
+//   void didUpdateWidget(covariant Chart oldWidget) {
+//     super.didUpdateWidget(oldWidget);
+//     if (widget.data != oldWidget.data) {
+//       _spots = widget.data
+//           .asMap()
+//           .entries
+//           .map((e) => FlSpot(e.key.toDouble(), e.value))
+//           .toList();
+//     }
+//     if (widget.secondData != oldWidget.secondData) {
+//       _secondSpots = widget.secondData
+//           .asMap()
+//           .entries
+//           .map((e) => FlSpot(e.key.toDouble(), e.value))
+//           .toList();
+//     }
+//   }
 
 //   @override
 //   Widget build(BuildContext context) {
 //     return Padding(
-//       padding: _padding,
+//       padding: widget.padding,
 //       child: SizedBox(
 //         width: 300,
 //         height: 75,
@@ -277,3 +220,58 @@ class _ChartState extends State<Chart> {
 //     );
 //   }
 // }
+
+class Chart extends StatelessWidget {
+  final EdgeInsetsGeometry _padding;
+  final List<FlSpot> _spots;
+  final List<FlSpot> _secondSpots;
+
+  const Chart({
+    Key? key,
+    EdgeInsetsGeometry padding = EdgeInsets.zero,
+    required List<FlSpot> spots,
+    List<FlSpot>? secondSpots,
+  })  : _padding = padding,
+        _spots = spots,
+        _secondSpots = secondSpots ?? const [],
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: _padding,
+      child: SizedBox(
+        width: 300,
+        height: 75,
+        child: LineChart(
+          duration: const Duration(milliseconds: 0),
+          LineChartData(
+            lineBarsData: [
+              LineChartBarData(
+                dotData: const FlDotData(show: false),
+                barWidth: 0.5,
+                isCurved: false,
+                spots: _spots,
+              ),
+              if (_secondSpots.isNotEmpty)
+                LineChartBarData(
+                  dotData: const FlDotData(show: false),
+                  barWidth: 0.5,
+                  isCurved: false,
+                  color: Colors.red,
+                  spots: _secondSpots,
+                ),
+            ],
+            lineTouchData: const LineTouchData(enabled: false),
+            gridData: const FlGridData(show: false),
+            titlesData: const FlTitlesData(
+              rightTitles:
+                  AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
