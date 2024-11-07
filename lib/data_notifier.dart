@@ -53,6 +53,9 @@ class DataNitiifer extends _$DataNitiifer {
       } else {
         newState[i] = [...state[i]];
       }
+      if (newState[i].length > 1000) {
+        newState[i].removeAt(0);
+      }
     }
     state = newState;
   }
