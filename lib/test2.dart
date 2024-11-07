@@ -207,24 +207,8 @@ class ADS1299Reader2 {
 
           // start
           for (var i = 0; i < dataToSend.length; i++) {
-            final data20 = dataToSend[i][19];
-            final data19 = dataToSend[i][18];
-            final data18 = dataToSend[i][17];
-            final data17 = dataToSend[i][16];
-            final data16 = dataToSend[i][15];
-            for (var j = 20; j < 50; j++) {
-              int a = j - 20;
-              if (a % 5 == 0) {
-                dataToSend[i][j] = data16;
-              } else if (a % 5 == 1) {
-                dataToSend[i][j] = data17;
-              } else if (a % 5 == 2) {
-                dataToSend[i][j] = data18;
-              } else if (a % 5 == 3) {
-                dataToSend[i][j] = data19;
-              } else if (a % 5 == 4) {
-                dataToSend[i][j] = data20;
-              }
+            for (var j = 20; j < 40; j++) {
+              dataToSend[i][j] = dataToSend[i][j - 20];
             }
           }
           // end
