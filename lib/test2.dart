@@ -199,15 +199,6 @@ class ADS1299Reader2 {
         final channelIndex = data['channelIndex'] as int;
         final bandPassData = data['sample'] as double;
 
-        channelCounter++;
-
-        buffers[channelIndex].add(bandPassData);
-
-        if (channelCounter == 8) {
-          channelCounter = 0;
-          counter++;
-        }
-
         if (counter >= 250) {
           // move data from buffer to dataToSend
           for (var i = 0; i < buffers.length; i++) {
@@ -215,6 +206,15 @@ class ADS1299Reader2 {
           }
           dataNotifier.addData(dataToSend);
           counter = 0;
+        }
+
+        channelCounter++;
+
+        buffers[channelIndex].add(bandPassData);
+
+        if (channelCounter == 8) {
+          channelCounter = 0;
+          counter++;
         }
       }
     });
