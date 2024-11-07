@@ -181,7 +181,7 @@ class ADS1299Reader2 {
     final bandPassFilterService = BandPassFilterService();
 
     final buffers =
-        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250, 100));
+        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
 
     int counter = 0;
     int channelCounter = 0;
@@ -189,31 +189,31 @@ class ADS1299Reader2 {
     // Listen for data from the isolate
     receivePort.listen((data) {
       if (data is Map) {
-        channelCounter++;
         final channelIndex = data['channelIndex'] as int;
         final sample = data['sample'] as double;
-        buffers[channelIndex].addWithWarmUp(sample);
+
+        channelCounter++;
+
+        // Apply the band-pass filter
+        final bandPassData =
+            bandPassFilterService.applyBandPassFilterWithWarmUp(
+          channelIndex,
+          sample,
+        );
+
+        // Only proceed if we have valid filtered data
+        if (bandPassData != null) {
+          buffers[channelIndex].add(bandPassData);
+        }
+
         if (channelCounter == 8) {
           channelCounter = 0;
           counter++;
         }
+
         if (counter >= 250) {
-          counter = 0;
-          final dataToSend =
-              buffers.map((buffer) => buffer.getDataWithWarmUp()).toList();
-          final bandPassResult = List<List<double>>.generate(8, (i) => []);
-          for (var i = 0; i < dataToSend.length; i++) {
-            for (var j = 0; j < dataToSend[i].length; j++) {
-              final bandPassData = bandPassFilterService.applyBandPassFilter(
-                i,
-                dataToSend[i][j],
-              );
-              if (j >= 100) {
-                bandPassResult[i].add(bandPassData);
-              }
-            }
-          }
-          dataNotifier.addData(bandPassResult);
+          final dataToSend = buffers.map((buffer) => buffer.getData()).toList();
+          dataNotifier.addData(dataToSend);
         }
       }
     });

@@ -207,7 +207,7 @@ class ADS1299Reader {
     final bandPassFilterService = BandPassFilterService();
 
     final buffers =
-        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250, 100));
+        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
 
     bool buttonState = false;
 
