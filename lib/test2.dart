@@ -221,7 +221,7 @@ class ADS1299Reader2 {
             // for (int j = 0; j < 40; j++) {
             //   dataToSend[i][j] = clearData[j - 0];
             // }
-            dataToSend[i].removeRange(0, 40);
+            dataToSend[i].removeRange(40, 80);
           }
 
           dataNotifier.addData(dataToSend);
