@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:test_project/data_notifier.dart';
+import 'package:test_project/data_notifier2.dart';
 import 'package:test_project/test2.dart';
 
 void main() {
@@ -118,8 +119,8 @@ class EEGPage extends ConsumerWidget {
                             Consumer(
                               builder: (context, ref, child) {
                                 final channelData = ref.watch(
-                                    dataNitiiferProvider
-                                        .select((data) => data[i]));
+                                    dataNotifier2Provider
+                                        .select((data) => data.list[i]));
                                 return Chart(
                                   padding: const EdgeInsets.only(
                                       left: 5, right: 5, top: 15),

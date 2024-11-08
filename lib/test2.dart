@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:test_project/buffer.dart';
 import 'package:test_project/data_notifier.dart';
 import 'package:dart_periphery/dart_periphery.dart';
+import 'package:test_project/data_notifier2.dart';
 import 'package:test_project/process_data.dart';
 // import 'package:test_project/process_data.dart';
 
@@ -15,12 +16,12 @@ part 'test2.g.dart';
 
 @riverpod
 ADS1299Reader2 dataListener2(Ref ref) {
-  final dataNotifier = ref.read(dataNitiiferProvider.notifier);
+  final dataNotifier = ref.read(dataNotifier2Provider.notifier);
   return ADS1299Reader2(dataNotifier);
 }
 
 class ADS1299Reader2 {
-  final DataNitiifer dataNotifier;
+  final DataNotifier2 dataNotifier;
 
   ADS1299Reader2(this.dataNotifier);
 
