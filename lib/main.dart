@@ -187,46 +187,40 @@ class _ChartState extends State<Chart> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(widget.randomData.toString()),
-        Padding(
-          padding: widget.padding,
-          child: SizedBox(
-            width: 300,
-            height: 75,
-            child: LineChart(
-              duration: const Duration(milliseconds: 0),
-              LineChartData(
-                lineBarsData: [
-                  LineChartBarData(
-                    dotData: const FlDotData(show: false),
-                    barWidth: 0.5,
-                    isCurved: false,
-                    spots: _spots,
-                  ),
-                  if (_secondSpots.isNotEmpty)
-                    LineChartBarData(
-                      dotData: const FlDotData(show: false),
-                      barWidth: 0.5,
-                      isCurved: false,
-                      color: Colors.red,
-                      spots: _secondSpots,
-                    ),
-                ],
-                lineTouchData: const LineTouchData(enabled: false),
-                gridData: const FlGridData(show: false),
-                titlesData: const FlTitlesData(
-                  rightTitles:
-                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  topTitles:
-                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                ),
+    return Padding(
+      padding: widget.padding,
+      child: SizedBox(
+        width: 300,
+        height: 75,
+        child: LineChart(
+          duration: const Duration(milliseconds: 0),
+          LineChartData(
+            lineBarsData: [
+              LineChartBarData(
+                dotData: const FlDotData(show: false),
+                barWidth: 0.5,
+                isCurved: false,
+                spots: _spots,
               ),
+              if (_secondSpots.isNotEmpty)
+                LineChartBarData(
+                  dotData: const FlDotData(show: false),
+                  barWidth: 0.5,
+                  isCurved: false,
+                  color: Colors.red,
+                  spots: _secondSpots,
+                ),
+            ],
+            lineTouchData: const LineTouchData(enabled: false),
+            gridData: const FlGridData(show: false),
+            titlesData: const FlTitlesData(
+              rightTitles:
+                  AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 }
