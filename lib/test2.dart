@@ -217,10 +217,11 @@ class ADS1299Reader2 {
           // move data from buffer to dataToSend
           for (var i = 0; i < buffers.length; i++) {
             dataToSend[i] = buffers[i].getData();
-            final clearData = dataToSend[i].sublist(80, 120);
-            for (int j = 0; j < 40; j++) {
-              dataToSend[i][j] = clearData[j - 0];
-            }
+            // final clearData = dataToSend[i].sublist(80, 120);
+            // for (int j = 0; j < 40; j++) {
+            //   dataToSend[i][j] = clearData[j - 0];
+            // }
+            dataToSend[i].removeRange(0, 80);
           }
 
           dataNotifier.addData(dataToSend);
