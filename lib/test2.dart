@@ -317,7 +317,7 @@ class ADS1299Reader2 {
 
         if (isIncreasing) {
           currentNumber++;
-          if (currentNumber >= 125) {
+          if (currentNumber >= 1000) {
             isIncreasing = false;
           }
         } else {
