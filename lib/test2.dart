@@ -221,7 +221,7 @@ class ADS1299Reader2 {
             // for (int j = 0; j < 40; j++) {
             //   dataToSend[i][j] = clearData[j - 0];
             // }
-            dataToSend[i].removeRange(0, 80);
+            dataToSend[i].removeRange(0, 40);
           }
 
           dataNotifier.addData(dataToSend);
@@ -307,13 +307,13 @@ class ADS1299Reader2 {
 
         for (var i = 0; i < result.length; i++) {
           // Apply the band-pass filter
-          bandPassResult = bandPassFilterService.applyBandPassFilter(
-            i,
-            result[i],
-          );
+          // bandPassResult = bandPassFilterService.applyBandPassFilter(
+          //   i,
+          //   result[i],
+          // );
           sendPort.send({
             'channelIndex': i,
-            'sample': bandPassResult,
+            'sample': result[i],
           });
         }
 
