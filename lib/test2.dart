@@ -284,7 +284,7 @@ class ADS1299Reader2 {
 
     // !!new version!! /close
 
-    double currentNumber = 0;
+    double currentNumber = 200;
     bool isIncreasing = true;
 
     while (true) {
@@ -316,13 +316,13 @@ class ADS1299Reader2 {
         }
 
         if (isIncreasing) {
-          currentNumber++;
-          if (currentNumber >= 1000) {
+          currentNumber += 100;
+          if (currentNumber >= 300) {
             isIncreasing = false;
           }
         } else {
-          currentNumber--;
-          if (currentNumber <= 0) {
+          currentNumber -= 100;
+          if (currentNumber <= 100) {
             isIncreasing = true;
           }
         }
