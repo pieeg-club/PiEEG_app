@@ -214,7 +214,7 @@ class ADS1299Reader2 {
         //   samplePerChannel.clear();
         // }
 
-        if (counter >= 1000) {
+        if (counter >= 250) {
           // move data from buffer to dataToSend
           for (var i = 0; i < buffers.length; i++) {
             dataToSend[i] = buffers[i].getData();
