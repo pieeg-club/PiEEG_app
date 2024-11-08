@@ -107,7 +107,7 @@ class EEGPage extends ConsumerWidget {
                   // ),
                   child: Wrap(
                     children: List<Widget>.generate(
-                      8,
+                      1,
                       (i) {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

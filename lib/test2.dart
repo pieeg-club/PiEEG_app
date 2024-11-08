@@ -177,7 +177,7 @@ class ADS1299Reader2 {
     // !!new version!! /open
 
     final buffers =
-        List<CircularBuffer>.generate(8, (_) => CircularBuffer(1000));
+        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
 
     int counter = 0;
     int channelCounter = 0;
