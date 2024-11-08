@@ -177,7 +177,7 @@ class ADS1299Reader2 {
     // !!new version!! /open
 
     final buffers =
-        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
+        List<CircularBuffer>.generate(8, (_) => CircularBuffer(500));
 
     int counter = 0;
     int channelCounter = 0;
@@ -214,7 +214,7 @@ class ADS1299Reader2 {
         //   samplePerChannel.clear();
         // }
 
-        if (counter >= 250) {
+        if (counter >= 500) {
           // move data from buffer to dataToSend
           for (var i = 0; i < buffers.length; i++) {
             dataToSend[i] = buffers[i].getData();
