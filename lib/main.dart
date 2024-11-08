@@ -118,13 +118,11 @@ class EEGPage extends ConsumerWidget {
                             ),
                             Consumer(
                               builder: (context, ref, child) {
-                                final channelData = ref.watch(
-                                    dataNotifier2Provider
-                                        .select((data) => data.list[i]));
                                 return Chart(
                                   padding: const EdgeInsets.only(
                                       left: 5, right: 5, top: 15),
-                                  data: channelData,
+                                  data: ref.watch(dataNotifier2Provider
+                                      .select((data) => data.list[i])),
                                 );
                               },
                             ),
