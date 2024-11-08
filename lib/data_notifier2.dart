@@ -11,7 +11,7 @@ class DataNotifier2 extends ChangeNotifier {
     for (var i = 0; i < 8; i++) {
       voltData.add([]);
       voltData[i] = [...list[i], ...data[i]];
-      while (voltData[i].length > 800) {
+      while (voltData[i].length > 900) {
         voltData[i].removeAt(0);
       }
     }
