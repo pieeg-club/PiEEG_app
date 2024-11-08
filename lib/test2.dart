@@ -279,13 +279,10 @@ class ADS1299Reader2 {
 
     // !!new version!! /open
 
-    final bandPassFilterService = BandPassFilterService();
-    double bandPassResult = 0;
+    // final bandPassFilterService = BandPassFilterService();
+    // double bandPassResult = 0;
 
     // !!new version!! /close
-
-    double currentNumber = 200;
-    bool isIncreasing = true;
 
     while (true) {
       buttonState = gpio.read();
@@ -305,26 +302,14 @@ class ADS1299Reader2 {
 
         for (var i = 0; i < result.length; i++) {
           // Apply the band-pass filter
-          bandPassResult = bandPassFilterService.applyBandPassFilter(
-            i,
-            currentNumber,
-          );
+          // bandPassResult = bandPassFilterService.applyBandPassFilter(
+          //   i,
+          //   currentNumber,
+          // );
           sendPort.send({
             'channelIndex': i,
-            'sample': bandPassResult,
+            'sample': result[i],
           });
-        }
-
-        if (isIncreasing) {
-          currentNumber += 20;
-          if (currentNumber >= 300) {
-            isIncreasing = false;
-          }
-        } else {
-          currentNumber -= 20;
-          if (currentNumber <= 100) {
-            isIncreasing = true;
-          }
         }
 
         // !!new version!! /close
