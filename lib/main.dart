@@ -118,11 +118,14 @@ class EEGPage extends ConsumerWidget {
                             ),
                             Consumer(
                               builder: (context, ref, child) {
+                                final dataNotifier =
+                                    ref.watch(dataNotifier2Provider);
+
                                 return Chart(
                                   padding: const EdgeInsets.only(
                                       left: 5, right: 5, top: 15),
-                                  data:
-                                      ref.watch(dataNotifier2Provider).list[i],
+                                  data: dataNotifier.list[i],
+                                  randomData: dataNotifier.randomData,
                                 );
                               },
                             ),
@@ -145,11 +148,13 @@ class Chart extends StatefulWidget {
   final EdgeInsetsGeometry padding;
   final List<double> data;
   final List<double> secondData;
+  final bool randomData;
 
   const Chart({
     Key? key,
     this.padding = EdgeInsets.zero,
     required this.data,
+    required this.randomData,
     this.secondData = const [],
   }) : super(key: key);
 
