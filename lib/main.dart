@@ -166,24 +166,24 @@ class _ChartState extends State<Chart> {
   List<FlSpot> _spots = [];
   List<FlSpot> _secondSpots = [];
 
-  // @override
-  // void didUpdateWidget(covariant Chart oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-  //   if (widget.data != oldWidget.data) {
-  //     _spots = widget.data
-  //         .asMap()
-  //         .entries
-  //         .map((e) => FlSpot(e.key.toDouble(), e.value))
-  //         .toList();
-  //   }
-  //   if (widget.secondData != oldWidget.secondData) {
-  //     _secondSpots = widget.secondData
-  //         .asMap()
-  //         .entries
-  //         .map((e) => FlSpot(e.key.toDouble(), e.value))
-  //         .toList();
-  //   }
-  // }
+  @override
+  void didUpdateWidget(covariant Chart oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.randomData != oldWidget.randomData) {
+      _spots = widget.data
+          .asMap()
+          .entries
+          .map((e) => FlSpot(e.key.toDouble(), e.value))
+          .toList();
+    }
+    if (widget.secondData != oldWidget.secondData) {
+      _secondSpots = widget.secondData
+          .asMap()
+          .entries
+          .map((e) => FlSpot(e.key.toDouble(), e.value))
+          .toList();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
