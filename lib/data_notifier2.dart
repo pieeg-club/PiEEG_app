@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final dataNotifier2Provider = ChangeNotifierProvider((ref) => DataNotifier2());
 
 class DataNotifier2 extends ChangeNotifier {
-  var list = List<List<double>>.generate(8, (i) => []);
+  final list = List<List<double>>.generate(8, (i) => []);
 
   void addData(List<List<double>> data) {
     for (var i = 0; i < 8; i++) {
@@ -13,6 +13,7 @@ class DataNotifier2 extends ChangeNotifier {
         list[i].removeAt(0);
       }
     }
+    print('DataNotifier2');
     notifyListeners();
   }
 }
