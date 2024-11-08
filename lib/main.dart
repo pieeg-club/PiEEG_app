@@ -121,17 +121,11 @@ class EEGPage extends ConsumerWidget {
                                 final dataNotifier =
                                     ref.watch(dataNotifier2Provider);
 
-                                return Column(
-                                  children: [
-                                    Text(dataNotifier.randomData
-                                        ? 'Random Data'
-                                        : 'Not Random Data'),
-                                    Chart(
-                                      padding: const EdgeInsets.only(
-                                          left: 5, right: 5, top: 15),
-                                      data: dataNotifier.list[i],
-                                    ),
-                                  ],
+                                return Chart(
+                                  padding: const EdgeInsets.only(
+                                      left: 5, right: 5, top: 15),
+                                  data: dataNotifier.list[i],
+                                  randomData: dataNotifier.randomData,
                                 );
                               },
                             ),
@@ -154,11 +148,13 @@ class Chart extends StatefulWidget {
   final EdgeInsetsGeometry padding;
   final List<double> data;
   final List<double> secondData;
+  final randomData;
 
   const Chart({
     Key? key,
     this.padding = EdgeInsets.zero,
     required this.data,
+    required this.randomData,
     this.secondData = const [],
   }) : super(key: key);
 
@@ -191,40 +187,46 @@ class _ChartState extends State<Chart> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: widget.padding,
-      child: SizedBox(
-        width: 300,
-        height: 75,
-        child: LineChart(
-          duration: const Duration(milliseconds: 0),
-          LineChartData(
-            lineBarsData: [
-              LineChartBarData(
-                dotData: const FlDotData(show: false),
-                barWidth: 0.5,
-                isCurved: false,
-                spots: _spots,
-              ),
-              if (_secondSpots.isNotEmpty)
-                LineChartBarData(
-                  dotData: const FlDotData(show: false),
-                  barWidth: 0.5,
-                  isCurved: false,
-                  color: Colors.red,
-                  spots: _secondSpots,
+    return Column(
+      children: [
+        Text(widget.randomData.toString()),
+        Padding(
+          padding: widget.padding,
+          child: SizedBox(
+            width: 300,
+            height: 75,
+            child: LineChart(
+              duration: const Duration(milliseconds: 0),
+              LineChartData(
+                lineBarsData: [
+                  LineChartBarData(
+                    dotData: const FlDotData(show: false),
+                    barWidth: 0.5,
+                    isCurved: false,
+                    spots: _spots,
+                  ),
+                  if (_secondSpots.isNotEmpty)
+                    LineChartBarData(
+                      dotData: const FlDotData(show: false),
+                      barWidth: 0.5,
+                      isCurved: false,
+                      color: Colors.red,
+                      spots: _secondSpots,
+                    ),
+                ],
+                lineTouchData: const LineTouchData(enabled: false),
+                gridData: const FlGridData(show: false),
+                titlesData: const FlTitlesData(
+                  rightTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
                 ),
-            ],
-            lineTouchData: const LineTouchData(enabled: false),
-            gridData: const FlGridData(show: false),
-            titlesData: const FlTitlesData(
-              rightTitles:
-                  AxisTitles(sideTitles: SideTitles(showTitles: false)),
-              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              ),
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
