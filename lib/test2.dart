@@ -316,12 +316,12 @@ class ADS1299Reader2 {
         }
 
         if (isIncreasing) {
-          currentNumber += 100;
+          currentNumber += 20;
           if (currentNumber >= 300) {
             isIncreasing = false;
           }
         } else {
-          currentNumber -= 100;
+          currentNumber -= 20;
           if (currentNumber <= 100) {
             isIncreasing = true;
           }
