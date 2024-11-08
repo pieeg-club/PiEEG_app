@@ -37,8 +37,8 @@ class DataNotifier2 extends ChangeNotifier {
       list[i].add(samples[i]);
 
       // Trim the list only if its length exceeds maxLength
-      if (list[i].length > maxLength) {
-        list[i] = list[i].sublist(list[i].length - maxLength);
+      while (list[i].length > 1000) {
+        list[i].removeAt(0);
       }
     }
 
