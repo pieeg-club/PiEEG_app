@@ -170,6 +170,37 @@ class ADS1299Reader2 {
     return spi.transfer(List.filled(length, 0), false);
   }
 
+  List<double> seamlessTransition(
+    List<double> samples,
+    int startIndex,
+    int endIndex,
+  ) {
+    final nPoints = endIndex - startIndex + 1;
+
+    // Step 1: Extract the last valid samples before the corrupted section
+    List<double> lastValidSamples =
+        samples.sublist(startIndex - nPoints, startIndex);
+
+    // Step 2: Extract the next valid samples after the corrupted section
+    List<double> nextValidSamples =
+        samples.sublist(endIndex + 1, endIndex + 1 + nPoints);
+
+    // Step 3: Create the blended transition
+    List<double> transition = List.generate(nPoints, (i) {
+      double weight = i / nPoints;
+      double blendedValue =
+          (1 - weight) * lastValidSamples[i] + weight * nextValidSamples[i];
+      return blendedValue;
+    });
+
+    // Step 4: Replace the corrupted section in the original samples with the transition values
+    for (int i = 0; i < nPoints; i++) {
+      samples[startIndex + i] = transition[i];
+    }
+
+    return samples;
+  }
+
   Future<void> startDataReadIsolate() async {
     ReceivePort receivePort = ReceivePort();
 
@@ -217,6 +248,7 @@ class ADS1299Reader2 {
           // move data from buffer to dataToSend
           for (var i = 0; i < buffers.length; i++) {
             dataToSend[i] = buffers[i].getData();
+            seamlessTransition(dataToSend[i], 0, 40);
           }
 
           dataNotifier.addData(dataToSend);
