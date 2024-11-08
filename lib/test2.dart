@@ -191,6 +191,8 @@ class ADS1299Reader2 {
     // Start the isolate
     await Isolate.spawn(dataAcquisitionIsolate, receivePort.sendPort);
 
+    Map<int, double> samplePerChannel = {};
+
     // !! new version!! /open
 
     // Listen for data from the isolate
@@ -199,24 +201,36 @@ class ADS1299Reader2 {
         final channelIndex = data['channelIndex'] as int;
         final bandPassData = data['sample'] as double;
 
-        if (counter >= 250) {
-          // move data from buffer to dataToSend
-          for (var i = 0; i < buffers.length; i++) {
-            dataToSend[i] = buffers[i].getData();
-          }
+        samplePerChannel[channelIndex] = bandPassData;
 
-          dataNotifier.addData(dataToSend);
-          counter = 0;
+        if (samplePerChannel.length == 8) {
+          // All channels have a sample, update state
+          final samples = List<double>.generate(8, (i) => samplePerChannel[i]!);
+
+          dataNotifier.addSamples(samples);
+
+          // Clear the map for the next set of samples
+          samplePerChannel.clear();
         }
 
-        channelCounter++;
+        // if (counter >= 250) {
+        //   // move data from buffer to dataToSend
+        //   for (var i = 0; i < buffers.length; i++) {
+        //     dataToSend[i] = buffers[i].getData();
+        //   }
 
-        buffers[channelIndex].add(bandPassData);
+        //   dataNotifier.addData(dataToSend);
+        //   counter = 0;
+        // }
 
-        if (channelCounter == 8) {
-          channelCounter = 0;
-          counter++;
-        }
+        // channelCounter++;
+
+        // buffers[channelIndex].add(bandPassData);
+
+        // if (channelCounter == 8) {
+        //   channelCounter = 0;
+        //   counter++;
+        // }
       }
     });
 
