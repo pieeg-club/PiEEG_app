@@ -171,6 +171,35 @@ class ADS1299Reader2 {
     return spi.transfer(List.filled(length, 0), false);
   }
 
+  List<double> repeatPatternWithAlignment(
+      List<double> waveData, int startIndex, int endIndex, int patternLength) {
+    // Step 1: Extract the pattern segment before the corrupted section
+    List<double> pattern = waveData.sublist(endIndex, endIndex + patternLength);
+
+    // Step 2: Find the point in `pattern` that aligns best with the last valid point
+    double lastValidPoint = waveData[startIndex - 1];
+    int bestMatchIndex = 0;
+    double minDifference = double.infinity;
+
+    for (int i = 0; i < pattern.length; i++) {
+      double difference = (pattern[i] - lastValidPoint).abs();
+      if (difference < minDifference) {
+        minDifference = difference;
+        bestMatchIndex = i;
+      }
+    }
+
+    // Step 3: Use the aligned pattern to fill in the corrupted segment
+    int patternIndex = bestMatchIndex;
+    for (int i = startIndex; i <= endIndex; i++) {
+      waveData[i] = pattern[patternIndex];
+      patternIndex =
+          (patternIndex + 1) % pattern.length; // Wrap around the pattern
+    }
+
+    return waveData;
+  }
+
   Future<void> startDataReadIsolate() async {
     ReceivePort receivePort = ReceivePort();
 
@@ -217,7 +246,8 @@ class ADS1299Reader2 {
         if (counter >= 250) {
           // move data from buffer to dataToSend
           for (var i = 0; i < buffers.length; i++) {
-            dataToSend[i] = buffers[i].getData();
+            dataToSend[i] =
+                repeatPatternWithAlignment(buffers[i].getData(), 10, 50, 20);
           }
 
           dataNotifier.addData(dataToSend);
