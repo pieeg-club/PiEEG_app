@@ -6,7 +6,7 @@ final dataNotifier2Provider = ChangeNotifierProvider((ref) => DataNotifier2());
 class DataNotifier2 extends ChangeNotifier {
   final list = List<List<double>>.generate(8, (i) => []);
 
-  bool update = false;
+  int counter = 0;
 
   void addData(List<List<double>> data) {
     for (var i = 0; i < 8; i++) {
@@ -15,8 +15,7 @@ class DataNotifier2 extends ChangeNotifier {
         list[i].removeAt(0);
       }
     }
-    update = false;
+    counter++;
     notifyListeners();
-    update = true;
   }
 }
