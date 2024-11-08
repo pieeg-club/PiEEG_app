@@ -15,8 +15,8 @@ class DataNotifier2 extends ChangeNotifier {
         list[i].removeAt(0);
       }
     }
-    print('DataNotifier2: ${list[0].length}');
-    update = true;
+    update = false;
     notifyListeners();
+    update = true;
   }
 }
