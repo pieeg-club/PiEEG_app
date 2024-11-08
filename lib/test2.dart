@@ -191,7 +191,7 @@ class ADS1299Reader2 {
     // Start the isolate
     await Isolate.spawn(dataAcquisitionIsolate, receivePort.sendPort);
 
-    Map<int, double> samplePerChannel = {};
+    // Map<int, double> samplePerChannel = {};
 
     // !! new version!! /open
 
@@ -201,36 +201,36 @@ class ADS1299Reader2 {
         final channelIndex = data['channelIndex'] as int;
         final bandPassData = data['sample'] as double;
 
-        samplePerChannel[channelIndex] = bandPassData;
+        // samplePerChannel[channelIndex] = bandPassData;
 
-        if (samplePerChannel.length == 8) {
-          // All channels have a sample, update state
-          final samples = List<double>.generate(8, (i) => samplePerChannel[i]!);
+        // if (samplePerChannel.length == 8) {
+        //   // All channels have a sample, update state
+        //   final samples = List<double>.generate(8, (i) => samplePerChannel[i]!);
 
-          dataNotifier.addSamples(samples);
+        //   dataNotifier.addSamples(samples);
 
-          // Clear the map for the next set of samples
-          samplePerChannel.clear();
+        //   // Clear the map for the next set of samples
+        //   samplePerChannel.clear();
+        // }
+
+        if (counter >= 250) {
+          // move data from buffer to dataToSend
+          for (var i = 0; i < buffers.length; i++) {
+            dataToSend[i] = buffers[i].getData();
+          }
+
+          dataNotifier.addData(dataToSend);
+          counter = 0;
         }
 
-        // if (counter >= 250) {
-        //   // move data from buffer to dataToSend
-        //   for (var i = 0; i < buffers.length; i++) {
-        //     dataToSend[i] = buffers[i].getData();
-        //   }
+        channelCounter++;
 
-        //   dataNotifier.addData(dataToSend);
-        //   counter = 0;
-        // }
+        buffers[channelIndex].add(bandPassData);
 
-        // channelCounter++;
-
-        // buffers[channelIndex].add(bandPassData);
-
-        // if (channelCounter == 8) {
-        //   channelCounter = 0;
-        //   counter++;
-        // }
+        if (channelCounter == 8) {
+          channelCounter = 0;
+          counter++;
+        }
       }
     });
 
@@ -279,10 +279,13 @@ class ADS1299Reader2 {
 
     // !!new version!! /open
 
-    final bandPassFilterService = BandPassFilterService();
-    double bandPassResult = 0;
+    // final bandPassFilterService = BandPassFilterService();
+    // double bandPassResult = 0;
 
     // !!new version!! /close
+
+    double currentNumber = 0;
+    bool isIncreasing = true;
 
     while (true) {
       buttonState = gpio.read();
@@ -302,14 +305,26 @@ class ADS1299Reader2 {
 
         for (var i = 0; i < result.length; i++) {
           // Apply the band-pass filter
-          bandPassResult = bandPassFilterService.applyBandPassFilter(
-            i,
-            result[i],
-          );
+          // bandPassResult = bandPassFilterService.applyBandPassFilter(
+          //   i,
+          //   result[i],
+          // );
           sendPort.send({
             'channelIndex': i,
-            'sample': bandPassResult,
+            'sample': currentNumber,
           });
+        }
+
+        if (isIncreasing) {
+          currentNumber++;
+          if (currentNumber >= 125) {
+            isIncreasing = false;
+          }
+        } else {
+          currentNumber--;
+          if (currentNumber <= 0) {
+            isIncreasing = true;
+          }
         }
 
         // !!new version!! /close

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'data_notifier.g.dart';
@@ -46,28 +44,28 @@ class DataNitiifer extends _$DataNitiifer {
     state = voltData;
   }
 
-  Timer? _updateTimer;
-  final List<List<double>> _pendingData = List.generate(8, (_) => []);
+  // Timer? _updateTimer;
+  // final List<List<double>> _pendingData = List.generate(8, (_) => []);
 
-  void addSamples(List<double> samples) {
-    for (var i = 0; i < 8; i++) {
-      _pendingData[i].add(samples[i]);
-    }
+  // void addSamples(List<double> samples) {
+  //   for (var i = 0; i < 8; i++) {
+  //     _pendingData[i].add(samples[i]);
+  //   }
 
-    if (_updateTimer == null) {
-      _updateTimer = Timer(Duration(milliseconds: 50), () {
-        final newState = List<List<double>>.generate(8, (i) {
-          final updatedChannelData = [...state[i], ..._pendingData[i]];
-          while (updatedChannelData.length > 1000) {
-            updatedChannelData.removeAt(0);
-          }
-          return updatedChannelData;
-        });
+  //   if (_updateTimer == null) {
+  //     _updateTimer = Timer(Duration(milliseconds: 50), () {
+  //       final newState = List<List<double>>.generate(8, (i) {
+  //         final updatedChannelData = [...state[i], ..._pendingData[i]];
+  //         while (updatedChannelData.length > 1000) {
+  //           updatedChannelData.removeAt(0);
+  //         }
+  //         return updatedChannelData;
+  //       });
 
-        state = newState;
-        _pendingData.forEach((list) => list.clear());
-        _updateTimer = null;
-      });
-    }
-  }
+  //       state = newState;
+  //       _pendingData.forEach((list) => list.clear());
+  //       _updateTimer = null;
+  //     });
+  //   }
+  // }
 }
