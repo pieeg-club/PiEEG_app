@@ -149,7 +149,7 @@ class Chart extends StatefulWidget {
   final EdgeInsetsGeometry padding;
   final List<double> data;
   final List<double> secondData;
-  final randomData;
+  final bool randomData;
 
   const Chart({
     Key? key,

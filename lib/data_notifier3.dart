@@ -32,5 +32,6 @@ class DataNotifier3 {
         removedDataIndex: removedDataIndex,
       );
     }
+    print(list[0].length);
   }
 }
