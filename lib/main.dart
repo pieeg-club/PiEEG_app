@@ -357,14 +357,20 @@ class Chart2 extends ConsumerWidget {
         width: 300,
         height: 75,
         child: SfCartesianChart(
+          primaryYAxis: const NumericAxis(
+            minimum: -300, // Set minimum based on your expected data range
+            maximum: 300, // Set maximum based on your expected data range
+          ),
           series: <LineSeries<double, double>>[
             LineSeries<double, double>(
-              onRendererCreated: (ChartSeriesController controller) {
+              onRendererCreated:
+                  (ChartSeriesController<double, double> controller) {
                 notifier.setUp(controller, _data, _channelIndex);
               },
               dataSource: _data,
               xValueMapper: (_, int index) => index.toDouble(),
               yValueMapper: (double value, _) => value,
+              animationDuration: 0,
             ),
           ],
         ),
