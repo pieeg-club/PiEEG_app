@@ -59,16 +59,14 @@ class DataNotifier2 extends ChangeNotifier {
   void updateData(List<double> data) {
     for (var i = 0; i < data.length; i++) {
       final controller = controllers[i]!;
-      // var removedDataIndex = -1;
       list[i].add(data[i]);
-      // if (list[i].length > maxLength) {
-      //   list[i].removeAt(0);
-      //   removedDataIndex = 0;
-      // }
-      controller.updateDataSource(
-        addedDataIndex: list[i].length - 1,
-        // removedDataIndex: removedDataIndex,
-      );
+      if (list[i].length >= maxLength) {
+        list[i].removeAt(0);
+        controller.updateDataSource(
+          addedDataIndex: list[i].length - 1,
+          removedDataIndex: 0,
+        );
+      }
     }
   }
 }
