@@ -33,4 +33,22 @@ class DataNotifier3 {
       );
     }
   }
+
+  void addData(List<List<double>> data) {
+    for (var i = 0; i < 8; i++) {
+      list[i].addAll(data[i]);
+      int removeLength = 0;
+      if (list[i].length > 1000) {
+        removeLength = list[i].length - 1000;
+        list[i].removeRange(0, removeLength);
+      }
+      controllers[i]!.updateDataSource(
+        removedDataIndexes: List<int>.generate(removeLength, (index) => index),
+        addedDataIndexes: List<int>.generate(
+          data[i].length,
+          (index) => list[i].length - data[i].length + index,
+        ),
+      );
+    }
+  }
 }
