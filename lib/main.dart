@@ -359,6 +359,10 @@ class Chart2 extends ConsumerWidget {
         width: 300,
         height: 75,
         child: SfCartesianChart(
+          primaryYAxis: NumericAxis(
+            minimum: -1000, // Set minimum based on your expected data range
+            maximum: 1000, // Set maximum based on your expected data range
+          ),
           series: <LineSeries<double, double>>[
             LineSeries<double, double>(
               onRendererCreated:
