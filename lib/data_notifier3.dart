@@ -25,7 +25,7 @@ class DataNotifier3 {
       list[i].add(data[i]);
       if (list[i].length == 1000) {
         list[i].removeAt(0);
-        removedDataIndex = -1;
+        removedDataIndex = 0;
       }
       controller.updateDataSource(
         addedDataIndex: list[i].length - 1,
