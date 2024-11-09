@@ -250,12 +250,12 @@ class ADS1299Reader2 {
                 repeatPatternWithAlignment(buffers[i].getData(), 10, 50, 20);
 
             // Apply band-pass filter
-            for (var j = 0; j < dataToSend[i].length; j++) {
-              dataToSend[i][j] = bandPassFilterService.applyBandPassFilter(
-                i,
-                dataToSend[i][j],
-              );
-            }
+            // for (var j = 0; j < dataToSend[i].length; j++) {
+            //   dataToSend[i][j] = bandPassFilterService.applyBandPassFilter(
+            //     i,
+            //     dataToSend[i][j],
+            //   );
+            // }
           }
 
           dataNotifier.addData(dataToSend);
