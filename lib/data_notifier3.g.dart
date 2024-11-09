@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'test2.dart';
+part of 'data_notifier3.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$dataListener2Hash() => r'93e79f798e9af51f7b845fadedbef22532a955a0';
+String _$dataNotifier3Hash() => r'9399c33e9e3a434e6b292c229e23065c266bebba';
 
-/// See also [dataListener2].
-@ProviderFor(dataListener2)
-final dataListener2Provider = AutoDisposeProvider<ADS1299Reader2>.internal(
-  dataListener2,
-  name: r'dataListener2Provider',
+/// See also [dataNotifier3].
+@ProviderFor(dataNotifier3)
+final dataNotifier3Provider = AutoDisposeProvider<DataNotifier3>.internal(
+  dataNotifier3,
+  name: r'dataNotifier3Provider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$dataListener2Hash,
+      : _$dataNotifier3Hash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef DataListener2Ref = AutoDisposeProviderRef<ADS1299Reader2>;
+typedef DataNotifier3Ref = AutoDisposeProviderRef<DataNotifier3>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

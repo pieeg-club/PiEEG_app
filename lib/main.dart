@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:test_project/data_notifier.dart';
 import 'package:test_project/data_notifier2.dart';
+import 'package:test_project/data_notifier3.dart';
 import 'package:test_project/test2.dart';
 
 void main() {
@@ -350,17 +351,13 @@ class Chart2 extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notifier = ref.read(dataNotifier2Provider.notifier);
+    final notifier = ref.read(dataNotifier3Provider);
     return Padding(
       padding: const EdgeInsets.only(left: 5, right: 5, top: 15),
       child: SizedBox(
         width: 300,
         height: 75,
         child: SfCartesianChart(
-          primaryYAxis: const NumericAxis(
-            minimum: -300, // Set minimum based on your expected data range
-            maximum: 300, // Set maximum based on your expected data range
-          ),
           series: <LineSeries<double, double>>[
             LineSeries<double, double>(
               onRendererCreated:

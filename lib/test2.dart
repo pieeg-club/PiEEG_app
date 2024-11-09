@@ -7,6 +7,7 @@ import 'package:test_project/buffer.dart';
 import 'package:test_project/data_notifier.dart';
 import 'package:dart_periphery/dart_periphery.dart';
 import 'package:test_project/data_notifier2.dart';
+import 'package:test_project/data_notifier3.dart';
 import 'package:test_project/process_data.dart';
 // import 'package:test_project/process_data.dart';
 
@@ -16,12 +17,12 @@ part 'test2.g.dart';
 
 @riverpod
 ADS1299Reader2 dataListener2(Ref ref) {
-  final dataNotifier = ref.read(dataNotifier2Provider.notifier);
+  final dataNotifier = ref.read(dataNotifier3Provider);
   return ADS1299Reader2(dataNotifier);
 }
 
 class ADS1299Reader2 {
-  final DataNotifier2 dataNotifier;
+  final DataNotifier3 dataNotifier;
 
   ADS1299Reader2(this.dataNotifier);
 
@@ -78,83 +79,83 @@ class ADS1299Reader2 {
     _sendCommand(spi, start); // START
   }
 
-  Future<void> startDataRead() async {
-    const int buttonPin = 26;
-    const int gpioChip = 4;
-    // var gpioConfig = GPIOconfig.defaultValues();
-    // gpioConfig.bias = GPIObias.gpioBiasPullDown;
-    // final gpio = GPIO.advanced(buttonPin, gpioConfig, gpioChip);
-    var gpio = GPIO(buttonPin, GPIOdirection.gpioDirIn, gpioChip);
+  // Future<void> startDataRead() async {
+  //   const int buttonPin = 26;
+  //   const int gpioChip = 4;
+  //   // var gpioConfig = GPIOconfig.defaultValues();
+  //   // gpioConfig.bias = GPIObias.gpioBiasPullDown;
+  //   // final gpio = GPIO.advanced(buttonPin, gpioConfig, gpioChip);
+  //   var gpio = GPIO(buttonPin, GPIOdirection.gpioDirIn, gpioChip);
 
-    // rpi_gpio
-    // RpiGpio gpio = await initialize_RpiGpio(spi: false);
-    // const int buttonPin = 37;
-    // final button = gpio.input(buttonPin);
+  //   // rpi_gpio
+  //   // RpiGpio gpio = await initialize_RpiGpio(spi: false);
+  //   // const int buttonPin = 37;
+  //   // final button = gpio.input(buttonPin);
 
-    int testDRDY = 5;
+  //   int testDRDY = 5;
 
-    print('Rpigpio initialized');
+  //   print('Rpigpio initialized');
 
-    var spi = SPI(0, 0, SPImode.mode1, 600000);
-    spi.setSPIbitsPerWord(8);
-    spi.setSPIbitOrder(BitOrder.msbFirst); // ???
+  //   var spi = SPI(0, 0, SPImode.mode1, 600000);
+  //   spi.setSPIbitsPerWord(8);
+  //   spi.setSPIbitOrder(BitOrder.msbFirst); // ???
 
-    _initializeADS1299(spi);
+  //   _initializeADS1299(spi);
 
-    print('Rpispi initialized');
+  //   print('Rpispi initialized');
 
-    print("Data reading started.");
+  //   print("Data reading started.");
 
-    var buffer = List<List<double>>.generate(8, (i) => []);
+  //   var buffer = List<List<double>>.generate(8, (i) => []);
 
-    var buttonState = false;
+  //   var buttonState = false;
 
-    // bandpass filter
-    BandPassFilterService bandPassFilterService = BandPassFilterService();
+  //   // bandpass filter
+  //   BandPassFilterService bandPassFilterService = BandPassFilterService();
 
-    while (true) {
-      buttonState = gpio.read();
-      // rpi_gpio
-      // buttonState = await button.value;
-      // print('Button state: $buttonState');
+  //   while (true) {
+  //     buttonState = gpio.read();
+  //     // rpi_gpio
+  //     // buttonState = await button.value;
+  //     // print('Button state: $buttonState');
 
-      if (buttonState) {
-        testDRDY = 10;
-      } else if (testDRDY == 10) {
-        testDRDY = 0;
+  //     if (buttonState) {
+  //       testDRDY = 10;
+  //     } else if (testDRDY == 10) {
+  //       testDRDY = 0;
 
-        // Read 27 bytes from the SPI device
-        final data = _readData(spi, 27);
-        print(
-            'Raw SPI Data: ${data.map((b) => b.toRadixString(16).padLeft(2, '0')).join(' ')}');
+  //       // Read 27 bytes from the SPI device
+  //       final data = _readData(spi, 27);
+  //       print(
+  //           'Raw SPI Data: ${data.map((b) => b.toRadixString(16).padLeft(2, '0')).join(' ')}');
 
-        // Process and scale the data to obtain voltage values
-        final result = DeviceDataProcessorService.processRawDeviceData(data);
-        for (var i = 0; i < result.length; i++) {
-          final bandPassResult =
-              bandPassFilterService.applyBandPassFilter(i, result[i]);
-          buffer[i].add(bandPassResult);
-        }
+  //       // Process and scale the data to obtain voltage values
+  //       final result = DeviceDataProcessorService.processRawDeviceData(data);
+  //       for (var i = 0; i < result.length; i++) {
+  //         final bandPassResult =
+  //             bandPassFilterService.applyBandPassFilter(i, result[i]);
+  //         buffer[i].add(bandPassResult);
+  //       }
 
-        if (buffer[0].length >= 250) {
-          dataNotifier.addData(buffer);
-          buffer = List<List<double>>.generate(8, (i) => []);
-        }
+  //       if (buffer[0].length >= 250) {
+  //         dataNotifier.addData(buffer);
+  //         buffer = List<List<double>>.generate(8, (i) => []);
+  //       }
 
-        // if (buffer[0].length >= 250) {
-        //   final bandPassResult = List<List<double>>.generate(8, (i) => []);
-        //   for (var i = 0; i < 8; i++) {
-        //     final bandPassData =
-        //         bandPassFilterService.applyBandPassFilter(i, buffer[i]);
-        //     bandPassResult[i] = bandPassData;
-        //   }
-        //   dataNotifier.addData(bandPassResult);
-        //   buffer = List<List<double>>.generate(8, (i) => []);
-        // }
-        // await Future<void>.delayed(Duration(milliseconds: 1));
-      }
-    }
-  }
+  //       // if (buffer[0].length >= 250) {
+  //       //   final bandPassResult = List<List<double>>.generate(8, (i) => []);
+  //       //   for (var i = 0; i < 8; i++) {
+  //       //     final bandPassData =
+  //       //         bandPassFilterService.applyBandPassFilter(i, buffer[i]);
+  //       //     bandPassResult[i] = bandPassData;
+  //       //   }
+  //       //   dataNotifier.addData(bandPassResult);
+  //       //   buffer = List<List<double>>.generate(8, (i) => []);
+  //       // }
+  //       // await Future<void>.delayed(Duration(milliseconds: 1));
+  //     }
+  //   }
+  // }
 
   static void _sendCommand(SPI spi, int command) {
     final sendData = [command];
