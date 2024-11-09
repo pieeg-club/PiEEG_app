@@ -9,10 +9,11 @@ DataNotifier3 dataNotifier3(Ref ref) => DataNotifier3();
 
 class DataNotifier3 {
   List<List<double>> list = List.generate(8, (_) => []);
-  List<ChartSeriesController?> controllers = List.generate(8, (_) => null);
+  List<ChartSeriesController<double, double>?> controllers =
+      List.generate(8, (_) => null);
 
-  void setUp(
-      ChartSeriesController conroller, List<double> data, int channelIndex) {
+  void setUp(ChartSeriesController<double, double> conroller, List<double> data,
+      int channelIndex) {
     controllers[channelIndex] = conroller;
     list[channelIndex] = data;
   }
@@ -22,7 +23,7 @@ class DataNotifier3 {
       final controller = controllers[i]!;
       var removedDataIndex = -1;
       list[i].add(data[i]);
-      if (list[i].length >= 1000) {
+      if (list[i].length == 1000) {
         list[i].removeAt(0);
         removedDataIndex = 0;
       }

@@ -3,10 +3,7 @@ import 'dart:isolate';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:test_project/buffer.dart';
-import 'package:test_project/data_notifier.dart';
 import 'package:dart_periphery/dart_periphery.dart';
-import 'package:test_project/data_notifier2.dart';
 import 'package:test_project/data_notifier3.dart';
 import 'package:test_project/process_data.dart';
 // import 'package:test_project/process_data.dart';
@@ -206,16 +203,16 @@ class ADS1299Reader2 {
 
     // !!new version!! /open
 
-    final buffers =
-        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
+    // final buffers =
+    //     List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
 
-    int counter = 0;
-    int channelCounter = 0;
+    // // int counter = 0;
+    // // int channelCounter = 0;
 
-    final dataToSend = List<List<double>>.generate(
-      buffers.length,
-      (i) => buffers[i].getData(),
-    ).toList();
+    // // final dataToSend = List<List<double>>.generate(
+    // //   buffers.length,
+    // //   (i) => buffers[i].getData(),
+    // // ).toList();
 
     // !!new version!! /close
 

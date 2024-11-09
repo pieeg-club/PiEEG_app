@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 final dataNotifier2Provider = ChangeNotifierProvider((ref) => DataNotifier2());
 
@@ -29,22 +26,22 @@ class DataNotifier2 extends ChangeNotifier {
     notifyListeners();
   }
 
-  Timer? _updateTimer;
-  final List<List<double>> _pendingData = List.generate(8, (_) => []);
+  // Timer? _updateTimer;
+  // final List<List<double>> _pendingData = List.generate(8, (_) => []);
 
-  void addSamples(List<double> samples) {
-    for (var i = 0; i < 8; i++) {
-      // Add new data to the end of each list[i]
-      list[i].add(samples[i]);
+  // void addSamples(List<double> samples) {
+  //   for (var i = 0; i < 8; i++) {
+  //     // Add new data to the end of each list[i]
+  //     list[i].add(samples[i]);
 
-      // Trim the list only if its length exceeds maxLength
-      while (list[i].length > 1000) {
-        list[i].removeAt(0);
-      }
-    }
+  //     // Trim the list only if its length exceeds maxLength
+  //     while (list[i].length > 1000) {
+  //       list[i].removeAt(0);
+  //     }
+  //   }
 
-    randomData = !randomData;
+  //   randomData = !randomData;
 
-    notifyListeners();
-  }
+  //   notifyListeners();
+  // }
 }

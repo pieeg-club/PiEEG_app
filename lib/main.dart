@@ -4,7 +4,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:test_project/data_notifier.dart';
 import 'package:test_project/data_notifier2.dart';
 import 'package:test_project/data_notifier3.dart';
 import 'package:test_project/test2.dart';
@@ -338,6 +337,7 @@ class EEGPage2 extends ConsumerWidget {
   }
 }
 
+/// Chart2
 class Chart2 extends ConsumerWidget {
   /// Basic Constructor for Chart2
   Chart2({
@@ -346,8 +346,8 @@ class Chart2 extends ConsumerWidget {
   })  : _channelIndex = channelIndex,
         _data = [];
 
-  int _channelIndex;
-  List<double> _data;
+  final int _channelIndex;
+  final List<double> _data;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
