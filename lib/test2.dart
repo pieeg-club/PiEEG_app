@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:dart_periphery/dart_periphery.dart';
 import 'package:test_project/data_notifier3.dart';
+import 'package:test_project/process_data.dart';
 
 import 'deice_data_process.dart';
 
@@ -306,8 +307,8 @@ class ADS1299Reader2 {
 
     // !!new version!! /open
 
-    // final bandPassFilterService = BandPassFilterService();
-    // double bandPassResult = 0;
+    final bandPassFilterService = BandPassFilterService();
+    double bandPassResult = 0;
 
     // !!new version!! /close
 
@@ -329,13 +330,13 @@ class ADS1299Reader2 {
 
         for (var i = 0; i < result.length; i++) {
           // Apply the band-pass filter
-          // bandPassResult = bandPassFilterService.applyBandPassFilter(
-          //   i,
-          //   result[i],
-          // );
+          bandPassResult = bandPassFilterService.applyBandPassFilter(
+            i,
+            result[i],
+          );
           sendPort.send({
             'channelIndex': i,
-            'sample': result[i],
+            'sample': bandPassResult,
           });
         }
 
