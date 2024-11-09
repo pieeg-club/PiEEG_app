@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:test_project/data_notifier.dart';
 import 'package:test_project/data_notifier2.dart';
 import 'package:test_project/test2.dart';
@@ -279,3 +280,95 @@ class _ChartState extends State<Chart> {
 //     );
 //   }
 // }
+
+/// Screen to listen data from EEG device
+class EEGPage2 extends ConsumerWidget {
+  /// Basic Constructor for EEGPage
+  EEGPage2({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final dataReciver = ref.read(dataListener2Provider);
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(50),
+        child: SizedBox.expand(
+          child: Center(
+            child: Column(
+              children: [
+                ElevatedButton(
+                  onPressed: dataReciver.startDataReadIsolate,
+                  child: const Text('Start'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    exit(0); // Close the app on Linux
+                  },
+                  child: const Text('Close App'),
+                ),
+                SizedBox(
+                  width: 700,
+                  child: Wrap(
+                    children: List<Widget>.generate(
+                      8,
+                      (i) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Text('Channel: $i'),
+                            ),
+                            Chart2(
+                              channelIndex: i,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Chart2 extends ConsumerWidget {
+  /// Basic Constructor for Chart2
+  Chart2({
+    required int channelIndex,
+    super.key,
+  })  : _channelIndex = channelIndex,
+        _data = [];
+
+  int _channelIndex;
+  List<double> _data;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notifier = ref.read(dataNotifier2Provider.notifier);
+    return Padding(
+      padding: const EdgeInsets.only(left: 5, right: 5, top: 15),
+      child: SizedBox(
+        width: 300,
+        height: 75,
+        child: SfCartesianChart(
+          series: <LineSeries<double, double>>[
+            LineSeries<double, double>(
+              onRendererCreated: (ChartSeriesController controller) {
+                notifier.setUp(controller, _data, _channelIndex);
+              },
+              dataSource: _data,
+              xValueMapper: (_, int index) => index.toDouble(),
+              yValueMapper: (double value, _) => value,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

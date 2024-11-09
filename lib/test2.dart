@@ -237,7 +237,7 @@ class ADS1299Reader2 {
           // All channels have a sample, update state
           final samples = List<double>.generate(8, (i) => samplePerChannel[i]!);
 
-          dataNotifier.addSamples(samples);
+          dataNotifier.updateData(samples);
 
           // Clear the map for the next set of samples
           samplePerChannel.clear();

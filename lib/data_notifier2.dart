@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 final dataNotifier2Provider = ChangeNotifierProvider((ref) => DataNotifier2());
 
@@ -45,5 +46,29 @@ class DataNotifier2 extends ChangeNotifier {
     randomData = !randomData;
 
     notifyListeners();
+  }
+
+  List<ChartSeriesController?> controllers = List.generate(8, (_) => null);
+
+  void setUp(
+      ChartSeriesController conroller, List<double> data, int channelIndex) {
+    controllers[channelIndex] = conroller;
+    list[channelIndex] = data;
+  }
+
+  void updateData(List<double> data) {
+    for (var i = 0; i < data.length; i++) {
+      final controller = controllers[i]!;
+      var removedDataIndex = -1;
+      list[i].add(data[i]);
+      if (list[i].length > maxLength) {
+        list[i].removeAt(0);
+        removedDataIndex = 0;
+      }
+      controller.updateDataSource(
+        addedDataIndex: list[i].length - 1,
+        removedDataIndex: removedDataIndex,
+      );
+    }
   }
 }
