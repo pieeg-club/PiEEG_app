@@ -348,6 +348,7 @@ class Chart2 extends ConsumerWidget {
 
   final int _channelIndex;
   final List<double> _data;
+  double counter = 0;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -365,7 +366,10 @@ class Chart2 extends ConsumerWidget {
                 notifier.setUp(controller, _data, _channelIndex);
               },
               dataSource: _data,
-              xValueMapper: (_, int index) => index.toDouble(),
+              xValueMapper: (_, int index) {
+                counter++;
+                return counter;
+              },
               yValueMapper: (double value, _) => value,
               animationDuration: 0,
             ),
