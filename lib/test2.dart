@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:dart_periphery/dart_periphery.dart';
 import 'package:test_project/buffer.dart';
 import 'package:test_project/data_notifier2.dart';
+import 'package:test_project/process_data.dart';
 
 import 'deice_data_process.dart';
 
@@ -213,6 +214,8 @@ class ADS1299Reader2 {
       (i) => buffers[i].getData(),
     ).toList();
 
+    final bandPassFilterService = BandPassFilterService();
+
     // !!new version!! /close
 
     // Start the isolate
@@ -245,6 +248,14 @@ class ADS1299Reader2 {
           for (var i = 0; i < buffers.length; i++) {
             dataToSend[i] =
                 repeatPatternWithAlignment(buffers[i].getData(), 10, 50, 20);
+
+            // Apply band-pass filter
+            for (var j = 0; j < dataToSend[i].length; j++) {
+              dataToSend[i][j] = bandPassFilterService.applyBandPassFilter(
+                i,
+                dataToSend[i][j],
+              );
+            }
           }
 
           dataNotifier.addData(dataToSend);
