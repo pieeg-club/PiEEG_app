@@ -5,8 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:dart_periphery/dart_periphery.dart';
 import 'package:test_project/buffer.dart';
-import 'package:test_project/data_notifier3.dart';
-import 'package:test_project/process_data.dart';
+import 'package:test_project/data_notifier2.dart';
 
 import 'deice_data_process.dart';
 
@@ -14,12 +13,12 @@ part 'test2.g.dart';
 
 @riverpod
 ADS1299Reader2 dataListener2(Ref ref) {
-  final dataNotifier = ref.read(dataNotifier3Provider);
+  final dataNotifier = ref.read(dataNotifier2Provider);
   return ADS1299Reader2(dataNotifier);
 }
 
 class ADS1299Reader2 {
-  final DataNotifier3 dataNotifier;
+  final DataNotifier2 dataNotifier;
 
   ADS1299Reader2(this.dataNotifier);
 
@@ -219,7 +218,7 @@ class ADS1299Reader2 {
     // Start the isolate
     await Isolate.spawn(dataAcquisitionIsolate, receivePort.sendPort);
 
-    Map<int, double> samplePerChannel = {};
+    // Map<int, double> samplePerChannel = {};
 
     // !! new version!! /open
 
@@ -229,37 +228,37 @@ class ADS1299Reader2 {
         final channelIndex = data['channelIndex'] as int;
         final bandPassData = data['sample'] as double;
 
-        samplePerChannel[channelIndex] = bandPassData;
+        // samplePerChannel[channelIndex] = bandPassData;
 
-        if (samplePerChannel.length == 8) {
-          // All channels have a sample, update state
-          final samples = List<double>.generate(8, (i) => samplePerChannel[i]!);
+        // if (samplePerChannel.length == 8) {
+        //   // All channels have a sample, update state
+        //   final samples = List<double>.generate(8, (i) => samplePerChannel[i]!);
 
-          dataNotifier.updateData(samples);
+        //   dataNotifier.updateData(samples);
 
-          // Clear the map for the next set of samples
-          samplePerChannel.clear();
+        //   // Clear the map for the next set of samples
+        //   samplePerChannel.clear();
+        // }
+
+        if (counter >= 250) {
+          // move data from buffer to dataToSend
+          for (var i = 0; i < buffers.length; i++) {
+            dataToSend[i] =
+                repeatPatternWithAlignment(buffers[i].getData(), 10, 50, 20);
+          }
+
+          dataNotifier.addData(dataToSend);
+          counter = 0;
         }
 
-        // if (counter >= 250) {
-        //   // move data from buffer to dataToSend
-        //   for (var i = 0; i < buffers.length; i++) {
-        //     dataToSend[i] = buffers[i].getData();
-        //     // repeatPatternWithAlignment(buffers[i].getData(), 10, 50, 20);
-        //   }
+        channelCounter++;
 
-        //   dataNotifier.addData(dataToSend);
-        //   counter = 0;
-        // }
+        buffers[channelIndex].add(bandPassData);
 
-        // channelCounter++;
-
-        // buffers[channelIndex].add(bandPassData);
-
-        // if (channelCounter == 8) {
-        //   channelCounter = 0;
-        //   counter++;
-        // }
+        if (channelCounter == 8) {
+          channelCounter = 0;
+          counter++;
+        }
       }
     });
 
@@ -308,8 +307,8 @@ class ADS1299Reader2 {
 
     // !!new version!! /open
 
-    final bandPassFilterService = BandPassFilterService();
-    double bandPassResult = 0;
+    // final bandPassFilterService = BandPassFilterService();
+    // double bandPassResult = 0;
 
     // !!new version!! /close
 
@@ -331,13 +330,13 @@ class ADS1299Reader2 {
 
         for (var i = 0; i < result.length; i++) {
           // Apply the band-pass filter
-          bandPassResult = bandPassFilterService.applyBandPassFilter(
-            i,
-            result[i],
-          );
+          // bandPassResult = bandPassFilterService.applyBandPassFilter(
+          //   i,
+          //   result[i],
+          // );
           sendPort.send({
             'channelIndex': i,
-            'sample': bandPassResult,
+            'sample': result[i],
           });
         }
 
