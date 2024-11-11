@@ -74,6 +74,7 @@ class EEGPage extends ConsumerWidget {
                   child: const Text('Close App'),
                 ),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Column(
                       children: [
@@ -84,7 +85,7 @@ class EEGPage extends ConsumerWidget {
                       ],
                     ),
                     SizedBox(
-                      width: 700,
+                      width: 600,
                       // child: Consumer(
                       //   builder: (context, ref, child) {
                       //     final dataNotifier = ref.watch(dataNitiiferProvider);
