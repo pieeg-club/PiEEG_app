@@ -73,8 +73,11 @@ class EEGPage extends ConsumerWidget {
                   icon: const Icon(Icons.play_arrow),
                   label: const Text('Start'),
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -85,10 +88,14 @@ class EEGPage extends ConsumerWidget {
                   icon: const Icon(Icons.close),
                   label: const Text('Close App'),
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
                   ),
                 ),
+                const SizedBox(height: 30),
                 ElevatedButton.icon(
                   onPressed: () {},
                   icon: const Icon(Icons.save),
