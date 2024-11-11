@@ -108,7 +108,9 @@ class EEGPage extends ConsumerWidget {
                   label: const Text('Start saving'),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -118,7 +120,20 @@ class EEGPage extends ConsumerWidget {
                   label: const Text('Stop saving'),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                  ),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.send),
+                  label: const Text('Send data'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
