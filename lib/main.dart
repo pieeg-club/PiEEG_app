@@ -70,10 +70,10 @@ class EEGPage extends ConsumerWidget {
               children: [
                 ElevatedButton.icon(
                   onPressed: dataReciver.startDataReadIsolate,
-                  icon: const Icon(Icons.play_arrow),
+                  icon: const Icon(Icons.play_arrow, color: Colors.black),
                   label: const Text(
                     'Start',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.black),
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
@@ -88,10 +88,10 @@ class EEGPage extends ConsumerWidget {
                   onPressed: () {
                     Process.killPid(pid); // Close the app on Linux
                   },
-                  icon: const Icon(Icons.close),
+                  icon: const Icon(Icons.close, color: Colors.black),
                   label: const Text(
                     'Close App',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.black),
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
