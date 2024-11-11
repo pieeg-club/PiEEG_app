@@ -125,17 +125,6 @@ class EEGPage extends ConsumerWidget {
                     ),
                   ),
                 ),
-                ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.send),
-                  label: const Text('Send data'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                  ),
-                ),
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
