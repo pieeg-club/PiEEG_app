@@ -85,7 +85,7 @@ class EEGPage extends ConsumerWidget {
                       ],
                     ),
                     SizedBox(
-                      width: 600,
+                      width: 700,
                       // child: Consumer(
                       //   builder: (context, ref, child) {
                       //     final dataNotifier = ref.watch(dataNitiiferProvider);
