@@ -74,7 +74,7 @@ class EEGPage extends ConsumerWidget {
                   child: const Text('Close App'),
                 ),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Column(
                       children: [
