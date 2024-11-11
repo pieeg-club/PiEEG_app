@@ -71,7 +71,10 @@ class EEGPage extends ConsumerWidget {
                 ElevatedButton.icon(
                   onPressed: dataReciver.startDataReadIsolate,
                   icon: const Icon(Icons.play_arrow),
-                  label: const Text('Start'),
+                  label: const Text(
+                    'Start',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     padding: const EdgeInsets.symmetric(
@@ -86,7 +89,10 @@ class EEGPage extends ConsumerWidget {
                     Process.killPid(pid); // Close the app on Linux
                   },
                   icon: const Icon(Icons.close),
-                  label: const Text('Close App'),
+                  label: const Text(
+                    'Close App',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                     padding: const EdgeInsets.symmetric(
@@ -122,7 +128,7 @@ class EEGPage extends ConsumerWidget {
                     const Text('Bandpass: '),
                     const SizedBox(width: 10),
                     SizedBox(
-                      width: 50,
+                      width: 60,
                       height: 50,
                       child: TextField(
                         controller: _bandPassLowController,
@@ -135,7 +141,7 @@ class EEGPage extends ConsumerWidget {
                     ),
                     const SizedBox(width: 10),
                     SizedBox(
-                      width: 50,
+                      width: 60,
                       height: 50,
                       child: TextField(
                         controller: _bandPassHighController,
