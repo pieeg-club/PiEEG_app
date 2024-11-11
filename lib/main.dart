@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -79,28 +80,30 @@ class EEGPage extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: const Text('Start saving'),
-                        ),
-                        Row(
-                          children: [
-                            const Text('Bandpass: '),
-                            TextField(
-                              controller: _bandPassLowController,
-                              decoration:
-                                  const InputDecoration(labelText: 'low'),
-                            ),
-                            TextField(
-                              controller: _bandPassHighController,
-                              decoration:
-                                  const InputDecoration(labelText: 'high'),
-                            ),
-                          ],
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: const Text('Start saving'),
+                          ),
+                          Row(
+                            children: [
+                              const Text('Bandpass: '),
+                              TextField(
+                                controller: _bandPassLowController,
+                                decoration:
+                                    const InputDecoration(labelText: 'low'),
+                              ),
+                              TextField(
+                                controller: _bandPassHighController,
+                                decoration:
+                                    const InputDecoration(labelText: 'high'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       width: 700,
