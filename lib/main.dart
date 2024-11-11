@@ -68,15 +68,26 @@ class EEGPage extends ConsumerWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
+                ElevatedButton.icon(
                   onPressed: dataReciver.startDataReadIsolate,
-                  child: const Text('Start'),
+                  icon: const Icon(Icons.play_arrow),
+                  label: const Text('Start'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                  ),
                 ),
-                ElevatedButton(
+                const SizedBox(height: 10),
+                ElevatedButton.icon(
                   onPressed: () {
                     Process.killPid(pid); // Close the app on Linux
                   },
-                  child: const Text('Close App'),
+                  icon: const Icon(Icons.close),
+                  label: const Text('Close App'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                  ),
                 ),
                 ElevatedButton.icon(
                   onPressed: () {},
