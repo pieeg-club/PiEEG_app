@@ -69,7 +69,7 @@ class EEGPage extends ConsumerWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    exit(0); // Close the app on Linux
+                    Process.killPid(pid); // Close the app on Linux
                   },
                   child: const Text('Close App'),
                 ),
