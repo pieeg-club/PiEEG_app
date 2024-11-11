@@ -348,7 +348,7 @@ class ADS1299Reader2 {
           );
           sendPort.send({
             'channelIndex': i,
-            'sample': result[i],
+            'sample': bandPassResult,
           });
         }
 
