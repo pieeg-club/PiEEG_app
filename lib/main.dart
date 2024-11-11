@@ -83,32 +83,67 @@ class EEGPage extends ConsumerWidget {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(
+                        ElevatedButton.icon(
                           onPressed: () {},
-                          child: const Text('Start saving'),
+                          icon: const Icon(Icons.save),
+                          label: const Text('Start saving'),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                          ),
                         ),
+                        const SizedBox(height: 10),
+                        ElevatedButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.stop),
+                          label: const Text('Stop saving'),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text('Bandpass: '),
+                            const SizedBox(width: 10),
                             SizedBox(
                               width: 50,
                               height: 50,
                               child: TextField(
                                 controller: _bandPassLowController,
-                                decoration:
-                                    const InputDecoration(labelText: 'low'),
+                                decoration: const InputDecoration(
+                                  labelText: 'Low',
+                                  border: OutlineInputBorder(),
+                                ),
+                                textAlign: TextAlign.center,
                               ),
                             ),
+                            const SizedBox(width: 10),
                             SizedBox(
                               width: 50,
                               height: 50,
                               child: TextField(
                                 controller: _bandPassHighController,
-                                decoration:
-                                    const InputDecoration(labelText: 'high'),
+                                decoration: const InputDecoration(
+                                  labelText: 'High',
+                                  border: OutlineInputBorder(),
+                                ),
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ],
+                        ),
+                        const SizedBox(height: 20),
+                        ElevatedButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.settings),
+                          label: const Text('Settings'),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                          ),
                         ),
                       ],
                     ),
