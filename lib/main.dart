@@ -73,68 +73,80 @@ class EEGPage extends ConsumerWidget {
                   },
                   child: const Text('Close App'),
                 ),
-                SizedBox(
-                  width: 700,
-                  // child: Consumer(
-                  //   builder: (context, ref, child) {
-                  //     final dataNotifier = ref.watch(dataNitiiferProvider);
-                  //     return Wrap(
-                  //       children: List<Widget>.generate(
-                  //         dataNotifier.length,
-                  //         (i) {
-                  //           return Column(
-                  //             crossAxisAlignment: CrossAxisAlignment.start,
-                  //             children: [
-                  //               Padding(
-                  //                 padding: const EdgeInsets.only(left: 20),
-                  //                 child: Text('Channel: $i'),
-                  //               ),
-                  //               Chart(
-                  //                 padding: const EdgeInsets.only(
-                  //                     left: 5, right: 5, top: 15),
-                  //                 spots: dataNotifier[i]
-                  //                     .asMap()
-                  //                     .entries
-                  //                     .map((e) =>
-                  //                         FlSpot(e.key.toDouble(), e.value))
-                  //                     .toList(),
-                  //               ),
-                  //             ],
-                  //           );
-                  //         },
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
-                  child: Wrap(
-                    children: List<Widget>.generate(
-                      8,
-                      (i) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20),
-                              child: Text('Channel: $i'),
-                            ),
-                            Consumer(
-                              builder: (context, ref, child) {
-                                final dataNotifier =
-                                    ref.watch(dataNotifier2Provider);
-
-                                return Chart(
-                                  padding: const EdgeInsets.only(
-                                      left: 5, right: 5, top: 15),
-                                  data: dataNotifier.list[i],
-                                  randomData: dataNotifier.randomData,
-                                );
-                              },
-                            ),
-                          ],
-                        );
-                      },
+                Row(
+                  children: [
+                    Column(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('Start saving'),
+                        ),
+                      ],
                     ),
-                  ),
+                    SizedBox(
+                      width: 700,
+                      // child: Consumer(
+                      //   builder: (context, ref, child) {
+                      //     final dataNotifier = ref.watch(dataNitiiferProvider);
+                      //     return Wrap(
+                      //       children: List<Widget>.generate(
+                      //         dataNotifier.length,
+                      //         (i) {
+                      //           return Column(
+                      //             crossAxisAlignment: CrossAxisAlignment.start,
+                      //             children: [
+                      //               Padding(
+                      //                 padding: const EdgeInsets.only(left: 20),
+                      //                 child: Text('Channel: $i'),
+                      //               ),
+                      //               Chart(
+                      //                 padding: const EdgeInsets.only(
+                      //                     left: 5, right: 5, top: 15),
+                      //                 spots: dataNotifier[i]
+                      //                     .asMap()
+                      //                     .entries
+                      //                     .map((e) =>
+                      //                         FlSpot(e.key.toDouble(), e.value))
+                      //                     .toList(),
+                      //               ),
+                      //             ],
+                      //           );
+                      //         },
+                      //       ),
+                      //     );
+                      //   },
+                      // ),
+                      child: Wrap(
+                        children: List<Widget>.generate(
+                          8,
+                          (i) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: Text('Channel: $i'),
+                                ),
+                                Consumer(
+                                  builder: (context, ref, child) {
+                                    final dataNotifier =
+                                        ref.watch(dataNotifier2Provider);
+
+                                    return Chart(
+                                      padding: const EdgeInsets.only(
+                                          left: 5, right: 5, top: 15),
+                                      data: dataNotifier.list[i],
+                                      randomData: dataNotifier.randomData,
+                                    );
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
