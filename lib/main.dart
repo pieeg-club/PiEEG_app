@@ -80,31 +80,37 @@ class EEGPage extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('Start saving'),
-                          ),
-                          Row(
-                            children: [
-                              const Text('Bandpass: '),
-                              TextField(
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('Start saving'),
+                        ),
+                        Row(
+                          children: [
+                            const Text('Bandpass: '),
+                            SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: TextField(
                                 controller: _bandPassLowController,
                                 decoration:
                                     const InputDecoration(labelText: 'low'),
                               ),
-                              TextField(
+                            ),
+                            SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: TextField(
                                 controller: _bandPassHighController,
                                 decoration:
                                     const InputDecoration(labelText: 'high'),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                     SizedBox(
                       width: 700,
