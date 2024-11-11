@@ -53,6 +53,9 @@ class EEGPage extends ConsumerWidget {
   /// Basic Constructor for EEGPage
   EEGPage({super.key});
 
+  final _bandPassLowController = TextEditingController(text: '1');
+  final _bandPassHighController = TextEditingController(text: '10');
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dataReciver = ref.read(dataListener2Provider);
@@ -81,6 +84,21 @@ class EEGPage extends ConsumerWidget {
                         ElevatedButton(
                           onPressed: () {},
                           child: const Text('Start saving'),
+                        ),
+                        Row(
+                          children: [
+                            const Text('Bandpass: '),
+                            TextField(
+                              controller: _bandPassLowController,
+                              decoration:
+                                  const InputDecoration(labelText: 'low'),
+                            ),
+                            TextField(
+                              controller: _bandPassHighController,
+                              decoration:
+                                  const InputDecoration(labelText: 'high'),
+                            ),
+                          ],
                         ),
                       ],
                     ),
