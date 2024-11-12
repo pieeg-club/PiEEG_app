@@ -101,7 +101,7 @@ class EEGPage extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
                 ElevatedButton.icon(
                   onPressed: () {},
                   icon: const Icon(Icons.save),
@@ -170,7 +170,7 @@ class EEGPage extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 ElevatedButton.icon(
                   onPressed: () {},
                   icon: const Icon(Icons.settings),
