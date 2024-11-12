@@ -165,7 +165,21 @@ class EEGPage extends ConsumerWidget {
                   label: const Text('Settings'),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.settings),
+                  label: const Text('EOG, ECG, EMG'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
                   ),
                 ),
               ],

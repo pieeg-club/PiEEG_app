@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final dataNotifier2Provider = ChangeNotifierProvider((ref) => DataNotifier2());
 
-const int maxLength = 1000;
+const int maxLength = 4000;
 
 class DataNotifier2 extends ChangeNotifier {
   final list = List<List<double>>.generate(8, (i) => []);
