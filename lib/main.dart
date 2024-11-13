@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:test_project/data_notifier2.dart';
 import 'package:test_project/data_notifier3.dart';
-import 'package:test_project/test.dart';
 import 'package:test_project/test2.dart';
 
 void main() {
@@ -59,7 +58,7 @@ class EEGPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dataReciver = ref.read(dataListenerProvider);
+    final dataReciver = ref.read(dataListener2Provider);
     return Scaffold(
       body: SizedBox.expand(
         child: Row(

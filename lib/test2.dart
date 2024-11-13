@@ -329,7 +329,8 @@ class ADS1299Reader2 {
 
       if (buttonState) {
         testDRDY = true;
-      } else if (testDRDY) {
+      }
+      if (testDRDY && !buttonState) {
         testDRDY = false;
 
         // Read data from SPI
