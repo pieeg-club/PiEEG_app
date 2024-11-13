@@ -214,7 +214,7 @@ class ADS1299Reader2 {
       (i) => buffers[i].getData(),
     ).toList();
 
-    final bandPassFilterService = BandPassFilterService();
+    // final bandPassFilterService = BandPassFilterService();
 
     // !!new version!! /close
 
@@ -290,7 +290,7 @@ class ADS1299Reader2 {
 
   static void dataAcquisitionIsolate(SendPort sendPort) {
     // Initialize SPI and GPIO here
-    final spi = SPI(0, 0, SPImode.mode1, 2000000);
+    final spi = SPI(0, 0, SPImode.mode1, 4000000);
     spi.setSPIbitsPerWord(8);
     spi.setSPIbitOrder(BitOrder.msbFirst);
 
