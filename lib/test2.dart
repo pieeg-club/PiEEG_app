@@ -53,7 +53,7 @@ class ADS1299Reader2 {
 
     _writeByte(spi, config1, 0x96);
     _writeByte(spi, config2, 0xD4);
-    _writeByte(spi, config3, 0xE0);
+    _writeByte(spi, config3, 0xFF);
     _writeByte(spi, 0x04, 0x00);
     _writeByte(spi, 0x0D, 0x00);
     _writeByte(spi, 0x0E, 0x00);
@@ -334,10 +334,11 @@ class ADS1299Reader2 {
         testDRDY = false;
 
         // Read data from SPI
-        final data = _readData(spi, 27);
+        final data = _readData(spi, 54);
 
         // Process data
-        final result = DeviceDataProcessorService.processRawDeviceData(data);
+        final result = DeviceDataProcessorService.processRawDeviceData(
+            data.sublist(0, 27));
 
         // !!new version!! /open
 
