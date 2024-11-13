@@ -290,7 +290,7 @@ class ADS1299Reader2 {
 
   static void dataAcquisitionIsolate(SendPort sendPort) {
     // Initialize SPI and GPIO here
-    final spi = SPI(0, 0, SPImode.mode1, 1500000);
+    final spi = SPI(0, 0, SPImode.mode1, 2500000);
     spi.setSPIbitsPerWord(8);
     spi.setSPIbitOrder(BitOrder.msbFirst);
 
