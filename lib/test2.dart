@@ -326,7 +326,7 @@ class ADS1299Reader2 {
     // !!new version!! /close
 
     while (true) {
-      buttonState = gpio.read();
+      // buttonState = gpio.read();
 
       final int timeout = 1000;
       final gpio_res = gpio.poll(timeout);
