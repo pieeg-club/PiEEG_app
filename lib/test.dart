@@ -73,10 +73,10 @@ class ADS1299Reader {
     _writeByte(device, ch2set, 0x00);
     _writeByte(device, ch3set, 0x00);
     _writeByte(device, ch4set, 0x00);
-    _writeByte(device, ch5set, 0x00);
-    _writeByte(device, ch6set, 0x00);
-    _writeByte(device, ch7set, 0x00);
-    _writeByte(device, ch8set, 0x00);
+    _writeByte(device, ch5set, 0x01);
+    _writeByte(device, ch6set, 0x01);
+    _writeByte(device, ch7set, 0x01);
+    _writeByte(device, ch8set, 0x01);
 
     _sendCommand(device, rdatac); // RDATAC
     _sendCommand(device, start); // START
@@ -91,7 +91,7 @@ class ADS1299Reader {
     print('Rpigpio initialized');
 
     spi = RpiSpi();
-    _device = spi.device(0, 24, 2000000, 1);
+    _device = spi.device(0, 24, 10000000, 1);
     _initializeADS1299(_device);
 
     print('Rpispi initialized');
