@@ -329,7 +329,7 @@ class ADS1299Reader2 {
 
       if (buttonState) {
         testDRDY = true;
-        await Future<void>.delayed(Duration(milliseconds: 1));
+        await Future<void>.delayed(Duration(milliseconds: 10));
       }
       if (testDRDY && !buttonState) {
         testDRDY = false;
