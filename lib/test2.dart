@@ -288,7 +288,7 @@ class ADS1299Reader2 {
     // !!previous veriosn!! /close
   }
 
-  static void dataAcquisitionIsolate(SendPort sendPort) {
+  static Future<void> dataAcquisitionIsolate(SendPort sendPort) async {
     // Initialize SPI and GPIO here
     final spi = SPI(0, 0, SPImode.mode1, 2000000);
     spi.setSPIbitsPerWord(8);
@@ -329,16 +329,16 @@ class ADS1299Reader2 {
 
       if (buttonState) {
         testDRDY = true;
+        await Future<void>.delayed(Duration(milliseconds: 1));
       }
       if (testDRDY && !buttonState) {
         testDRDY = false;
 
         // Read data from SPI
-        final data = _readData(spi, 54);
+        final data = _readData(spi, 27);
 
         // Process data
-        final result = DeviceDataProcessorService.processRawDeviceData(
-            data.sublist(0, 27));
+        final result = DeviceDataProcessorService.processRawDeviceData(data);
 
         // !!new version!! /open
 
