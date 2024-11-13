@@ -296,7 +296,7 @@ class ADS1299Reader2 {
     spi.setSPIbitOrder(BitOrder.msbFirst);
 
     final gpio = GPIO(26, GPIOdirection.gpioDirIn, 4);
-    gpio.setGPIOedge(GPIOedge.gpioEdgeFalling);
+    // gpio.setGPIOedge(GPIOedge.gpioEdgeFalling);
 
     // Initialize ADS1299
     _initializeADS1299(spi);
@@ -327,19 +327,19 @@ class ADS1299Reader2 {
     // !!new version!! /close
 
     while (true) {
-      // buttonState = gpio.read();
+      buttonState = gpio.read();
 
-      final int timeout = 1000;
-      final gpio_res = gpio.poll(timeout);
+      // final int timeout = 1000;
+      // final gpio_res = gpio.poll(timeout);
 
-      if (gpio_res == GPIOpolling.success) {
-        final edge = gpio.readEvent();
+      // if (gpio_res == GPIOpolling.success) {
+      //   final edge = gpio.readEvent();
 
-        // if (buttonState) {
-        //   testDRDY = true;
-        // }
-        // if (testDRDY && !buttonState) {
-        //   testDRDY = false;
+      if (buttonState) {
+        testDRDY = true;
+      }
+      if (testDRDY && !buttonState) {
+        testDRDY = false;
 
         // Read data from SPI
         final data = _readData(spi, 27);
