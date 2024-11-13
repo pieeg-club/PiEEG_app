@@ -67,10 +67,10 @@ class ADS1299Reader2 {
     _writeByte(spi, ch2set, 0x00);
     _writeByte(spi, ch3set, 0x00);
     _writeByte(spi, ch4set, 0x00);
-    _writeByte(spi, ch5set, 0x00);
-    _writeByte(spi, ch6set, 0x00);
-    _writeByte(spi, ch7set, 0x00);
-    _writeByte(spi, ch8set, 0x00);
+    _writeByte(spi, ch5set, 0x01);
+    _writeByte(spi, ch6set, 0x01);
+    _writeByte(spi, ch7set, 0x01);
+    _writeByte(spi, ch8set, 0x01);
 
     _sendCommand(spi, rdatac); // RDATAC
     _sendCommand(spi, start); // START
@@ -290,7 +290,7 @@ class ADS1299Reader2 {
 
   static void dataAcquisitionIsolate(SendPort sendPort) {
     // Initialize SPI and GPIO here
-    final spi = SPI(0, 0, SPImode.mode1, 2500000);
+    final spi = SPI(0, 0, SPImode.mode1, 2000000);
     spi.setSPIbitsPerWord(8);
     spi.setSPIbitOrder(BitOrder.msbFirst);
 
