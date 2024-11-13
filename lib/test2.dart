@@ -291,7 +291,7 @@ class ADS1299Reader2 {
 
   static Future<void> dataAcquisitionIsolate(SendPort sendPort) async {
     // Initialize SPI and GPIO here
-    final spi = SPI(0, 0, SPImode.mode1, 1000000);
+    final spi = SPI(0, 0, SPImode.mode1, 2000000);
     spi.setSPIbitsPerWord(8);
     spi.setSPIbitOrder(BitOrder.msbFirst);
 
