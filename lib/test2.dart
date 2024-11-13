@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:dart_periphery/dart_periphery.dart';
+import 'package:rpi_gpio/gpio.dart';
 import 'package:test_project/buffer.dart';
 import 'package:test_project/data_notifier2.dart';
 import 'package:test_project/process_data.dart';
@@ -327,11 +328,17 @@ class ADS1299Reader2 {
     while (true) {
       buttonState = gpio.read();
 
-      if (buttonState) {
-        testDRDY = true;
-      }
-      if (testDRDY && !buttonState) {
-        testDRDY = false;
+      final int timeout = 1000;
+      final gpio_res = gpio.poll(timeout);
+
+      if (gpio_res == GPIOpolling.success) {
+        final edge = gpio.readEvent();
+
+        // if (buttonState) {
+        //   testDRDY = true;
+        // }
+        // if (testDRDY && !buttonState) {
+        //   testDRDY = false;
 
         // Read data from SPI
         final data = _readData(spi, 27);
