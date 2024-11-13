@@ -53,7 +53,7 @@ class ADS1299Reader2 {
 
     _writeByte(spi, config1, 0x96);
     _writeByte(spi, config2, 0xD4);
-    _writeByte(spi, config3, 0xFF);
+    _writeByte(spi, config3, 0xE0);
     _writeByte(spi, 0x04, 0x00);
     _writeByte(spi, 0x0D, 0x00);
     _writeByte(spi, 0x0E, 0x00);
@@ -290,7 +290,7 @@ class ADS1299Reader2 {
 
   static void dataAcquisitionIsolate(SendPort sendPort) {
     // Initialize SPI and GPIO here
-    final spi = SPI(0, 0, SPImode.mode1, 0);
+    final spi = SPI(0, 0, SPImode.mode1, 2000000);
     spi.setSPIbitsPerWord(8);
     spi.setSPIbitOrder(BitOrder.msbFirst);
 
