@@ -54,6 +54,7 @@ class FileStorage {
         Directory appDirectory = await getApplicationDocumentsDirectory();
         // _file = File('${appDirectory!.path}/eeg_data.bin');
         _file = File('${appDirectory.path}/eeg_data.txt');
+        print('File path: ${_file!.path}');
       }
 
       if (flush) {
