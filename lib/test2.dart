@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:isolate';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:dart_periphery/dart_periphery.dart';
@@ -220,7 +221,11 @@ class ADS1299Reader2 {
     // !!new version!! /close
 
     // Start the isolate
-    await Isolate.spawn(dataAcquisitionIsolate, receivePort.sendPort);
+    final args = {
+      'sendPort': receivePort.sendPort,
+      'rootIsolateToken': RootIsolateToken.instance,
+    };
+    await Isolate.spawn(dataAcquisitionIsolate, args);
 
     // Map<int, double> samplePerChannel = {};
 
@@ -289,7 +294,11 @@ class ADS1299Reader2 {
     // !!previous veriosn!! /close
   }
 
-  static Future<void> dataAcquisitionIsolate(SendPort sendPort) async {
+  static Future<void> dataAcquisitionIsolate(Map<String, dynamic> args) async {
+    final sendPort = args['sendPort'] as SendPort;
+    final rootIsolateToken = args['rootIsolateToken'] as RootIsolateToken;
+
+    BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
     FileStorage fileStorage = FileStorage();
 
     // Initialize SPI and GPIO here
