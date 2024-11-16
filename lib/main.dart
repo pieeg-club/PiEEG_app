@@ -446,6 +446,7 @@ class EEGPage2 extends ConsumerWidget {
 }
 
 /// Chart2
+// ignore: must_be_immutable
 class Chart2 extends ConsumerWidget {
   /// Basic Constructor for Chart2
   Chart2({

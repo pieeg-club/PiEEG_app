@@ -4,9 +4,9 @@ import 'dart:isolate';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:dart_periphery/dart_periphery.dart';
-import 'package:rpi_gpio/gpio.dart';
 import 'package:test_project/buffer.dart';
 import 'package:test_project/data_notifier2.dart';
+import 'package:test_project/file_sotrage.dart';
 import 'package:test_project/process_data.dart';
 
 import 'deice_data_process.dart';
@@ -290,6 +290,8 @@ class ADS1299Reader2 {
   }
 
   static Future<void> dataAcquisitionIsolate(SendPort sendPort) async {
+    FileStorage fileStorage = FileStorage();
+
     // Initialize SPI and GPIO here
     final spi = SPI(0, 0, SPImode.mode1, 2000000);
     spi.setSPIbitsPerWord(8);
@@ -321,8 +323,8 @@ class ADS1299Reader2 {
 
     // !!new version!! /open
 
-    // final bandPassFilterService = BandPassFilterService();
-    // double bandPassResult = 0;
+    final bandPassFilterService = BandPassFilterService();
+    double bandPassResult = 0;
 
     // !!new version!! /close
 
@@ -344,6 +346,9 @@ class ADS1299Reader2 {
         // Read data from SPI
         final data = _readData(spi, 27);
 
+        // Save data to file
+        fileStorage.saveData(data: data);
+
         // Process data
         final result = DeviceDataProcessorService.processRawDeviceData(data);
 
@@ -351,13 +356,13 @@ class ADS1299Reader2 {
 
         for (var i = 0; i < result.length; i++) {
           // Apply the band-pass filter
-          // bandPassResult = bandPassFilterService.applyBandPassFilter(
-          //   i,
-          //   result[i],
-          // );
+          bandPassResult = bandPassFilterService.applyBandPassFilter(
+            i,
+            result[i],
+          );
           sendPort.send({
             'channelIndex': i,
-            'sample': result[i],
+            'sample': bandPassResult,
           });
         }
 
