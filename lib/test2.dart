@@ -347,7 +347,11 @@ class ADS1299Reader2 {
         final data = _readData(spi, 27);
 
         // Save data to file
-        fileStorage.saveData(data: data);
+        try {
+          await fileStorage.saveData(data: data);
+        } catch (e) {
+          print('Error saving data: $e');
+        }
 
         // Process data
         final result = DeviceDataProcessorService.processRawDeviceData(data);
