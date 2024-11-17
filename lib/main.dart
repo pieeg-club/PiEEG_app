@@ -104,9 +104,7 @@ class EEGPage extends ConsumerWidget {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton.icon(
-                  onPressed: () {
-                    fileStorage.allowSave = true;
-                  },
+                  onPressed: fileStorage.allowSave,
                   icon: const Icon(Icons.save),
                   label: const Text('Start saving'),
                   style: ElevatedButton.styleFrom(
@@ -118,9 +116,7 @@ class EEGPage extends ConsumerWidget {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton.icon(
-                  onPressed: () {
-                    fileStorage.allowSave = false;
-                  },
+                  onPressed: fileStorage.disallowSave,
                   icon: const Icon(Icons.stop),
                   label: const Text('Stop saving'),
                   style: ElevatedButton.styleFrom(

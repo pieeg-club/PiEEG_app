@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:synchronized/synchronized.dart';
@@ -14,9 +15,18 @@ class FileStorage {
   File? _file;
   bool _allowSave = false;
 
-  /// Setter for the allowSave property.
-  set allowSave(bool value) {
-    _allowSave = value;
+  /// Allows saving data to the file.
+  void allowSave() {
+    _allowSave = true;
+  }
+
+  /// Disallows saving data to the file.
+  Future<void> disallowSave() async {
+    _allowSave = false;
+    if (_file != null) {
+      await _flushFile(_file!);
+      _file = null;
+    }
   }
 
   /// Checks and Appends the provided data to the file.
@@ -37,7 +47,6 @@ class FileStorage {
         final file = await _getFile();
         await file.writeAsString(data, mode: FileMode.append);
         // await file.writeAsBytes(data, mode: FileMode.append);
-        print("Data saved to file");
       });
     } catch (e) {
       rethrow;
@@ -75,9 +84,13 @@ class FileStorage {
     try {
       if (_file == null) {
         Directory appDirectory = await getApplicationDocumentsDirectory();
-        // _file = File('${appDirectory!.path}/eeg_data.bin');
-        _file = File('${appDirectory.path}/eeg_data.txt');
-        print('File path: ${_file!.path}');
+
+        // Format the current date and time
+        final String timestamp =
+            DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
+
+        // Generate the file name with date and time
+        _file = File('${appDirectory.path}/eeg_data_$timestamp.txt');
       }
 
       if (flush) {
