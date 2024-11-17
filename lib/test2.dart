@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:isolate';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:dart_periphery/dart_periphery.dart';
 import 'package:test_project/buffer.dart';
 import 'package:test_project/data_notifier2.dart';
-import 'package:test_project/file_sotrage.dart';
+import 'package:test_project/file_storage.dart';
 import 'package:test_project/process_data.dart';
 
 import 'deice_data_process.dart';
@@ -17,13 +16,15 @@ part 'test2.g.dart';
 @riverpod
 ADS1299Reader2 dataListener2(Ref ref) {
   final dataNotifier = ref.read(dataNotifier2Provider);
-  return ADS1299Reader2(dataNotifier);
+  final fileStorage = ref.read(fileStorageProvider);
+  return ADS1299Reader2(dataNotifier, fileStorage);
 }
 
 class ADS1299Reader2 {
   final DataNotifier2 dataNotifier;
+  final FileStorage fileStorage;
 
-  ADS1299Reader2(this.dataNotifier);
+  ADS1299Reader2(this.dataNotifier, this.fileStorage);
 
   static void _initializeADS1299(SPI spi) {
     const config1 = 0x01;
@@ -208,7 +209,8 @@ class ADS1299Reader2 {
     final buffers =
         List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
 
-    // final fileStorage = FileStorage();
+    var rawDataBuffer = '';
+
     final bandPassFilterService = BandPassFilterService();
     double bandPassResult = 0;
 
@@ -231,9 +233,9 @@ class ADS1299Reader2 {
 
     receivePort.listen((data) {
       if (data is List<int>) {
-        // fileStorage.saveData(data: data);
-        final result = DeviceDataProcessorService.processRawDeviceData(data);
+        rawDataBuffer += data.toString();
 
+        final result = DeviceDataProcessorService.processRawDeviceData(data);
         for (var channelIndex = 0;
             channelIndex < result.length;
             channelIndex++) {
@@ -249,6 +251,9 @@ class ADS1299Reader2 {
         counter++;
 
         if (counter >= 250) {
+          fileStorage.checkAndSaveData(data: rawDataBuffer);
+          rawDataBuffer = '';
+
           // move data from buffer to dataToSend
           for (var i = 0; i < buffers.length; i++) {
             dataToSend[i] = buffers[i].getData();

@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:test_project/data_notifier2.dart';
 import 'package:test_project/data_notifier3.dart';
+import 'package:test_project/file_storage.dart';
 import 'package:test_project/test2.dart';
 
 void main() {
@@ -59,6 +60,7 @@ class EEGPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dataReciver = ref.read(dataListener2Provider);
+    final fileStorage = ref.read(fileStorageProvider);
     return Scaffold(
       body: SizedBox.expand(
         child: Row(
@@ -102,7 +104,9 @@ class EEGPage extends ConsumerWidget {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    fileStorage.allowSave = true;
+                  },
                   icon: const Icon(Icons.save),
                   label: const Text('Start saving'),
                   style: ElevatedButton.styleFrom(
@@ -114,7 +118,9 @@ class EEGPage extends ConsumerWidget {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    fileStorage.allowSave = false;
+                  },
                   icon: const Icon(Icons.stop),
                   label: const Text('Stop saving'),
                   style: ElevatedButton.styleFrom(

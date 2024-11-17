@@ -1,19 +1,41 @@
 import 'dart:io';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:synchronized/synchronized.dart';
+
+part 'file_storage.g.dart';
+
+@Riverpod(keepAlive: true)
+FileStorage fileStorage(Ref ref) => FileStorage();
 
 class FileStorage {
   final Lock _lock = Lock();
   File? _file;
+  bool _allowSave = false;
+
+  /// Setter for the allowSave property.
+  set allowSave(bool value) {
+    _allowSave = value;
+  }
+
+  /// Checks and Appends the provided data to the file.
+  Future<void> checkAndSaveData({
+    required String data,
+  }) async {
+    if (_allowSave) {
+      await _saveData(data: data);
+    }
+  }
 
   /// Appends the provided data to the file.
-  Future<void> saveData({
-    required List<int> data,
+  Future<void> _saveData({
+    required String data,
   }) async {
     try {
       await _lock.synchronized(() async {
         final file = await _getFile();
-        await file.writeAsString(data.toString(), mode: FileMode.append);
+        await file.writeAsString(data, mode: FileMode.append);
         // await file.writeAsBytes(data, mode: FileMode.append);
       });
     } catch (e) {
