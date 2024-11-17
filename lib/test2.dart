@@ -213,7 +213,7 @@ class ADS1299Reader2 {
     double bandPassResult = 0;
 
     int counter = 0;
-    int channelCounter = 0;
+    // int channelCounter = 0;
 
     final dataToSend = List<List<double>>.generate(
       buffers.length,
@@ -243,24 +243,19 @@ class ADS1299Reader2 {
             result[channelIndex],
           );
 
-          if (counter >= 250) {
-            // move data from buffer to dataToSend
-            for (var i = 0; i < buffers.length; i++) {
-              dataToSend[i] = buffers[i].getData();
-            }
-
-            dataNotifier.addData(dataToSend);
-            counter = 0;
-          }
-
-          channelCounter++;
-
           buffers[channelIndex].add(bandPassResult);
+        }
 
-          if (channelCounter == 8) {
-            channelCounter = 0;
-            counter++;
+        counter++;
+
+        if (counter >= 250) {
+          // move data from buffer to dataToSend
+          for (var i = 0; i < buffers.length; i++) {
+            dataToSend[i] = buffers[i].getData();
           }
+
+          dataNotifier.addData(dataToSend);
+          counter = 0;
         }
       }
     });
