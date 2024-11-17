@@ -87,7 +87,7 @@ class FileStorage {
 
         // Format the current date and time
         final String timestamp =
-            DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
+            DateFormat('yyyy_MM_dd_HH_mm_ss').format(DateTime.now());
 
         // Generate the file name with date and time
         _file = File('${appDirectory.path}/eeg_data_$timestamp.txt');
