@@ -37,6 +37,7 @@ class FileStorage {
         final file = await _getFile();
         await file.writeAsString(data, mode: FileMode.append);
         // await file.writeAsBytes(data, mode: FileMode.append);
+        print("Data saved to file");
       });
     } catch (e) {
       rethrow;
