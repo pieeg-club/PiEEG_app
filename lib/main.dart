@@ -7,6 +7,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:test_project/data_notifier2.dart';
 import 'package:test_project/data_notifier3.dart';
 import 'package:test_project/file_storage.dart';
+import 'package:test_project/process_data.dart';
 import 'package:test_project/test2.dart';
 
 void main() {
@@ -55,12 +56,13 @@ class EEGPage extends ConsumerWidget {
   EEGPage({super.key});
 
   final _bandPassLowController = TextEditingController(text: '1');
-  final _bandPassHighController = TextEditingController(text: '10');
+  final _bandPassHighController = TextEditingController(text: '30');
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dataReciver = ref.read(dataListener2Provider);
     final fileStorage = ref.read(fileStorageProvider);
+    final bandPassFilter = ref.read(bandPassFilterServiceProvider);
     return Scaffold(
       body: SizedBox.expand(
         child: Row(
@@ -137,6 +139,19 @@ class EEGPage extends ConsumerWidget {
                       height: 50,
                       child: TextField(
                         controller: _bandPassLowController,
+                        onSubmitted: (value) {
+                          try {
+                            bandPassFilter.lowCutOffFreq = double.parse(value);
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Invalid low cut-off'),
+                              ),
+                            );
+                            _bandPassLowController.text =
+                                bandPassFilter.leftCutOffFreq.toString();
+                          }
+                        },
                         decoration: const InputDecoration(
                           labelText: 'Low',
                           border: OutlineInputBorder(),
@@ -150,6 +165,19 @@ class EEGPage extends ConsumerWidget {
                       height: 50,
                       child: TextField(
                         controller: _bandPassHighController,
+                        onSubmitted: (value) {
+                          try {
+                            bandPassFilter.highCutOffFreq = double.parse(value);
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Invalid high cut-off'),
+                              ),
+                            );
+                            _bandPassHighController.text =
+                                bandPassFilter.rightCutOffFreq.toString();
+                          }
+                        },
                         decoration: const InputDecoration(
                           labelText: 'High',
                           border: OutlineInputBorder(),

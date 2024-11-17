@@ -17,14 +17,17 @@ part 'test2.g.dart';
 ADS1299Reader2 dataListener2(Ref ref) {
   final dataNotifier = ref.read(dataNotifier2Provider);
   final fileStorage = ref.read(fileStorageProvider);
-  return ADS1299Reader2(dataNotifier, fileStorage);
+  final bandPassFilter = ref.read(bandPassFilterServiceProvider);
+  return ADS1299Reader2(dataNotifier, fileStorage, bandPassFilter);
 }
 
 class ADS1299Reader2 {
   final DataNotifier2 dataNotifier;
   final FileStorage fileStorage;
+  final BandPassFilterService bandPassFilterService;
 
-  ADS1299Reader2(this.dataNotifier, this.fileStorage);
+  ADS1299Reader2(
+      this.dataNotifier, this.fileStorage, this.bandPassFilterService);
 
   static void _initializeADS1299(SPI spi) {
     const config1 = 0x01;
@@ -211,7 +214,7 @@ class ADS1299Reader2 {
 
     var rawDataBuffer = '';
 
-    final bandPassFilterService = BandPassFilterService();
+    // final bandPassFilterService = BandPassFilterService();
     double bandPassResult = 0;
 
     int counter = 0;

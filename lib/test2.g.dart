@@ -6,7 +6,7 @@ part of 'test2.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$dataListener2Hash() => r'240cccb4278646bfe76644e955478b6f1bb9c483';
+String _$dataListener2Hash() => r'c24bb20090e9824a6b24a1e332b2d6ac6863a3c7';
 
 /// See also [dataListener2].
 @ProviderFor(dataListener2)
