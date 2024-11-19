@@ -334,6 +334,8 @@ class _ChartState extends State<Chart> {
         child: LineChart(
           duration: const Duration(milliseconds: 0),
           LineChartData(
+            maxY: 200,
+            minY: -200,
             lineBarsData: [
               LineChartBarData(
                 dotData: const FlDotData(show: false),
