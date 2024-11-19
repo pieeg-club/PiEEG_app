@@ -219,7 +219,7 @@ class ADS1299Reader2 {
     }
 
     final difference = (currentValue - _lastValidValue!).abs();
-    if (difference > 7825) {
+    if (difference > 3925) {
       return false;
     }
 
