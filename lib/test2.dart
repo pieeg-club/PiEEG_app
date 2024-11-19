@@ -273,6 +273,7 @@ class ADS1299Reader2 {
     receivePort.listen((data) {
       if (data is List<int>) {
         if (!_theInputIsValide(data)) {
+          print('Invalid data');
           return;
         }
 
