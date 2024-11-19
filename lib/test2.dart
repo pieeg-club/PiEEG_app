@@ -207,7 +207,11 @@ class ADS1299Reader2 {
   int? _lastValidValue;
 
   bool _theInputIsValide(List<int> input) {
-    final currentValue = _toSigned(input[24]);
+    final msb = input[24];
+    final middle = input[25];
+    final lsb = input[26];
+
+    final currentValue = _toSigned24Bit(msb, middle, lsb);
 
     if (_lastValidValue == null) {
       _lastValidValue = currentValue;
@@ -215,7 +219,7 @@ class ADS1299Reader2 {
     }
 
     final difference = (currentValue - _lastValidValue!).abs();
-    if (difference > 30) {
+    if (difference > 2500000) {
       return false;
     }
 
@@ -223,11 +227,17 @@ class ADS1299Reader2 {
     return true;
   }
 
-  int _toSigned(int byte) {
-    if (byte > 127) {
-      return byte - 256;
+  int _toSigned24Bit(int msb, int middle, int lsb) {
+    // Combine the bytes into a 24-bit integer
+    int combined = (msb << 16) | (middle << 8) | lsb;
+
+    // Check the sign bit of the MSB
+    if (msb & 0x80 != 0) {
+      // If the sign bit is set, convert to negative 24-bit signed integer
+      combined -= 1 << 24;
     }
-    return byte;
+
+    return combined;
   }
 
   Future<void> startDataReadIsolate() async {
