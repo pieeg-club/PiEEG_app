@@ -204,6 +204,26 @@ class ADS1299Reader2 {
     return waveData;
   }
 
+  int? _lastValidValue;
+
+  bool _theInputIsValide(List<int> input) {
+    final currentValue = input[24];
+
+    if (_lastValidValue == null) {
+      _lastValidValue = currentValue;
+      return true;
+    }
+
+    final difference =
+        (currentValue - _lastValidValue!).abs() / _lastValidValue!;
+    if (difference > 0.3) {
+      return false;
+    }
+
+    _lastValidValue = currentValue;
+    return true;
+  }
+
   Future<void> startDataReadIsolate() async {
     ReceivePort receivePort = ReceivePort();
 
@@ -236,6 +256,10 @@ class ADS1299Reader2 {
 
     receivePort.listen((data) {
       if (data is List<int>) {
+        if (!_theInputIsValide(data)) {
+          return;
+        }
+
         rawDataBuffer += data.toString();
 
         final result = DeviceDataProcessorService.processRawDeviceData(data);
