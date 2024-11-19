@@ -214,9 +214,8 @@ class ADS1299Reader2 {
       return true;
     }
 
-    final difference =
-        (currentValue - _lastValidValue!).abs() / _lastValidValue!;
-    if (difference > 0.3) {
+    final difference = (currentValue - _lastValidValue!).abs();
+    if (difference > 38) {
       return false;
     }
 
@@ -263,36 +262,38 @@ class ADS1299Reader2 {
 
     receivePort.listen((data) {
       if (data is List<int>) {
-        if (_theInputIsValide(data)) {
-          rawDataBuffer += data.toString();
+        if (!_theInputIsValide(data)) {
+          return;
+        }
 
-          final result = DeviceDataProcessorService.processRawDeviceData(data);
-          for (var channelIndex = 0;
-              channelIndex < result.length;
-              channelIndex++) {
-            // Apply the band-pass filter
-            bandPassResult = bandPassFilterService.applyBandPassFilter(
-              channelIndex,
-              result[channelIndex],
-            );
+        rawDataBuffer += data.toString();
 
-            buffers[channelIndex].add(bandPassResult);
+        final result = DeviceDataProcessorService.processRawDeviceData(data);
+        for (var channelIndex = 0;
+            channelIndex < result.length;
+            channelIndex++) {
+          // Apply the band-pass filter
+          bandPassResult = bandPassFilterService.applyBandPassFilter(
+            channelIndex,
+            result[channelIndex],
+          );
+
+          buffers[channelIndex].add(bandPassResult);
+        }
+
+        counter++;
+
+        if (counter >= 250) {
+          fileStorage.checkAndSaveData(data: rawDataBuffer);
+          rawDataBuffer = '';
+
+          // move data from buffer to dataToSend
+          for (var i = 0; i < buffers.length; i++) {
+            dataToSend[i] = buffers[i].getData();
           }
 
-          counter++;
-
-          if (counter >= 250) {
-            fileStorage.checkAndSaveData(data: rawDataBuffer);
-            rawDataBuffer = '';
-
-            // move data from buffer to dataToSend
-            for (var i = 0; i < buffers.length; i++) {
-              dataToSend[i] = buffers[i].getData();
-            }
-
-            dataNotifier.addData(dataToSend);
-            counter = 0;
-          }
+          dataNotifier.addData(dataToSend);
+          counter = 0;
         }
       }
     });
