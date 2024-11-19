@@ -336,6 +336,7 @@ class _ChartState extends State<Chart> {
           LineChartData(
             maxY: 200,
             minY: -200,
+            clipData: const FlClipData.all(),
             lineBarsData: [
               LineChartBarData(
                 dotData: const FlDotData(show: false),
