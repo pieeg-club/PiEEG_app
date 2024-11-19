@@ -111,7 +111,7 @@ class EEGPage extends ConsumerWidget {
                 Consumer(
                   builder: (context, ref, child) {
                     final recordingIndicator =
-                        ref.read(recordingIndicatorNotifierProvider);
+                        ref.watch(recordingIndicatorNotifierProvider);
                     return ElevatedButton.icon(
                       onPressed: () {
                         fileStorage.allowSave();
