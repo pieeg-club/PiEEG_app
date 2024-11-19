@@ -22,6 +22,7 @@ class FileStorage {
 
   /// Disallows saving data to the file.
   Future<void> disallowSave() async {
+    if (!_allowSave) return;
     _allowSave = false;
     if (_file != null) {
       await _flushFile(_file!);

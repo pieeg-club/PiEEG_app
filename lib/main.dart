@@ -64,6 +64,8 @@ class EEGPage extends ConsumerWidget {
     final dataReciver = ref.read(dataListener2Provider);
     final fileStorage = ref.read(fileStorageProvider);
     final bandPassFilter = ref.read(bandPassFilterServiceProvider);
+    final recordingIndicatorNotifier =
+        ref.read(recordingIndicatorNotifierProvider.notifier);
     return Scaffold(
       body: SizedBox.expand(
         child: Row(
@@ -108,13 +110,16 @@ class EEGPage extends ConsumerWidget {
                 const SizedBox(height: 20),
                 Consumer(
                   builder: (context, ref, child) {
-                    final recordingIndicatorNotifier =
+                    final recordingIndicator =
                         ref.read(recordingIndicatorNotifierProvider);
                     return ElevatedButton.icon(
-                      onPressed: fileStorage.allowSave,
+                      onPressed: () {
+                        fileStorage.allowSave();
+                        recordingIndicatorNotifier.startRecording();
+                      },
                       icon: Icon(
                         Icons.save,
-                        color: recordingIndicatorNotifier ? Colors.green : null,
+                        color: recordingIndicator ? Colors.green : null,
                       ),
                       label: const Text('Start saving'),
                       style: ElevatedButton.styleFrom(
@@ -128,7 +133,10 @@ class EEGPage extends ConsumerWidget {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton.icon(
-                  onPressed: fileStorage.disallowSave,
+                  onPressed: () {
+                    fileStorage.disallowSave();
+                    recordingIndicatorNotifier.stopRecording();
+                  },
                   icon: const Icon(Icons.stop),
                   label: const Text('Stop saving'),
                   style: ElevatedButton.styleFrom(
