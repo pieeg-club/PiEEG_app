@@ -207,7 +207,7 @@ class ADS1299Reader2 {
   int? _lastValidValue;
 
   bool _theInputIsValide(List<int> input) {
-    final currentValue = input[24];
+    final currentValue = _toSigned(input[24]);
 
     if (_lastValidValue == null) {
       _lastValidValue = currentValue;
@@ -222,6 +222,13 @@ class ADS1299Reader2 {
 
     _lastValidValue = currentValue;
     return true;
+  }
+
+  int _toSigned(int byte) {
+    if (byte > 127) {
+      return byte - 256;
+    }
+    return byte;
   }
 
   Future<void> startDataReadIsolate() async {
