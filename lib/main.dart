@@ -220,7 +220,7 @@ class EEGPage extends ConsumerWidget {
                 const SizedBox(height: 10),
                 ElevatedButton.icon(
                   onPressed: () {},
-                  icon: const Icon(Icons.settings),
+                  icon: const Icon(Icons.medical_services_outlined),
                   label: const Text('EOG, ECG, EMG'),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
