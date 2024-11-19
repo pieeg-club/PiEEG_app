@@ -215,7 +215,7 @@ class ADS1299Reader2 {
     }
 
     final difference = (currentValue - _lastValidValue!).abs();
-    if (difference > 38) {
+    if (difference > 30) {
       return false;
     }
 
@@ -263,6 +263,7 @@ class ADS1299Reader2 {
     receivePort.listen((data) {
       if (data is List<int>) {
         if (!_theInputIsValide(data)) {
+          print('Invalid data');
           return;
         }
 
