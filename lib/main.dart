@@ -8,6 +8,7 @@ import 'package:test_project/data_notifier2.dart';
 import 'package:test_project/data_notifier3.dart';
 import 'package:test_project/file_storage.dart';
 import 'package:test_project/process_data.dart';
+import 'package:test_project/recordingIndicatorNotifier.dart';
 import 'package:test_project/test2.dart';
 
 void main() {
@@ -105,16 +106,25 @@ class EEGPage extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton.icon(
-                  onPressed: fileStorage.allowSave,
-                  icon: const Icon(Icons.save),
-                  label: const Text('Start saving'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                  ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final recordingIndicatorNotifier =
+                        ref.read(recordingIndicatorNotifierProvider);
+                    return ElevatedButton.icon(
+                      onPressed: fileStorage.allowSave,
+                      icon: Icon(
+                        Icons.save,
+                        color: recordingIndicatorNotifier ? Colors.green : null,
+                      ),
+                      label: const Text('Start saving'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10,
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton.icon(
