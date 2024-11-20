@@ -260,7 +260,7 @@ class EEGPage extends ConsumerWidget {
               ],
             ),
             SizedBox(
-              width: 700,
+              width: 1050,
               // child: Consumer(
               //   builder: (context, ref, child) {
               //     final dataNotifier = ref.watch(dataNitiiferProvider);
@@ -383,8 +383,8 @@ class _ChartState extends State<Chart> {
     return Padding(
       padding: widget.padding,
       child: SizedBox(
-        width: 300,
-        height: 75,
+        width: 450,
+        height: 110,
         child: LineChart(
           duration: const Duration(milliseconds: 0),
           LineChartData(
