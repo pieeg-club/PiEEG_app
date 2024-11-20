@@ -362,8 +362,12 @@ class _ChartState extends State<Chart> {
 
   @override
   Widget build(BuildContext context) {
-    final minY = widget.data.reduce(min) - padding;
-    final maxY = widget.data.reduce(max) + padding;
+    double minY = -100;
+    double maxY = 100;
+    if (widget.data.isNotEmpty) {
+      minY = widget.data.reduce(min) - padding;
+      maxY = widget.data.reduce(max) + padding;
+    }
     return Padding(
       padding: widget.padding,
       child: SizedBox(
