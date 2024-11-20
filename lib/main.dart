@@ -89,7 +89,7 @@ class EEGPage extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 ElevatedButton.icon(
                   onPressed: () {
                     Process.killPid(pid); // Close the app on Linux
@@ -107,7 +107,7 @@ class EEGPage extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
                 Consumer(
                   builder: (context, ref, child) {
                     final recordingIndicator =
@@ -131,7 +131,7 @@ class EEGPage extends ConsumerWidget {
                     );
                   },
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 ElevatedButton.icon(
                   onPressed: () {
                     fileStorage.disallowSave();
@@ -146,7 +146,7 @@ class EEGPage extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -179,7 +179,7 @@ class EEGPage extends ConsumerWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 ElevatedButton(
                   onPressed: () {
                     // Update low cut-off frequency
@@ -217,7 +217,7 @@ class EEGPage extends ConsumerWidget {
                   ),
                   child: const Text('Confirm'),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
                 ElevatedButton.icon(
                   onPressed: () {},
                   icon: const Icon(Icons.settings),
@@ -229,7 +229,7 @@ class EEGPage extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 ElevatedButton.icon(
                   onPressed: () {},
                   icon: const Icon(Icons.medical_services_outlined),
