@@ -93,24 +93,24 @@ class EEGPage extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Process.killPid(pid); // Close the app on Linux
-                  },
-                  icon: const Icon(Icons.close, color: Colors.white),
-                  label: const Text(
-                    'Close App',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                  ),
-                ),
+                // const SizedBox(height: 10),
+                // ElevatedButton.icon(
+                //   onPressed: () {
+                //     Process.killPid(pid); // Close the app on Linux
+                //   },
+                //   icon: const Icon(Icons.close, color: Colors.white),
+                //   label: const Text(
+                //     'Close App',
+                //     style: TextStyle(color: Colors.white),
+                //   ),
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: Colors.red,
+                //     padding: const EdgeInsets.symmetric(
+                //       horizontal: 20,
+                //       vertical: 10,
+                //     ),
+                //   ),
+                // ),
                 const SizedBox(height: 25),
                 Consumer(
                   builder: (context, ref, child) {
