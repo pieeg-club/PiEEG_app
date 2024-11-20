@@ -5,12 +5,12 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:test_project/data_notifier2.dart';
-import 'package:test_project/data_notifier3.dart';
-import 'package:test_project/file_storage.dart';
-import 'package:test_project/process_data.dart';
-import 'package:test_project/recordingIndicatorNotifier.dart';
-import 'package:test_project/test2.dart';
+import 'package:PiEEG_app/data_notifier2.dart';
+import 'package:PiEEG_app/data_notifier3.dart';
+import 'package:PiEEG_app/file_storage.dart';
+import 'package:PiEEG_app/process_data.dart';
+import 'package:PiEEG_app/recordingIndicatorNotifier.dart';
+import 'package:PiEEG_app/test2.dart';
 
 void main() {
   runApp(

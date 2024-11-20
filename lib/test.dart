@@ -7,9 +7,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rpi_gpio/rpi_gpio.dart';
 import 'package:rpi_spi/rpi_spi.dart';
 import 'package:rpi_spi/spi.dart';
-import 'package:test_project/buffer.dart';
-import 'package:test_project/data_notifier2.dart';
-import 'package:test_project/process_data.dart';
+import 'package:PiEEG_app/buffer.dart';
+import 'package:PiEEG_app/data_notifier2.dart';
+import 'package:PiEEG_app/process_data.dart';
 
 import 'deice_data_process.dart';
 

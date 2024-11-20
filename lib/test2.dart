@@ -4,10 +4,10 @@ import 'dart:isolate';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:dart_periphery/dart_periphery.dart';
-import 'package:test_project/buffer.dart';
-import 'package:test_project/data_notifier2.dart';
-import 'package:test_project/file_storage.dart';
-import 'package:test_project/process_data.dart';
+import 'package:PiEEG_app/buffer.dart';
+import 'package:PiEEG_app/data_notifier2.dart';
+import 'package:PiEEG_app/file_storage.dart';
+import 'package:PiEEG_app/process_data.dart';
 
 import 'deice_data_process.dart';
 
