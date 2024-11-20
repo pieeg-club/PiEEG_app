@@ -245,6 +245,18 @@ class EEGPage extends ConsumerWidget {
                     ),
                   ),
                 ),
+                const SizedBox(height: 10),
+                ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.memory),
+                  label: const Text('Sensors board'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                  ),
+                ),
               ],
             ),
             SizedBox(
