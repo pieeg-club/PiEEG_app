@@ -89,7 +89,7 @@ class EEGPage extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 10),
                 ElevatedButton.icon(
                   onPressed: () {
                     Process.killPid(pid); // Close the app on Linux
