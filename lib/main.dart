@@ -157,19 +157,6 @@ class EEGPage extends ConsumerWidget {
                       height: 50,
                       child: TextField(
                         controller: _bandPassLowController,
-                        onSubmitted: (value) {
-                          try {
-                            bandPassFilter.lowCutOffFreq = double.parse(value);
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Invalid low cut-off'),
-                              ),
-                            );
-                            _bandPassLowController.text =
-                                bandPassFilter.leftCutOffFreq.toString();
-                          }
-                        },
                         decoration: const InputDecoration(
                           labelText: 'Low',
                           border: OutlineInputBorder(),
@@ -183,19 +170,6 @@ class EEGPage extends ConsumerWidget {
                       height: 50,
                       child: TextField(
                         controller: _bandPassHighController,
-                        onSubmitted: (value) {
-                          try {
-                            bandPassFilter.highCutOffFreq = double.parse(value);
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Invalid high cut-off'),
-                              ),
-                            );
-                            _bandPassHighController.text =
-                                bandPassFilter.rightCutOffFreq.toString();
-                          }
-                        },
                         decoration: const InputDecoration(
                           labelText: 'High',
                           border: OutlineInputBorder(),
@@ -204,6 +178,44 @@ class EEGPage extends ConsumerWidget {
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    // Update low cut-off frequency
+                    try {
+                      bandPassFilter.lowCutOffFreq =
+                          double.parse(_bandPassLowController.text);
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Invalid low cut-off'),
+                        ),
+                      );
+                      _bandPassLowController.text =
+                          bandPassFilter.leftCutOffFreq.toString();
+                    }
+                    // Update high cut-off frequency
+                    try {
+                      bandPassFilter.highCutOffFreq =
+                          double.parse(_bandPassHighController.text);
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Invalid high cut-off'),
+                        ),
+                      );
+                      _bandPassHighController.text =
+                          bandPassFilter.rightCutOffFreq.toString();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                  ),
+                  child: const Text('Confirm'),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton.icon(
