@@ -93,24 +93,24 @@ class EEGPage extends ConsumerWidget {
                     ),
                   ),
                 ),
-                // const SizedBox(height: 10),
-                // ElevatedButton.icon(
-                //   onPressed: () {
-                //     Process.killPid(pid); // Close the app on Linux
-                //   },
-                //   icon: const Icon(Icons.close, color: Colors.white),
-                //   label: const Text(
-                //     'Close App',
-                //     style: TextStyle(color: Colors.white),
-                //   ),
-                //   style: ElevatedButton.styleFrom(
-                //     backgroundColor: Colors.red,
-                //     padding: const EdgeInsets.symmetric(
-                //       horizontal: 20,
-                //       vertical: 10,
-                //     ),
-                //   ),
-                // ),
+                const SizedBox(height: 10),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Process.killPid(pid); // Close the app on Linux
+                  },
+                  icon: const Icon(Icons.close, color: Colors.white),
+                  label: const Text(
+                    'Close App',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 25),
                 Consumer(
                   builder: (context, ref, child) {
@@ -260,7 +260,7 @@ class EEGPage extends ConsumerWidget {
               ],
             ),
             SizedBox(
-              width: 1050,
+              width: 700,
               // child: Consumer(
               //   builder: (context, ref, child) {
               //     final dataNotifier = ref.watch(dataNitiiferProvider);
@@ -377,14 +377,14 @@ class _ChartState extends State<Chart> {
     double minY = -100;
     double maxY = 100;
     if (widget.data.isNotEmpty) {
-      minY = widget.data.reduce(min) - padding;
-      maxY = widget.data.reduce(max) + padding;
+      minY = -widget.data.last.abs() - padding;
+      maxY = widget.data.last.abs() + padding;
     }
     return Padding(
       padding: widget.padding,
       child: SizedBox(
-        width: 450,
-        height: 110,
+        width: 300,
+        height: 75,
         child: LineChart(
           duration: const Duration(milliseconds: 0),
           LineChartData(
