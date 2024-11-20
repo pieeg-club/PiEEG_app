@@ -67,6 +67,9 @@ class EEGPage extends ConsumerWidget {
     final recordingIndicatorNotifier =
         ref.read(recordingIndicatorNotifierProvider.notifier);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('PiEEG'),
+      ),
       body: SizedBox.expand(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
