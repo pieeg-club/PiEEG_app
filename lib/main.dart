@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -357,8 +358,12 @@ class _ChartState extends State<Chart> {
     }
   }
 
+  final double padding = 40;
+
   @override
   Widget build(BuildContext context) {
+    final minY = widget.data.reduce(min) - padding;
+    final maxY = widget.data.reduce(max) + padding;
     return Padding(
       padding: widget.padding,
       child: SizedBox(
@@ -367,8 +372,8 @@ class _ChartState extends State<Chart> {
         child: LineChart(
           duration: const Duration(milliseconds: 0),
           LineChartData(
-            maxY: 30,
-            minY: -30,
+            maxY: maxY,
+            minY: minY,
             clipData: const FlClipData.vertical(),
             lineBarsData: [
               LineChartBarData(
