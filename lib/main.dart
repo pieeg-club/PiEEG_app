@@ -131,7 +131,7 @@ class EEGPage extends ConsumerWidget {
                     );
                   },
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 10),
                 ElevatedButton.icon(
                   onPressed: () {
                     fileStorage.disallowSave();
@@ -179,7 +179,7 @@ class EEGPage extends ConsumerWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
                     // Update low cut-off frequency
@@ -229,7 +229,7 @@ class EEGPage extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 10),
                 ElevatedButton.icon(
                   onPressed: () {},
                   icon: const Icon(Icons.medical_services_outlined),
