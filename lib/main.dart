@@ -221,42 +221,42 @@ class EEGPage extends ConsumerWidget {
                   ),
                   child: const Text('Confirm'),
                 ),
-                const SizedBox(height: 25),
-                ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.settings),
-                  label: const Text('Settings'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.medical_services_outlined),
-                  label: const Text('EOG, ECG, EMG'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.memory),
-                  label: const Text('Sensors board'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                  ),
-                ),
+                // const SizedBox(height: 25),
+                // ElevatedButton.icon(
+                //   onPressed: () {},
+                //   icon: const Icon(Icons.settings),
+                //   label: const Text('Settings'),
+                //   style: ElevatedButton.styleFrom(
+                //     padding: const EdgeInsets.symmetric(
+                //       horizontal: 20,
+                //       vertical: 10,
+                //     ),
+                //   ),
+                // ),
+                // const SizedBox(height: 10),
+                // ElevatedButton.icon(
+                //   onPressed: () {},
+                //   icon: const Icon(Icons.medical_services_outlined),
+                //   label: const Text('EOG, ECG, EMG'),
+                //   style: ElevatedButton.styleFrom(
+                //     padding: const EdgeInsets.symmetric(
+                //       horizontal: 20,
+                //       vertical: 10,
+                //     ),
+                //   ),
+                // ),
+                // const SizedBox(height: 10),
+                // ElevatedButton.icon(
+                //   onPressed: () {},
+                //   icon: const Icon(Icons.memory),
+                //   label: const Text('Sensors board'),
+                //   style: ElevatedButton.styleFrom(
+                //     padding: const EdgeInsets.symmetric(
+                //       horizontal: 20,
+                //       vertical: 10,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
             SizedBox(
