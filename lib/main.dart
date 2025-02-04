@@ -1,12 +1,9 @@
-import 'dart:io';
 import 'dart:math';
 
+import 'package:PiEEG_app/data_notifier2.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:PiEEG_app/data_notifier2.dart';
-import 'package:PiEEG_app/data_notifier3.dart';
 import 'package:PiEEG_app/file_storage.dart';
 import 'package:PiEEG_app/process_data.dart';
 import 'package:PiEEG_app/recordingIndicatorNotifier.dart';
@@ -475,107 +472,3 @@ class _ChartState extends State<Chart> {
 //     );
 //   }
 // }
-
-/// Screen to listen data from EEG device
-class EEGPage2 extends ConsumerWidget {
-  /// Basic Constructor for EEGPage
-  EEGPage2({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final dataReciver = ref.read(dataListener2Provider);
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(50),
-        child: SizedBox.expand(
-          child: Center(
-            child: Column(
-              children: [
-                ElevatedButton(
-                  onPressed: dataReciver.startDataReadIsolate,
-                  child: const Text('Start'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    exit(0); // Close the app on Linux
-                  },
-                  child: const Text('Close App'),
-                ),
-                SizedBox(
-                  width: 700,
-                  child: Wrap(
-                    children: List<Widget>.generate(
-                      8,
-                      (i) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20),
-                              child: Text('Channel: $i'),
-                            ),
-                            Chart2(
-                              channelIndex: i,
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Chart2
-// ignore: must_be_immutable
-class Chart2 extends ConsumerWidget {
-  /// Basic Constructor for Chart2
-  Chart2({
-    required int channelIndex,
-    super.key,
-  })  : _channelIndex = channelIndex,
-        _data = [];
-
-  final int _channelIndex;
-  final List<double> _data;
-  double counter = 0;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final notifier = ref.read(dataNotifier3Provider);
-    return Padding(
-      padding: const EdgeInsets.only(left: 5, right: 5, top: 15),
-      child: SizedBox(
-        width: 300,
-        height: 75,
-        child: SfCartesianChart(
-          primaryYAxis: NumericAxis(
-            minimum: -1000, // Set minimum based on your expected data range
-            maximum: 1000, // Set maximum based on your expected data range
-          ),
-          series: <LineSeries<double, double>>[
-            LineSeries<double, double>(
-              onRendererCreated:
-                  (ChartSeriesController<double, double> controller) {
-                notifier.setUp(controller, _data, _channelIndex);
-              },
-              dataSource: _data,
-              xValueMapper: (_, int index) {
-                counter++;
-                return counter;
-              },
-              yValueMapper: (double value, _) => value,
-              animationDuration: 0,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
