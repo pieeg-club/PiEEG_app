@@ -90,24 +90,6 @@ class EEGPage extends ConsumerWidget {
                     ),
                   ),
                 ),
-                // const SizedBox(height: 10),
-                // ElevatedButton.icon(
-                //   onPressed: () {
-                //     Process.killPid(pid); // Close the app on Linux
-                //   },
-                //   icon: const Icon(Icons.close, color: Colors.white),
-                //   label: const Text(
-                //     'Close App',
-                //     style: TextStyle(color: Colors.white),
-                //   ),
-                //   style: ElevatedButton.styleFrom(
-                //     backgroundColor: Colors.red,
-                //     padding: const EdgeInsets.symmetric(
-                //       horizontal: 20,
-                //       vertical: 10,
-                //     ),
-                //   ),
-                // ),
                 const SizedBox(height: 25),
                 Consumer(
                   builder: (context, ref, child) {
@@ -218,77 +200,10 @@ class EEGPage extends ConsumerWidget {
                   ),
                   child: const Text('Confirm'),
                 ),
-                // const SizedBox(height: 25),
-                // ElevatedButton.icon(
-                //   onPressed: () {},
-                //   icon: const Icon(Icons.settings),
-                //   label: const Text('Settings'),
-                //   style: ElevatedButton.styleFrom(
-                //     padding: const EdgeInsets.symmetric(
-                //       horizontal: 20,
-                //       vertical: 10,
-                //     ),
-                //   ),
-                // ),
-                // const SizedBox(height: 10),
-                // ElevatedButton.icon(
-                //   onPressed: () {},
-                //   icon: const Icon(Icons.medical_services_outlined),
-                //   label: const Text('EOG, ECG, EMG'),
-                //   style: ElevatedButton.styleFrom(
-                //     padding: const EdgeInsets.symmetric(
-                //       horizontal: 20,
-                //       vertical: 10,
-                //     ),
-                //   ),
-                // ),
-                // const SizedBox(height: 10),
-                // ElevatedButton.icon(
-                //   onPressed: () {},
-                //   icon: const Icon(Icons.memory),
-                //   label: const Text('Sensors board'),
-                //   style: ElevatedButton.styleFrom(
-                //     padding: const EdgeInsets.symmetric(
-                //       horizontal: 20,
-                //       vertical: 10,
-                //     ),
-                //   ),
-                // ),
               ],
             ),
             SizedBox(
               width: 1050,
-              // child: Consumer(
-              //   builder: (context, ref, child) {
-              //     final dataNotifier = ref.watch(dataNitiiferProvider);
-              //     return Wrap(
-              //       children: List<Widget>.generate(
-              //         dataNotifier.length,
-              //         (i) {
-              //           return Column(
-              //             crossAxisAlignment: CrossAxisAlignment.start,
-              //             children: [
-              //               Padding(
-              //                 padding: const EdgeInsets.only(left: 20),
-              //                 child: Text('Channel: $i'),
-              //               ),
-              //               Chart(
-              //                 padding: const EdgeInsets.only(
-              //                     left: 5, right: 5, top: 15),
-              //                 spots: dataNotifier[i]
-              //                     .asMap()
-              //                     .entries
-              //                     .map((e) =>
-              //                         FlSpot(e.key.toDouble(), e.value))
-              //                     .toList(),
-              //               ),
-              //             ],
-              //           );
-              //         },
-              //       ),
-              //     );
-              //   },
-              // ),
               child: Wrap(
                 children: List<Widget>.generate(
                   8,
@@ -417,58 +332,3 @@ class _ChartState extends State<Chart> {
     );
   }
 }
-
-// class Chart extends StatelessWidget {
-//   final EdgeInsetsGeometry _padding;
-//   final List<FlSpot> _spots;
-//   final List<FlSpot> _secondSpots;
-
-//   const Chart({
-//     Key? key,
-//     EdgeInsetsGeometry padding = EdgeInsets.zero,
-//     required List<FlSpot> spots,
-//     List<FlSpot>? secondSpots,
-//   })  : _padding = padding,
-//         _spots = spots,
-//         _secondSpots = secondSpots ?? const [],
-//         super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: _padding,
-//       child: SizedBox(
-//         width: 300,
-//         height: 75,
-//         child: LineChart(
-//           duration: const Duration(milliseconds: 0),
-//           LineChartData(
-//             lineBarsData: [
-//               LineChartBarData(
-//                 dotData: const FlDotData(show: false),
-//                 barWidth: 0.5,
-//                 isCurved: false,
-//                 spots: _spots,
-//               ),
-//               if (_secondSpots.isNotEmpty)
-//                 LineChartBarData(
-//                   dotData: const FlDotData(show: false),
-//                   barWidth: 0.5,
-//                   isCurved: false,
-//                   color: Colors.red,
-//                   spots: _secondSpots,
-//                 ),
-//             ],
-//             lineTouchData: const LineTouchData(enabled: false),
-//             gridData: const FlGridData(show: false),
-//             titlesData: const FlTitlesData(
-//               rightTitles:
-//                   AxisTitles(sideTitles: SideTitles(showTitles: false)),
-//               topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

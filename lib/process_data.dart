@@ -53,29 +53,4 @@ class BandPassFilterService {
     var filter = _butterworths[channelIndex];
     return filter.filter(data);
   }
-
-  // double? applyBandPassFilterWithWarmUp(int channelIndex, double data) {
-  //   var filter = _butterworths[channelIndex];
-  //   _sampleCounts[channelIndex]++;
-  //   double result = filter.filter(data);
-
-  //   // Warm-up length
-  //   const int warmUpLength = 1000;
-
-  //   if (_sampleCounts[channelIndex] <= warmUpLength) {
-  //     // Discard outputs during warm-up
-  //     return null;
-  //   } else {
-  //     return result;
-  //   }
-  // }
-
-  // List<double> applyBandPassFilter(int channelIndex, List<double> data) {
-  //   var filter = _butterworths[channelIndex];
-  //   List<double> filteredData = [];
-  //   for (double sample in data) {
-  //     filteredData.add(filter.filter(sample));
-  //   }
-  //   return filteredData;
-  // }
 }
