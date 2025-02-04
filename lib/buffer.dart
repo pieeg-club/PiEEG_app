@@ -11,7 +11,16 @@ class CircularBuffer {
   }
 
   List<double> getData() {
-    // Return data in the correct order
-    return [...buffer.sublist(writeIndex), ...buffer.sublist(0, writeIndex)];
+    // Allocate a single list to avoid multiple memory allocations
+    List<double> orderedBuffer = List<double>.filled(capacity, 0);
+    int firstPartSize = capacity - writeIndex;
+
+    // Copy the "newer" portion (from writeIndex to end)
+    orderedBuffer.setRange(0, firstPartSize, buffer, writeIndex);
+
+    // Copy the "older" portion (from start to writeIndex)
+    orderedBuffer.setRange(firstPartSize, capacity, buffer, 0);
+
+    return orderedBuffer;
   }
 }
