@@ -259,7 +259,6 @@ class Chart extends StatefulWidget {
 
 class _ChartState extends State<Chart> {
   List<FlSpot> _spots = [];
-  List<FlSpot> _secondSpots = [];
 
   @override
   void didUpdateWidget(covariant Chart oldWidget) {
@@ -301,14 +300,6 @@ class _ChartState extends State<Chart> {
                 isCurved: false,
                 spots: _spots,
               ),
-              if (_secondSpots.isNotEmpty)
-                LineChartBarData(
-                  dotData: const FlDotData(show: false),
-                  barWidth: 0.5,
-                  isCurved: false,
-                  color: Colors.red,
-                  spots: _secondSpots,
-                ),
             ],
             lineTouchData: const LineTouchData(enabled: false),
             gridData: const FlGridData(show: false),
