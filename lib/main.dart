@@ -244,7 +244,6 @@ class EEGPage extends ConsumerWidget {
 class Chart extends StatefulWidget {
   final EdgeInsetsGeometry padding;
   final List<double> data;
-  final List<double> secondData;
   final bool randomData;
 
   const Chart({
@@ -252,7 +251,6 @@ class Chart extends StatefulWidget {
     this.padding = EdgeInsets.zero,
     required this.data,
     required this.randomData,
-    this.secondData = const [],
   }) : super(key: key);
 
   @override
@@ -268,13 +266,6 @@ class _ChartState extends State<Chart> {
     super.didUpdateWidget(oldWidget);
     if (widget.randomData != oldWidget.randomData) {
       _spots = widget.data
-          .asMap()
-          .entries
-          .map((e) => FlSpot(e.key.toDouble(), e.value))
-          .toList();
-    }
-    if (widget.secondData != oldWidget.secondData) {
-      _secondSpots = widget.secondData
           .asMap()
           .entries
           .map((e) => FlSpot(e.key.toDouble(), e.value))
