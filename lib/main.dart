@@ -245,6 +245,7 @@ class EEGPage extends ConsumerWidget {
                 final dataNotifier = ref.watch(dataNotifier2Provider);
 
                 return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     PowerDisplayWidget(powerValues: dataNotifier.powers),
                     PowerLineChart(channelData: dataNotifier.fftResults),
