@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:isolate';
 
+import 'package:PiEEG_app/algorithm/algorithm.dart';
+import 'package:PiEEG_app/algorithm/algorithm_result.dart';
+import 'package:PiEEG_app/algorithm/processing_steps/fft.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:dart_periphery/dart_periphery.dart';
-import 'package:PiEEG_app/buffer.dart';
 import 'package:PiEEG_app/data_notifier2.dart';
 import 'package:PiEEG_app/file_storage.dart';
 import 'package:PiEEG_app/process_data.dart';
-
-import 'deice_data_process.dart';
 
 part 'test2.g.dart';
 
@@ -18,16 +18,23 @@ ADS1299Reader2 dataListener2(Ref ref) {
   final dataNotifier = ref.read(dataNotifier2Provider);
   final fileStorage = ref.read(fileStorageProvider);
   final bandPassFilter = ref.read(bandPassFilterServiceProvider);
-  return ADS1299Reader2(dataNotifier, fileStorage, bandPassFilter);
+  final fastFourierTransform = ref.read(fastFourierTransformServiceProvider);
+  return ADS1299Reader2(
+    dataNotifier,
+    fileStorage,
+    bandPassFilter,
+    fastFourierTransform,
+  );
 }
 
 class ADS1299Reader2 {
   final DataNotifier2 dataNotifier;
   final FileStorage fileStorage;
   final BandPassFilterService bandPassFilterService;
+  final FastFourierTransformService fastFourierTransformService;
 
-  ADS1299Reader2(
-      this.dataNotifier, this.fileStorage, this.bandPassFilterService);
+  ADS1299Reader2(this.dataNotifier, this.fileStorage,
+      this.bandPassFilterService, this.fastFourierTransformService);
 
   static void _initializeADS1299(SPI spi) {
     const config1 = 0x01;
@@ -163,21 +170,12 @@ class ADS1299Reader2 {
   }
 
   Future<void> startDataReadIsolate() async {
-    ReceivePort receivePort = ReceivePort();
+    final receivePort = ReceivePort();
 
-    final buffers =
-        List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
-
-    var rawDataBuffer = '';
-
-    double bandPassResult = 0;
-
-    int counter = 0;
-
-    final dataToSend = List<List<double>>.generate(
-      buffers.length,
-      (i) => buffers[i].getData(),
-    ).toList();
+    final algorithm = Algorithm(
+      bandPassFilterService,
+      fastFourierTransformService,
+    );
 
     // Start the isolate
     await Isolate.spawn(dataAcquisitionIsolate, receivePort.sendPort);
@@ -188,35 +186,14 @@ class ADS1299Reader2 {
           return;
         }
 
-        rawDataBuffer += data.toString();
-
-        final result = DeviceDataProcessorService.processRawDeviceData(data);
-        for (var channelIndex = 0;
-            channelIndex < result.length;
-            channelIndex++) {
-          // Apply the band-pass filter
-          bandPassResult = bandPassFilterService.applyBandPassFilter(
-            channelIndex,
-            result[channelIndex],
-          );
-
-          buffers[channelIndex].add(bandPassResult);
-        }
-
-        counter++;
-
-        if (counter >= 250) {
-          fileStorage.checkAndSaveData(data: rawDataBuffer);
-          rawDataBuffer = '';
-
-          // move data from buffer to dataToSend
-          for (var i = 0; i < buffers.length; i++) {
-            dataToSend[i] = buffers[i].getData();
-          }
-
-          dataNotifier.addData(dataToSend);
-          counter = 0;
-        }
+        algorithm.processData(
+          data,
+          (String data) => fileStorage.checkAndSaveData(data: data),
+          (AlgorithmResult algorithmResult) => dataNotifier.addData(
+            algorithmResult.bandPassResult,
+            algorithmResult.powers,
+          ),
+        );
       }
     });
   }
