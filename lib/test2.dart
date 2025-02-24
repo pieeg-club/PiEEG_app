@@ -135,6 +135,8 @@ class ADS1299Reader2 {
 
   int? _lastValidValue;
 
+  var _counter = 0;
+
   bool _theInputIsValide(List<int> input) {
     final msb = input[24];
     final middle = input[25];
@@ -149,6 +151,8 @@ class ADS1299Reader2 {
 
     final difference = (currentValue - _lastValidValue!).abs();
     if (difference > 3925) {
+      print('Corrupted data detected _counter: $_counter');
+      _counter++;
       return false;
     }
 
