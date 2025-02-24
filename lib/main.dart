@@ -71,7 +71,7 @@ class EEGPage extends ConsumerWidget {
       ),
       body: SizedBox.expand(
         child: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(100),
           child: SingleChildScrollView(
             child: Column(
               children: [
