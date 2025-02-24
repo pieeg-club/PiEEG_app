@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:PiEEG_app/data_notifier2.dart';
 import 'package:PiEEG_app/widgets/powerDisplayWidget.dart';
+import 'package:PiEEG_app/widgets/powerLineChart.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -243,7 +244,12 @@ class EEGPage extends ConsumerWidget {
               builder: (context, ref, child) {
                 final dataNotifier = ref.watch(dataNotifier2Provider);
 
-                return PowerDisplayWidget(powerValues: dataNotifier.powers);
+                return Row(
+                  children: [
+                    PowerDisplayWidget(powerValues: dataNotifier.powers),
+                    PowerLineChart(channelData: dataNotifier.fftResults),
+                  ],
+                );
               },
             ),
           ],

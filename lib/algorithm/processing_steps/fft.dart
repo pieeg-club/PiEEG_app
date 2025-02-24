@@ -16,22 +16,8 @@ const double samplingFrequency = 250;
 
 /// FastFourierTransform class
 class FastFourierTransformService {
-  /// Calculate the power
-  double calculatePower(
-    List<double> data,
-    double leftCutOffFreq,
-    double rightCutOffFreq,
-  ) {
-    final fftDataPoints = _applyFastFourierTransform(data);
-    return _calculatePowerPerUnitFrequency(
-      fftDataPoints: fftDataPoints,
-      leftCutOffFreq: leftCutOffFreq,
-      rightCutOffFreq: rightCutOffFreq,
-    );
-  }
-
   /// Calculate the power per unit frequency
-  double _calculatePowerPerUnitFrequency({
+  double calculatePowerPerUnitFrequency({
     required List<FFTDataPoint> fftDataPoints,
     required double leftCutOffFreq,
     required double rightCutOffFreq,
@@ -51,7 +37,7 @@ class FastFourierTransformService {
   }
 
   /// Apply Fast Fourier Transform
-  List<FFTDataPoint> _applyFastFourierTransform(List<double> data) {
+  List<FFTDataPoint> applyFastFourierTransform(List<double> data) {
     // If there is no data, return an empty list
     if (data.isEmpty) return [];
 

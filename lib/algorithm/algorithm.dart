@@ -55,12 +55,19 @@ class Algorithm {
         _bandPassData[i] = _buffers[i].getData();
       }
 
+      final fftResults = <List<FFTDataPoint>>[];
       final powers = <double>[];
       for (var i = 0; i < _buffers.length; i++) {
-        final power = _fastFourierTransformService.calculatePower(
+        final fftResult =
+            _fastFourierTransformService.applyFastFourierTransform(
           _bandPassData[i],
-          _bandPassFilterService.leftCutOffFreq,
-          _bandPassFilterService.rightCutOffFreq,
+        );
+        fftResults.add(fftResult);
+        final power =
+            _fastFourierTransformService.calculatePowerPerUnitFrequency(
+          fftDataPoints: fftResult,
+          leftCutOffFreq: _bandPassFilterService.leftCutOffFreq,
+          rightCutOffFreq: _bandPassFilterService.rightCutOffFreq,
         );
         powers.add(power);
       }
@@ -68,6 +75,7 @@ class Algorithm {
       final result = AlgorithmResult(
         bandPassResult: _bandPassData,
         powers: powers,
+        fftResults: fftResults,
       );
 
       displayFunction(result);

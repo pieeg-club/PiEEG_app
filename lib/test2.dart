@@ -192,6 +192,7 @@ class ADS1299Reader2 {
           (AlgorithmResult algorithmResult) => dataNotifier.addData(
             algorithmResult.bandPassResult,
             algorithmResult.powers,
+            algorithmResult.fftResults,
           ),
         );
       }
