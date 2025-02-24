@@ -29,36 +29,37 @@ class _PowerPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    print("Power values: $powerValues");
-    // Center of the head circle
     final center = Offset(size.width / 2, size.height / 2);
-    // Head radius is half the smallest dimension
     final headRadius = min(size.width, size.height) / 2;
 
     // Draw the head circle
     final headPaint = Paint()..color = Colors.grey.shade300;
     canvas.drawCircle(center, headRadius, headPaint);
 
-    // Define parameters for electrode circles
-    // Electrode centers will be evenly distributed along a smaller circle inside the head
-    final electrodeDistance =
-        headRadius * 0.6; // distance from center to each electrode
-    final electrodeRadius = headRadius * 0.1; // radius of each electrode circle
+    final electrodeDistance = headRadius * 0.6;
+    final electrodeRadius = headRadius * 0.1;
+
+    // Compute min and max from your actual power values
+    final minValue = powerValues.reduce(min);
+    final maxValue = powerValues.reduce(max);
+    final range = maxValue - minValue;
 
     // Draw each electrode
     for (int i = 0; i < 8; i++) {
-      // Calculate position around the circle using polar coordinates.
-      // Start from the top (-pi/2) and distribute evenly.
       double angle = (2 * pi * i / 8) - (pi / 2);
       final electrodeCenter = Offset(
         center.dx + electrodeDistance * cos(angle),
         center.dy + electrodeDistance * sin(angle),
       );
 
-      // Normalize the power value between 0.0 and 1.0.
-      final value = powerValues[i].clamp(0.0, 1.0);
+      // Normalize the power value to be between 0 and 1
+      final normalizedValue = range > 0
+          ? (powerValues[i] - minValue) / range
+          : 0.5; // default in case all values are equal
+
       // Interpolate color: blue for low power, red for high power.
-      final electrodeColor = Color.lerp(Colors.blue, Colors.red, value)!;
+      final electrodeColor =
+          Color.lerp(Colors.blue, Colors.red, normalizedValue)!;
       final electrodePaint = Paint()..color = electrodeColor;
 
       canvas.drawCircle(electrodeCenter, electrodeRadius, electrodePaint);
