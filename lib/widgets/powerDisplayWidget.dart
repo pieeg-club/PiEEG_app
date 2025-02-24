@@ -14,6 +14,7 @@ class PowerDisplayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(this.powerValues);
     // CustomPaint lets us draw the head and electrodes exactly how we want.
     return CustomPaint(
       size: const Size(300, 300),
