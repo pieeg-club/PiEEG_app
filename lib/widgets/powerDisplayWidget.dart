@@ -14,7 +14,6 @@ class PowerDisplayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(this.powerValues);
     // CustomPaint lets us draw the head and electrodes exactly how we want.
     return CustomPaint(
       size: const Size(300, 300),
@@ -68,6 +67,6 @@ class _PowerPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _PowerPainter oldDelegate) {
     // Repaint if the power values have changed.
-    return oldDelegate.powerValues != powerValues;
+    return true;
   }
 }
