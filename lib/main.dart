@@ -248,7 +248,7 @@ class EEGPage extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     PowerDisplayWidget(powerValues: dataNotifier.powers),
-                    PowerLineChart(channelData: dataNotifier.fftResults),
+                    // PowerLineChart(channelData: dataNotifier.fftResults),
                   ],
                 );
               },
