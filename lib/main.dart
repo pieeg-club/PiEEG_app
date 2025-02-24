@@ -206,7 +206,7 @@ class EEGPage extends ConsumerWidget {
                   ],
                 ),
                 SizedBox(
-                  width: 1050,
+                  width: 700,
                   child: Wrap(
                     children: List<Widget>.generate(
                       8,
