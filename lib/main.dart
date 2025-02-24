@@ -206,7 +206,7 @@ class EEGPage extends ConsumerWidget {
                   ],
                 ),
                 SizedBox(
-                  width: 900,
+                  width: 1050,
                   child: Wrap(
                     children: List<Widget>.generate(
                       8,
@@ -297,8 +297,8 @@ class _ChartState extends State<Chart> {
     return Padding(
       padding: widget.padding,
       child: SizedBox(
-        width: 450,
-        height: 110,
+        width: 300,
+        height: 60,
         child: LineChart(
           duration: const Duration(milliseconds: 0),
           LineChartData(
