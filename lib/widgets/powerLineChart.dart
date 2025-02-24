@@ -56,44 +56,48 @@ class PowerLineChart extends StatelessWidget {
     // Build the LineChart widget with proper axis settings
     return Container(
       padding: const EdgeInsets.all(16),
-      child: LineChart(
-        LineChartData(
-          lineBarsData: lineBarsData,
-          titlesData: FlTitlesData(
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                reservedSize: 30,
-                interval: 10,
-                getTitlesWidget: (value, meta) {
-                  // Format frequency values as desired
-                  return Text(value.toStringAsFixed(0));
-                },
+      child: SizedBox(
+        width: 300,
+        height: 110,
+        child: LineChart(
+          LineChartData(
+            lineBarsData: lineBarsData,
+            titlesData: FlTitlesData(
+              bottomTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  reservedSize: 30,
+                  interval: 10,
+                  getTitlesWidget: (value, meta) {
+                    // Format frequency values as desired
+                    return Text(value.toStringAsFixed(0));
+                  },
+                ),
+              ),
+              leftTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  reservedSize: 40,
+                  interval: 10,
+                  getTitlesWidget: (value, meta) {
+                    // Format amplitude values as desired
+                    return Text(value.toStringAsFixed(0));
+                  },
+                ),
               ),
             ),
-            leftTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                reservedSize: 40,
-                interval: 10,
-                getTitlesWidget: (value, meta) {
-                  // Format amplitude values as desired
-                  return Text(value.toStringAsFixed(0));
-                },
+            gridData: FlGridData(show: true),
+            borderData: FlBorderData(
+              show: true,
+              border: const Border(
+                left: BorderSide(),
+                bottom: BorderSide(),
               ),
             ),
+            // Optionally, set axis ranges if needed:
+            // minX: 0, maxX: 100,
+            // minY: 0, maxY: 100,
           ),
-          gridData: FlGridData(show: true),
-          borderData: FlBorderData(
-            show: true,
-            border: const Border(
-              left: BorderSide(),
-              bottom: BorderSide(),
-            ),
-          ),
-          // Optionally, set axis ranges if needed:
-          // minX: 0, maxX: 100,
-          // minY: 0, maxY: 100,
         ),
       ),
     );
