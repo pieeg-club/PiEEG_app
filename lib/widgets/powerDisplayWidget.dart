@@ -29,6 +29,7 @@ class _PowerPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    print("Power values: $powerValues");
     // Center of the head circle
     final center = Offset(size.width / 2, size.height / 2);
     // Head radius is half the smallest dimension
