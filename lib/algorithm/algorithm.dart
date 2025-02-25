@@ -57,20 +57,20 @@ class Algorithm {
 
       final fftResults = <List<FFTDataPoint>>[];
       final powers = <double>[];
-      // for (var i = 0; i < _buffers.length; i++) {
-      // final fftResult =
-      //     _fastFourierTransformService.applyFastFourierTransform(
-      //   _bandPassData[i],
-      // );
-      // fftResults.add(fftResult);
-      // final power =
-      //     _fastFourierTransformService.calculatePowerPerUnitFrequency(
-      //   fftDataPoints: fftResult,
-      //   leftCutOffFreq: _bandPassFilterService.leftCutOffFreq,
-      //   rightCutOffFreq: _bandPassFilterService.rightCutOffFreq,
-      // );
-      // powers.add(power);
-      // }
+      for (var i = 0; i < _buffers.length; i++) {
+        final fftResult =
+            _fastFourierTransformService.applyFastFourierTransform(
+          _bandPassData[i],
+        );
+        // fftResults.add(fftResult);
+        final power =
+            _fastFourierTransformService.calculatePowerPerUnitFrequency(
+          fftDataPoints: fftResult,
+          leftCutOffFreq: _bandPassFilterService.leftCutOffFreq,
+          rightCutOffFreq: _bandPassFilterService.rightCutOffFreq,
+        );
+        powers.add(power);
+      }
 
       final result = AlgorithmResult(
         bandPassResult: _bandPassData,
