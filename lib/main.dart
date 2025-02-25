@@ -74,7 +74,7 @@ class EEGPage extends ConsumerWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 50, right: 50),
+              padding: const EdgeInsets.only(left: 80, right: 50),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -307,7 +307,7 @@ class _ChartState extends State<Chart> {
     return Padding(
       padding: widget.padding,
       child: SizedBox(
-        width: 200,
+        width: 180,
         height: 60,
         child: LineChart(
           duration: const Duration(milliseconds: 0),
