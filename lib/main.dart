@@ -71,7 +71,7 @@ class EEGPage extends ConsumerWidget {
         title: const Text('PiEEG'),
       ),
       body: SizedBox(
-        width: 1500,
+        width: 500,
         child: Column(
           children: [
             Row(
