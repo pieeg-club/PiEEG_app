@@ -74,7 +74,7 @@ class EEGPage extends ConsumerWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 80, right: 50),
+              padding: const EdgeInsets.only(left: 80, right: 100),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
