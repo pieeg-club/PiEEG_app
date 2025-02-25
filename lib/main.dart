@@ -307,7 +307,7 @@ class _ChartState extends State<Chart> {
     return Padding(
       padding: widget.padding,
       child: SizedBox(
-        width: 300,
+        width: 200,
         height: 60,
         child: LineChart(
           duration: const Duration(milliseconds: 0),
