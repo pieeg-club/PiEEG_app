@@ -66,195 +66,197 @@ class EEGPage extends ConsumerWidget {
     final bandPassFilter = ref.read(bandPassFilterServiceProvider);
     final recordingIndicatorNotifier =
         ref.read(recordingIndicatorNotifierProvider.notifier);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('PiEEG'),
-      ),
-      body: SizedBox(
-        width: double.infinity,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton.icon(
-                      onPressed: dataReciver.startDataReadIsolate,
-                      icon: const Icon(Icons.play_arrow, color: Colors.white),
-                      label: const Text(
-                        'Start',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 10,
+    return Padding(
+      padding: const EdgeInsets.only(left: 50, right: 50),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('PiEEG'),
+        ),
+        body: SizedBox.expand(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: dataReciver.startDataReadIsolate,
+                        icon: const Icon(Icons.play_arrow, color: Colors.white),
+                        label: const Text(
+                          'Start',
+                          style: TextStyle(color: Colors.white),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 25),
-                    Consumer(
-                      builder: (context, ref, child) {
-                        final recordingIndicator =
-                            ref.watch(recordingIndicatorNotifierProvider);
-                        return ElevatedButton.icon(
-                          onPressed: () {
-                            fileStorage.allowSave();
-                            recordingIndicatorNotifier.startRecording();
-                          },
-                          icon: Icon(
-                            Icons.save,
-                            color: recordingIndicator ? Colors.green : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 10,
                           ),
-                          label: const Text('Start saving'),
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 10,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        fileStorage.disallowSave();
-                        recordingIndicatorNotifier.stopRecording();
-                      },
-                      icon: const Icon(Icons.stop),
-                      label: const Text('Stop saving'),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 10,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 25),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Bandpass: '),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 60,
-                          height: 50,
-                          child: TextField(
-                            controller: _bandPassLowController,
-                            decoration: const InputDecoration(
-                              labelText: 'Low',
-                              border: OutlineInputBorder(),
+                      const SizedBox(height: 25),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final recordingIndicator =
+                              ref.watch(recordingIndicatorNotifierProvider);
+                          return ElevatedButton.icon(
+                            onPressed: () {
+                              fileStorage.allowSave();
+                              recordingIndicatorNotifier.startRecording();
+                            },
+                            icon: Icon(
+                              Icons.save,
+                              color: recordingIndicator ? Colors.green : null,
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 60,
-                          height: 50,
-                          child: TextField(
-                            controller: _bandPassHighController,
-                            decoration: const InputDecoration(
-                              labelText: 'High',
-                              border: OutlineInputBorder(),
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Update low cut-off frequency
-                        try {
-                          bandPassFilter.lowCutOffFreq =
-                              double.parse(_bandPassLowController.text);
-                        } catch (e) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Invalid low cut-off'),
+                            label: const Text('Start saving'),
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 10,
+                              ),
                             ),
                           );
-                          _bandPassLowController.text =
-                              bandPassFilter.leftCutOffFreq.toString();
-                        }
-                        // Update high cut-off frequency
-                        try {
-                          bandPassFilter.highCutOffFreq =
-                              double.parse(_bandPassHighController.text);
-                        } catch (e) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Invalid high cut-off'),
-                            ),
-                          );
-                          _bandPassHighController.text =
-                              bandPassFilter.rightCutOffFreq.toString();
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 10,
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          fileStorage.disallowSave();
+                          recordingIndicatorNotifier.stopRecording();
+                        },
+                        icon: const Icon(Icons.stop),
+                        label: const Text('Stop saving'),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 10,
+                          ),
                         ),
                       ),
-                      child: const Text('Confirm'),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: 1050,
-                  child: Wrap(
-                    children: List<Widget>.generate(
-                      8,
-                      (i) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20),
-                              child: Text('Channel: $i'),
+                      const SizedBox(height: 25),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('Bandpass: '),
+                          const SizedBox(width: 10),
+                          SizedBox(
+                            width: 60,
+                            height: 50,
+                            child: TextField(
+                              controller: _bandPassLowController,
+                              decoration: const InputDecoration(
+                                labelText: 'Low',
+                                border: OutlineInputBorder(),
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                            Consumer(
-                              builder: (context, ref, child) {
-                                final dataNotifier =
-                                    ref.watch(dataNotifier2Provider);
+                          ),
+                          const SizedBox(width: 10),
+                          SizedBox(
+                            width: 60,
+                            height: 50,
+                            child: TextField(
+                              controller: _bandPassHighController,
+                              decoration: const InputDecoration(
+                                labelText: 'High',
+                                border: OutlineInputBorder(),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Update low cut-off frequency
+                          try {
+                            bandPassFilter.lowCutOffFreq =
+                                double.parse(_bandPassLowController.text);
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Invalid low cut-off'),
+                              ),
+                            );
+                            _bandPassLowController.text =
+                                bandPassFilter.leftCutOffFreq.toString();
+                          }
+                          // Update high cut-off frequency
+                          try {
+                            bandPassFilter.highCutOffFreq =
+                                double.parse(_bandPassHighController.text);
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Invalid high cut-off'),
+                              ),
+                            );
+                            _bandPassHighController.text =
+                                bandPassFilter.rightCutOffFreq.toString();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 10,
+                          ),
+                        ),
+                        child: const Text('Confirm'),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 1050,
+                    child: Wrap(
+                      children: List<Widget>.generate(
+                        8,
+                        (i) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: Text('Channel: $i'),
+                              ),
+                              Consumer(
+                                builder: (context, ref, child) {
+                                  final dataNotifier =
+                                      ref.watch(dataNotifier2Provider);
 
-                                return Chart(
-                                  padding: const EdgeInsets.only(
-                                      left: 5, right: 5, top: 15),
-                                  data: dataNotifier.list[i],
-                                  randomData: dataNotifier.randomData,
-                                );
-                              },
-                            ),
-                          ],
-                        );
-                      },
+                                  return Chart(
+                                    padding: const EdgeInsets.only(
+                                        left: 5, right: 5, top: 15),
+                                    data: dataNotifier.list[i],
+                                    randomData: dataNotifier.randomData,
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Consumer(
-              builder: (context, ref, child) {
-                final dataNotifier = ref.watch(dataNotifier2Provider);
+                ],
+              ),
+              Consumer(
+                builder: (context, ref, child) {
+                  final dataNotifier = ref.watch(dataNotifier2Provider);
 
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    PowerDisplayWidget(powerValues: dataNotifier.powers),
-                    // PowerLineChart(channelData: dataNotifier.fftResults),
-                  ],
-                );
-              },
-            ),
-          ],
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      PowerDisplayWidget(powerValues: dataNotifier.powers),
+                      // PowerLineChart(channelData: dataNotifier.fftResults),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
