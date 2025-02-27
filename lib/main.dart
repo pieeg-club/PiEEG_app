@@ -67,7 +67,7 @@ class EEGPage extends ConsumerWidget {
     final recordingIndicatorNotifier =
         ref.read(recordingIndicatorNotifierProvider.notifier);
     return Padding(
-      padding: const EdgeInsets.only(left: 50, right: 50),
+      padding: const EdgeInsets.only(left: 70, right: 50),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('PiEEG'),
@@ -209,7 +209,7 @@ class EEGPage extends ConsumerWidget {
                     ],
                   ),
                   SizedBox(
-                    width: 1050,
+                    width: 800,
                     child: Wrap(
                       children: List<Widget>.generate(
                         8,
