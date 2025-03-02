@@ -205,15 +205,12 @@ class ADS1299Reader2 {
 
   static Future<void> dataAcquisitionIsolate(SendPort sendPort) async {
     // Initialize SPI and GPIO here
-    final spi = SPI(0, 0, SPImode.mode1, 1000);
+    final spi = SPI(0, 0, SPImode.mode1, 2000000);
     spi.setSPIbitsPerWord(8);
     spi.setSPIbitOrder(BitOrder.msbFirst);
 
-    final gpio = GPIO(26, GPIOdirection.gpioDirIn, 0);
+    final gpio = GPIO(26, GPIOdirection.gpioDirIn, 544);
     // gpio.setGPIOedge(GPIOedge.gpioEdgeFalling);
-    print("GPIO initialized");
-    print(gpio.line);
-    print(spi.maxSpeed);
 
     // Initialize ADS1299
     _initializeADS1299(spi);
