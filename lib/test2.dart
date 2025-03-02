@@ -91,21 +91,13 @@ class ADS1299Reader2 {
 
   static void _sendCommand(SPI spi, int command) {
     final sendData = [command];
-    try {
-      spi.transfer(sendData, false);
-    } catch (e) {
-      print(e);
-    }
+    spi.transfer(sendData, false);
   }
 
   static void _writeByte(SPI spi, int register, int data) {
     final writeCommand = 0x40 | register;
     final sendData = [writeCommand, 0x00, data];
-    try {
-      spi.transfer(sendData, false);
-    } catch (e) {
-      print(e);
-    }
+    spi.transfer(sendData, false);
   }
 
   static List<int> _readData(SPI spi, int length) {
