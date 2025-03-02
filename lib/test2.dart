@@ -212,7 +212,8 @@ class ADS1299Reader2 {
     final gpio = GPIO(26, GPIOdirection.gpioDirIn, 4);
     // gpio.setGPIOedge(GPIOedge.gpioEdgeFalling);
     print("GPIO initialized");
-    print(gpio.name);
+    print(gpio);
+    print(spi);
 
     // Initialize ADS1299
     _initializeADS1299(spi);
