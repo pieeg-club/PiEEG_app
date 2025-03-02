@@ -209,7 +209,7 @@ class ADS1299Reader2 {
     spi.setSPIbitsPerWord(8);
     spi.setSPIbitOrder(BitOrder.msbFirst);
 
-    final gpio = GPIO(26, GPIOdirection.gpioDirIn, 4);
+    final gpio = GPIO(26, GPIOdirection.gpioDirIn, 0);
     // gpio.setGPIOedge(GPIOedge.gpioEdgeFalling);
     print("GPIO initialized");
     print(gpio.line);
