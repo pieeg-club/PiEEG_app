@@ -4,12 +4,12 @@ import 'dart:isolate';
 import 'package:PiEEG_app/algorithm/algorithm.dart';
 import 'package:PiEEG_app/algorithm/algorithm_result.dart';
 import 'package:PiEEG_app/algorithm/processing_steps/fft.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:dart_periphery/dart_periphery.dart';
 import 'package:PiEEG_app/data_notifier2.dart';
 import 'package:PiEEG_app/file_storage.dart';
 import 'package:PiEEG_app/process_data.dart';
+import 'package:dart_periphery/dart_periphery.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'test2.g.dart';
 
@@ -205,12 +205,14 @@ class ADS1299Reader2 {
 
   static Future<void> dataAcquisitionIsolate(SendPort sendPort) async {
     // Initialize SPI and GPIO here
-    final spi = SPI(0, 0, SPImode.mode1, 2000000);
+    final spi = SPI(0, 0, SPImode.mode1, 1000);
     spi.setSPIbitsPerWord(8);
     spi.setSPIbitOrder(BitOrder.msbFirst);
 
     final gpio = GPIO(26, GPIOdirection.gpioDirIn, 4);
     // gpio.setGPIOedge(GPIOedge.gpioEdgeFalling);
+    print("GPIO initialized");
+    print(gpio.name);
 
     // Initialize ADS1299
     _initializeADS1299(spi);
