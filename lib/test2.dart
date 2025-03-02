@@ -91,13 +91,21 @@ class ADS1299Reader2 {
 
   static void _sendCommand(SPI spi, int command) {
     final sendData = [command];
-    spi.transfer(sendData, false);
+    try {
+      spi.transfer(sendData, false);
+    } catch (e) {
+      print(e);
+    }
   }
 
   static void _writeByte(SPI spi, int register, int data) {
     final writeCommand = 0x40 | register;
     final sendData = [writeCommand, 0x00, data];
-    spi.transfer(sendData, false);
+    try {
+      spi.transfer(sendData, false);
+    } catch (e) {
+      print(e);
+    }
   }
 
   static List<int> _readData(SPI spi, int length) {
@@ -209,7 +217,7 @@ class ADS1299Reader2 {
     spi.setSPIbitsPerWord(8);
     spi.setSPIbitOrder(BitOrder.msbFirst);
 
-    final gpio = GPIO(26, GPIOdirection.gpioDirIn, 0);
+    final gpio = GPIO(26, GPIOdirection.gpioDirIn, 4);
     // gpio.setGPIOedge(GPIOedge.gpioEdgeFalling);
 
     // Initialize ADS1299
