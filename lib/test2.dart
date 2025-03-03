@@ -196,7 +196,7 @@ class ADS1299Reader2 {
     bool buttonState = false;
 
     while (true) {
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(Duration(milliseconds: 1));
       buttonState = gpio.read();
 
       if (buttonState) {
