@@ -196,6 +196,7 @@ class ADS1299Reader2 {
     bool buttonState = false;
 
     while (true) {
+      await Future.delayed(Duration(milliseconds: 50));
       buttonState = gpio.read();
 
       if (buttonState) {
@@ -207,21 +208,15 @@ class ADS1299Reader2 {
         // Read data from SPI
         final data = _readData(spi, 27);
 
-        if (data is List<int>) {
-          // if (!_theInputIsValide(data)) {
-          //   continue;
-          // }
-
-          algorithm.processData(
-            data,
-            (String data) => fileStorage.checkAndSaveData(data: data),
-            (AlgorithmResult algorithmResult) => dataNotifier.addData(
-              algorithmResult.bandPassResult,
-              algorithmResult.powers,
-              algorithmResult.fftResults,
-            ),
-          );
-        }
+        algorithm.processData(
+          data,
+          (String data) => fileStorage.checkAndSaveData(data: data),
+          (AlgorithmResult algorithmResult) => dataNotifier.addData(
+            algorithmResult.bandPassResult,
+            algorithmResult.powers,
+            algorithmResult.fftResults,
+          ),
+        );
       }
     }
   }
