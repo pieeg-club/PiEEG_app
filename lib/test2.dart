@@ -209,7 +209,7 @@ class ADS1299Reader2 {
 
         if (data is List<int>) {
           if (!_theInputIsValide(data)) {
-            return;
+            continue;
           }
 
           algorithm.processData(
