@@ -208,9 +208,9 @@ class ADS1299Reader2 {
         final data = _readData(spi, 27);
 
         if (data is List<int>) {
-          if (!_theInputIsValide(data)) {
-            continue;
-          }
+          // if (!_theInputIsValide(data)) {
+          //   continue;
+          // }
 
           algorithm.processData(
             data,
