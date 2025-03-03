@@ -181,26 +181,49 @@ class ADS1299Reader2 {
       fastFourierTransformService,
     );
 
-    // Start the isolate
-    await Isolate.spawn(dataAcquisitionIsolate, receivePort.sendPort);
+    // Initialize SPI and GPIO here
+    final spi = SPI(0, 0, SPImode.mode1, 2000000);
+    spi.setSPIbitsPerWord(8);
+    spi.setSPIbitOrder(BitOrder.msbFirst);
 
-    receivePort.listen((data) {
-      if (data is List<int>) {
-        if (!_theInputIsValide(data)) {
-          return;
-        }
+    final gpio = GPIO(26, GPIOdirection.gpioDirIn, 4);
+    // gpio.setGPIOedge(GPIOedge.gpioEdgeFalling);
 
-        algorithm.processData(
-          data,
-          (String data) => fileStorage.checkAndSaveData(data: data),
-          (AlgorithmResult algorithmResult) => dataNotifier.addData(
-            algorithmResult.bandPassResult,
-            algorithmResult.powers,
-            algorithmResult.fftResults,
-          ),
-        );
+    // Initialize ADS1299
+    _initializeADS1299(spi);
+
+    bool testDRDY = false;
+    bool buttonState = false;
+
+    while (true) {
+      buttonState = gpio.read();
+
+      if (buttonState) {
+        testDRDY = true;
       }
-    });
+      if (testDRDY && !buttonState) {
+        testDRDY = false;
+
+        // Read data from SPI
+        final data = _readData(spi, 27);
+
+        if (data is List<int>) {
+          if (!_theInputIsValide(data)) {
+            return;
+          }
+
+          algorithm.processData(
+            data,
+            (String data) => fileStorage.checkAndSaveData(data: data),
+            (AlgorithmResult algorithmResult) => dataNotifier.addData(
+              algorithmResult.bandPassResult,
+              algorithmResult.powers,
+              algorithmResult.fftResults,
+            ),
+          );
+        }
+      }
+    }
   }
 
   static Future<void> dataAcquisitionIsolate(SendPort sendPort) async {
