@@ -31,6 +31,7 @@ class Algorithm {
   String _rawDataBuffer = '';
   double _bandPassResult = 0;
   int _counter = 0;
+  int _index = 0;
 
   /// Process the data
   void processData(
@@ -64,10 +65,12 @@ class Algorithm {
             .getData()
             .asMap()
             .entries
-            .map((e) => FlSpot(e.key.toDouble(), e.value))
+            .map((e) => FlSpot(_index + e.key.toDouble(), e.value))
             .toList();
         ;
       }
+
+      _index += 250;
 
       // final fftResults = <List<FFTDataPoint>>[];
       // final powers = <double>[];
