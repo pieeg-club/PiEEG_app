@@ -208,7 +208,6 @@ class ADS1299Reader2 {
         // Read data from SPI
         final data = _readData(spi, 27);
 
-        print("Sending data to process");
         algorithm.processData(
           data,
           (String data) => fileStorage.checkAndSaveData(data: data),

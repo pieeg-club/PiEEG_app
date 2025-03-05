@@ -46,6 +46,8 @@ class Algorithm {
 
     _counter++;
 
+    print('Counter: $_counter');
+
     if (_counter >= 250) {
       saveFunction(_rawDataBuffer);
       _rawDataBuffer = '';
