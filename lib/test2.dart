@@ -173,7 +173,9 @@ class ADS1299Reader2 {
     return combined;
   }
 
-  Future<void> startDataReadIsolate() async {
+  Future<void> startDataReadIsolate(
+    void Function(List<List<double>>) addData,
+  ) async {
     final receivePort = ReceivePort();
 
     final algorithm = Algorithm(
@@ -210,10 +212,8 @@ class ADS1299Reader2 {
         algorithm.processData(
           data,
           (String data) => fileStorage.checkAndSaveData(data: data),
-          (AlgorithmResult algorithmResult) => dataNotifier.addData(
+          (AlgorithmResult algorithmResult) => addData(
             algorithmResult.bandPassResult,
-            algorithmResult.powers,
-            algorithmResult.fftResults,
           ),
         );
       }

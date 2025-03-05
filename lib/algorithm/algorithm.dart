@@ -47,7 +47,7 @@ class Algorithm {
     _counter++;
 
     if (_counter >= 250) {
-      saveFunction(_rawDataBuffer);
+      // saveFunction(_rawDataBuffer);
       _rawDataBuffer = '';
 
       // move data from buffer to dataToSend
@@ -79,7 +79,6 @@ class Algorithm {
       );
 
       displayFunction(result);
-      print('Data processed');
       _counter = 0;
     }
   }
