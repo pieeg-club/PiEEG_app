@@ -212,7 +212,7 @@ class ADS1299Reader2 {
     bool testDRDY = false;
     bool buttonState = false;
 
-    Timer.periodic(const Duration(microseconds: 50), (timer) {
+    while (true) {
       buttonState = gpio.read();
 
       if (buttonState) {
@@ -226,6 +226,6 @@ class ADS1299Reader2 {
 
         sendPort.send(data);
       }
-    });
+    }
   }
 }
