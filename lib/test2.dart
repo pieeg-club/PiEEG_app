@@ -197,7 +197,7 @@ class ADS1299Reader2 {
     bool testDRDY = false;
     bool buttonState = false;
 
-    Timer.periodic(const Duration(microseconds: 100), (timer) {
+    Timer.periodic(const Duration(microseconds: 50), (timer) {
       buttonState = gpio.read();
 
       if (buttonState) {
