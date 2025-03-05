@@ -195,8 +195,7 @@ class ADS1299Reader2 {
     bool testDRDY = false;
     bool buttonState = false;
 
-    while (true) {
-      // await Future.delayed(Duration(milliseconds: 1));
+    Timer.periodic(const Duration(microseconds: 100), (timer) {
       buttonState = gpio.read();
 
       if (buttonState) {
@@ -218,7 +217,7 @@ class ADS1299Reader2 {
           ),
         );
       }
-    }
+    });
   }
 
   static Future<void> dataAcquisitionIsolate(SendPort sendPort) async {

@@ -18,7 +18,6 @@ class DataNotifier2 extends ChangeNotifier {
     List<double> powers,
     List<List<FFTDataPoint>> fftResults,
   ) {
-    print("DataNotifier2.addData");
     for (var i = 0; i < 8; i++) {
       // Add new data to the end of each list[i]
       list[i].addAll(bandPassData[i]);
