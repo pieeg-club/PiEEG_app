@@ -323,8 +323,8 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double minY = -100;
-    double maxY = 100;
+    double minY = -200;
+    double maxY = 200;
 
     return Padding(
       padding: padding,
