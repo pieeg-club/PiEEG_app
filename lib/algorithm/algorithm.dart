@@ -3,6 +3,7 @@ import 'package:PiEEG_app/algorithm/processing_steps/fft.dart';
 import 'package:PiEEG_app/buffer.dart';
 import 'package:PiEEG_app/deice_data_process.dart';
 import 'package:PiEEG_app/process_data.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 /// Algorithm class
 class Algorithm {
@@ -15,12 +16,18 @@ class Algorithm {
       _buffers.length,
       (i) => _buffers[i].getData(),
     ).toList();
+
+    _spots = List<List<FlSpot>>.generate(
+      _buffers.length,
+      (i) => _buffers[i].getData().map((e) => FlSpot(0, e)).toList(),
+    );
   }
 
   final BandPassFilterService _bandPassFilterService;
   final FastFourierTransformService _fastFourierTransformService;
   final _buffers = List<CircularBuffer>.generate(8, (_) => CircularBuffer(250));
   late List<List<double>> _bandPassData;
+  late List<List<FlSpot>> _spots;
   String _rawDataBuffer = '';
   double _bandPassResult = 0;
   int _counter = 0;
@@ -29,7 +36,7 @@ class Algorithm {
   void processData(
     List<int> data,
     Future<void> Function(String) saveFunction,
-    void Function(AlgorithmResult) displayFunction,
+    void Function(List<List<FlSpot>>) displayFunction,
   ) {
     _rawDataBuffer += data.toString();
 
@@ -48,15 +55,21 @@ class Algorithm {
 
     if (_counter >= 250) {
       // saveFunction(_rawDataBuffer);
-      _rawDataBuffer = '';
+      // _rawDataBuffer = '';
 
       // move data from buffer to dataToSend
       for (var i = 0; i < _buffers.length; i++) {
-        _bandPassData[i] = _buffers[i].getData();
+        // _bandPassData[i] = _buffers[i].getData();
+        _spots[i] = _bandPassData[i]
+            .asMap()
+            .entries
+            .map((e) => FlSpot(e.key.toDouble(), e.value))
+            .toList();
+        ;
       }
 
-      final fftResults = <List<FFTDataPoint>>[];
-      final powers = <double>[];
+      // final fftResults = <List<FFTDataPoint>>[];
+      // final powers = <double>[];
       // for (var i = 0; i < _buffers.length; i++) {
       // final fftResult =
       //     _fastFourierTransformService.applyFastFourierTransform(
@@ -72,13 +85,7 @@ class Algorithm {
       // powers.add(power);
       // }
 
-      final result = AlgorithmResult(
-        bandPassResult: _bandPassData,
-        powers: powers,
-        fftResults: fftResults,
-      );
-
-      displayFunction(result);
+      displayFunction(_spots);
       _counter = 0;
     }
   }

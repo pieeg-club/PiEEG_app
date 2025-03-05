@@ -66,20 +66,25 @@ class _EEGPageState extends State<EEGPage> {
   final _bandPassLowController = TextEditingController(text: '1');
   final _bandPassHighController = TextEditingController(text: '30');
 
-  final list = List<List<double>>.generate(8, (i) => []);
+  // final list = List<List<double>>.generate(8, (i) => []);
+
+  final _spots = List<List<FlSpot>>.generate(
+    8,
+    (i) => [],
+  );
 
   bool randomData = true;
 
   void addData(
-    List<List<double>> bandPassData,
+    List<List<FlSpot>> newspots,
   ) {
     for (var i = 0; i < 8; i++) {
       // Add new data to the end of each list[i]
-      list[i].addAll(bandPassData[i]);
+      _spots[i].addAll(newspots[i]);
 
       // Trim the list only if its length exceeds maxLength
-      if (list[i].length > maxLength) {
-        list[i] = list[i].sublist(list[i].length - maxLength);
+      if (_spots[i].length > maxLength) {
+        _spots[i] = _spots[i].sublist(_spots[i].length - maxLength);
       }
     }
 
@@ -273,7 +278,7 @@ class _EEGPageState extends State<EEGPage> {
                             Chart(
                               padding: const EdgeInsets.only(
                                   left: 5, right: 5, top: 15),
-                              data: list[i],
+                              data: _spots[i],
                               randomData: randomData,
                             ),
                           ],
@@ -304,9 +309,9 @@ class _EEGPageState extends State<EEGPage> {
   }
 }
 
-class Chart extends StatefulWidget {
+class Chart extends StatelessWidget {
   final EdgeInsetsGeometry padding;
-  final List<double> data;
+  final List<FlSpot> data;
   final bool randomData;
 
   const Chart({
@@ -317,36 +322,12 @@ class Chart extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ChartState createState() => _ChartState();
-}
-
-class _ChartState extends State<Chart> {
-  List<FlSpot> _spots = [];
-
-  @override
-  void didUpdateWidget(covariant Chart oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.randomData != oldWidget.randomData) {
-      _spots = widget.data
-          .asMap()
-          .entries
-          .map((e) => FlSpot(e.key.toDouble(), e.value))
-          .toList();
-    }
-  }
-
-  final double padding = 40;
-
-  @override
   Widget build(BuildContext context) {
     double minY = -100;
     double maxY = 100;
-    if (widget.data.isNotEmpty) {
-      minY = widget.data.reduce(min) - padding;
-      maxY = widget.data.reduce(max) + padding;
-    }
+
     return Padding(
-      padding: widget.padding,
+      padding: padding,
       child: SizedBox(
         width: 180,
         height: 60,
@@ -361,7 +342,7 @@ class _ChartState extends State<Chart> {
                 dotData: const FlDotData(show: false),
                 barWidth: 0.5,
                 isCurved: false,
-                spots: _spots,
+                spots: data,
               ),
             ],
             lineTouchData: const LineTouchData(enabled: false),

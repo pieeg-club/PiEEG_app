@@ -8,6 +8,7 @@ import 'package:PiEEG_app/data_notifier2.dart';
 import 'package:PiEEG_app/file_storage.dart';
 import 'package:PiEEG_app/process_data.dart';
 import 'package:dart_periphery/dart_periphery.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -174,7 +175,7 @@ class ADS1299Reader2 {
   }
 
   Future<void> startDataReadIsolate(
-    void Function(List<List<double>>) addData,
+    void Function(List<List<FlSpot>>) addData,
   ) async {
     final receivePort = ReceivePort();
 
@@ -212,9 +213,7 @@ class ADS1299Reader2 {
         algorithm.processData(
           data,
           (String data) => fileStorage.checkAndSaveData(data: data),
-          (AlgorithmResult algorithmResult) => addData(
-            algorithmResult.bandPassResult,
-          ),
+          addData,
         );
       }
     });
