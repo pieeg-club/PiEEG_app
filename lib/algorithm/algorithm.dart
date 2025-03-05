@@ -79,6 +79,7 @@ class Algorithm {
       );
 
       displayFunction(result);
+      print('Data processed');
       _counter = 0;
     }
   }
