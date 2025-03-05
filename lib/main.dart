@@ -334,8 +334,6 @@ class Chart extends StatelessWidget {
         child: LineChart(
           duration: const Duration(milliseconds: 0),
           LineChartData(
-            maxY: maxY,
-            minY: minY,
             clipData: const FlClipData.vertical(),
             lineBarsData: [
               LineChartBarData(
