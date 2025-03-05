@@ -38,7 +38,7 @@ class Algorithm {
     Future<void> Function(String) saveFunction,
     void Function(List<List<FlSpot>>) displayFunction,
   ) {
-    _rawDataBuffer += data.toString();
+    // _rawDataBuffer += data.toString();
 
     final result = DeviceDataProcessorService.processRawDeviceData(data);
     for (var channelIndex = 0; channelIndex < result.length; channelIndex++) {
@@ -60,7 +60,8 @@ class Algorithm {
       // move data from buffer to dataToSend
       for (var i = 0; i < _buffers.length; i++) {
         // _bandPassData[i] = _buffers[i].getData();
-        _spots[i] = _bandPassData[i]
+        _spots[i] = _buffers[i]
+            .getData()
             .asMap()
             .entries
             .map((e) => FlSpot(e.key.toDouble(), e.value))
