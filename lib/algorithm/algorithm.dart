@@ -44,10 +44,11 @@ class Algorithm {
     final result = DeviceDataProcessorService.processRawDeviceData(data);
     for (var channelIndex = 0; channelIndex < result.length; channelIndex++) {
       // Apply the band-pass filter
-      _bandPassResult = _bandPassFilterService.applyBandPassFilter(
-        channelIndex,
-        result[channelIndex],
-      );
+      // _bandPassResult = _bandPassFilterService.applyBandPassFilter(
+      //   channelIndex,
+      //   result[channelIndex],
+      // );
+      _bandPassResult = result[channelIndex];
 
       _buffers[channelIndex].add(_bandPassResult);
     }
