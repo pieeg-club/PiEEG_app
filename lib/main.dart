@@ -84,7 +84,8 @@ class _EEGPageState extends State<EEGPage> {
 
       // Trim the list only if its length exceeds maxLength
       if (_spots[i].length > maxLength) {
-        _spots[i] = _spots[i].sublist(_spots[i].length - maxLength);
+        final excess = _spots[i].length - maxLength;
+        _spots[i].removeRange(0, excess);
       }
     }
 
