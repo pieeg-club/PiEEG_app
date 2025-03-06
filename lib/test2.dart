@@ -39,8 +39,8 @@ class ADS1299Reader2 {
 
   static void _initializeADS1299(SPI spi) {
     const config1 = 0x01;
-    const config2 = 0X02;
-    const config3 = 0X03;
+    const config2 = 0x02;
+    const config3 = 0x03;
 
     const reset = 0x06;
     const stop = 0x0A;
@@ -67,7 +67,7 @@ class ADS1299Reader2 {
 
     _writeByte(spi, config1, 0x96);
     _writeByte(spi, config2, 0xD4);
-    _writeByte(spi, config3, 0xFF);
+    _writeByte(spi, config3, 0xE0);
     _writeByte(spi, 0x04, 0x00);
     _writeByte(spi, 0x0D, 0x00);
     _writeByte(spi, 0x0E, 0x00);
