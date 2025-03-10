@@ -67,7 +67,7 @@ class ADS1299Reader2 {
 
     _writeByte(spi, config1, 0x96);
     _writeByte(spi, config2, 0xD4);
-    _writeByte(spi, config3, 0xEE);
+    _writeByte(spi, config3, 0xFF);
     _writeByte(spi, 0x04, 0x00);
     _writeByte(spi, 0x0D, 0x00);
     _writeByte(spi, 0x0E, 0x00);
