@@ -220,10 +220,10 @@ class ADS1299Reader2 {
         testDRDY = false;
 
         // Read data from SPI
-        final data = _readData(spi, 54);
+        final data = _readData(spi, 27);
 
         algorithm.processData(
-          data.sublist(0, 27),
+          data,
           (String data) => fileStorage.checkAndSaveData(data: data),
           addData,
         );
